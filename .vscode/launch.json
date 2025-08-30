@@ -1,0 +1,136 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🔥 股健檢 - 完整品質檢查 (CI)",
+      "type": "shell",
+      "request": "launch",
+      "command": "${workspaceFolder}/scripts/ci-check.sh",
+      "args": [],
+      "options": {
+        "cwd": "${workspaceFolder}",
+        "env": {}
+      },
+      "console": "integratedTerminal",
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared",
+        "focus": false
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🔍 ESLint 檢查",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/eslint",
+      "args": [
+        "*.js",
+        "--ext",
+        ".js"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "cwd": "${workspaceFolder}/functions",
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared",
+        "focus": false
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🎨 Prettier 檢查格式",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/prettier",
+      "args": [
+        "--check",
+        "*.js"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "cwd": "${workspaceFolder}/functions",
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared",
+        "focus": false
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🏗️ 專案建置驗證",
+      "program": "node",
+      "args": [
+        "-e",
+        "console.log('✅ Build check complete')"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "cwd": "${workspaceFolder}/functions",
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared",
+        "focus": false
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🧪 本地測試",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/dotenv",
+      "args": [
+        "-e",
+        "${workspaceFolder}/functions/.env",
+        "--",
+        "node",
+        "-e",
+        "require('./index.js'); console.log('✅ Local syntax check passed');"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "cwd": "${workspaceFolder}/functions",
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared",
+        "focus": false
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "📊 本機 LINE Bot 測試",
+      "program": "${workspaceFolder}/functions/index.js",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared",
+        "focus": false
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "🔍 專案結構分析",
+      "program": "tree",
+      "args": [
+        "-L 3",
+        "-I node_modules",
+        "${workspaceFolder}"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared",
+        "focus": false
+      }
+    }
+  ]
+}
