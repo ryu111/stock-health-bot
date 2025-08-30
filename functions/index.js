@@ -18,6 +18,12 @@ const {
   analyzeTrend,
   getHistoricalData,
 } = require('./stockService');
+const {
+  getETFData,
+  calculateETFHealthScore,
+  formatETFReport,
+  formatETFLookupTable,
+} = require('./etfDataService');
 const { performAnalysis, performEnhancedAnalysis } = require('./aiAnalyzer');
 
 // 初始化 Firebase Admin
@@ -68,6 +74,35 @@ app.get('/test', (req, res) => {
   res.send('股健檢 API 正在運行！');
 });
 
+// 測試專用端點 - 跳過簽名驗證
+app.post('/test-webhook', async (req, res) => {
+  try {
+    const events = req.body.events;
+    const responses = [];
+
+    await Promise.all(
+      events.map(async (event) => {
+        if (event.type === 'message' && event.message.type === 'text') {
+          const response = await handleTestMessage(event);
+          responses.push(response);
+        } else if (event.type === 'postback') {
+          return await handlePostback(event);
+        } else if (event.type === 'follow') {
+          return await handleFollow(event);
+        }
+      })
+    );
+
+    res.status(200).json({ 
+      message: '測試成功',
+      responses: responses
+    });
+  } catch (error) {
+    console.error('測試 Webhook 錯誤:', error);
+    res.status(500).json({ error: '內部伺服器錯誤', details: error.message });
+  }
+});
+
 // LINE Webhook 端點
 app.post('/webhook', lineMiddleware, async (req, res) => {
   try {
@@ -91,6 +126,52 @@ app.post('/webhook', lineMiddleware, async (req, res) => {
     res.status(500).json({ error: '內部伺服器錯誤' });
   }
 });
+
+// 測試專用訊息處理器
+async function handleTestMessage(event) {
+  const userId = event.source.userId;
+  const messageText = event.message.text;
+
+  try {
+    // 確保使用者檔案存在
+    await ensureUserProfile(userId);
+
+    // 指令解析
+    if (messageText.startsWith('查詢')) {
+      // 從訊息中提取股票代碼 (例如: "查詢 2330")
+      const symbol = messageText.split(' ')[1]?.trim();
+      if (symbol) {
+        return await handleTestStockQuery(event.replyToken, userId, symbol);
+      } else {
+        return {
+          type: 'text',
+          text: '請提供股票代碼，例如：查詢 2330'
+        };
+      }
+    } else if (messageText === '幫助' || messageText === 'help') {
+      return {
+        type: 'text',
+        text: '股健檢 Bot 功能：\n• 查詢 [代碼] - 股票健康度\n• 詳細分析 [代碼] - AI 進階分析\n• 加入清單 [代碼] - 加入監控\n• 我的清單 - 查看觀察清單\n• ETF 速查表 - 查看常見 ETF\n• 幫助 - 詳細功能'
+      };
+    } else if (messageText === 'ETF 速查表' || messageText === 'etf' || messageText === 'ETF') {
+      return {
+        type: 'text',
+        text: formatETFLookupTable()
+      };
+    } else {
+      return {
+        type: 'text',
+        text: '可用指令：\n• 查詢 [代碼] - 股票健康度\n• 詳細分析 [代碼] - AI 進階分析\n• 加入清單 [代碼] - 加入監控\n• 我的清單 - 查看觀察清單\n• 幫助 - 詳細功能'
+      };
+    }
+  } catch (error) {
+    console.error('測試訊息處理錯誤:', error);
+    return {
+      type: 'text',
+      text: '處理訊息時發生錯誤，請稍後再試。'
+    };
+  }
+}
 
 // 處理傳入訊息
 async function handleMessage(event) {
@@ -161,6 +242,109 @@ async function handleMessage(event) {
   } catch (error) {
     console.error('訊息處理錯誤:', error);
     await replyWithText(event.replyToken, '處理訊息時發生錯誤，請稍後再試。');
+  }
+}
+
+// 測試專用股票查詢處理器
+async function handleTestStockQuery(replyToken, userId, symbol) {
+  try {
+    // 檢查使用者訂閱和查詢限制
+    const userRef = db.collection('users').doc(userId);
+    const userDoc = await userRef.get();
+    const userData = userDoc.data();
+
+    try {
+      // 根據台灣市場代號慣例判斷是否為 ETF
+      // ETF 代號規則：開頭為 00 或 00X 的 4-5 位數字代號
+      const isETF = /^00\d{2,3}$/.test(symbol);
+      
+      if (isETF) {
+        // 使用 ETF 專用服務
+        const etfData = await getETFData(symbol);
+        const healthScore = calculateETFHealthScore(etfData);
+        
+        return {
+          type: 'text',
+          text: formatETFReport(etfData, healthScore)
+        };
+      } else {
+        // 使用一般股票服務
+        let stockSymbol = symbol.toUpperCase();
+
+        // 如果未指定，為台股添加 .TW
+        if (!stockSymbol.includes('.')) {
+          stockSymbol = stockSymbol + '.TW';
+        }
+
+        const stockData = await getStockData(stockSymbol);
+
+      if (!stockData || !stockData.price) {
+        return {
+          type: 'text',
+          text: `❌ 無法取得 ${symbol} 的股票數據\n\n🚀 可能的原因：\n• 股票代碼格式錯誤\n• 當前非交易時間\n• 網路連接問題\n\n請確認代碼並稍後再試\n例如：2330 (台積電)`
+        };
+      }
+
+      // 計算健康分數
+      const healthScore = calculateHealthScore(stockData);
+
+      // 取得歷史資料並為所有使用者執行基本分析
+      const historicalData = await getHistoricalData(stockSymbol, '1mo');
+      const trendAnalysis = await analyzeTrend(stockSymbol);
+
+      // 免費使用者基本分析，付費使用者增強分析
+      let analysisScore = healthScore;
+      if (userData && userData.subscriptionType === 'premium') {
+        const basicAnalysis = await performAnalysis(
+          stockData,
+          historicalData,
+          {}
+        );
+        analysisScore = basicAnalysis.overallScore;
+      }
+
+      // 準備回應資料
+      const responseData = {
+        symbol: stockData.name || stockSymbol,
+        healthScore: analysisScore,
+        pe: stockData.peRatio ? stockData.peRatio.toFixed(2) : 'N/A',
+        marketCap: formatMarketCap(stockData.marketCap),
+        monthlyChange: stockData.dailyChange
+          ? stockData.dailyChange.toFixed(2)
+          : 0,
+        price: stockData.price ? stockData.price.toFixed(2) : 'N/A',
+        volume: stockData.volume || 'N/A',
+        trend: trendAnalysis,
+        dividendYield: stockData.dividendYield
+          ? (stockData.dividendYield * 100).toFixed(2) + '%'
+          : 'N/A',
+        returnOnEquity: stockData.returnOnEquity
+          ? (stockData.returnOnEquity * 100).toFixed(2) + '%'
+          : 'N/A',
+        volatility:
+          historicalData && historicalData.length > 5 ? '可用' : '資料不足',
+        isPremium: userData && userData.subscriptionType === 'premium',
+      };
+
+              return {
+          type: 'text',
+          text: `📊 ${responseData.symbol} 股票健康報告\n\n🏥 健康分數: ${responseData.healthScore}/100\n💰 當前價格: $${responseData.price}\n📈 漲跌幅: ${responseData.monthlyChange}%\n📊 本益比: ${responseData.pe}\n💎 市值: ${responseData.marketCap}\n📊 成交量: ${responseData.volume}\n📈 趨勢: ${responseData.trend}\n💵 股息殖利率: ${responseData.dividendYield}\n📊 股東權益報酬率: ${responseData.returnOnEquity}\n📈 波動性: ${responseData.volatility}`
+        };
+      }
+    } catch (apiError) {
+      console.error('股票 API 錯誤:', apiError);
+
+      return {
+        type: 'text',
+        text: `❌ 無法取得 ${symbol} 的股票數據\n\n🚀 可能的原因：\n• 股票代碼格式錯誤\n• 當前非交易時間\n• 網路連接問題\n\n請確認代碼並稍後再試\n例如：2330 (台積電)`
+      };
+    }
+  } catch (error) {
+    console.error('測試股票查詢錯誤:', error);
+    return {
+      type: 'text',
+      text: '查詢過程中發生錯誤，請稍後再試。'
+    };
   }
 }
 

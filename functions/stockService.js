@@ -26,6 +26,7 @@ async function getStockData(symbol) {
   try {
     // 先檢查快取
     const firestore = getFirestore();
+    let cachedData = null;
     if (firestore) {
       const cacheKey = `stock_${symbol}`;
       const cacheDoc = await firestore
@@ -34,7 +35,7 @@ async function getStockData(symbol) {
         .get();
 
       if (cacheDoc.exists) {
-        const cachedData = cacheDoc.data();
+        cachedData = cacheDoc.data();
         const cacheTime = new Date(cachedData.timestamp);
         const now = new Date();
 
@@ -98,6 +99,26 @@ async function getStockData(symbol) {
     stockData.priceToBook = quote.priceToBook || null;
     stockData.returnOnEquity = quote.returnOnEquity || null;
 
+    // 確保所有欄位都有有效值，避免 Firestore 錯誤
+    const sanitizedData = {
+      symbol: stockData.symbol || '',
+      name: stockData.name || '',
+      price: stockData.price || null,
+      previousClose: stockData.previousClose || null,
+      marketCap: stockData.marketCap || null,
+      volume: stockData.volume || null,
+      peRatio: stockData.peRatio || null,
+      eps: stockData.eps || null,
+      dividendYield: stockData.dividendYield || null,
+      fiftyTwoWeekHigh: stockData.fiftyTwoWeekHigh || null,
+      fiftyTwoWeekLow: stockData.fiftyTwoWeekLow || null,
+      currency: stockData.currency || 'TWD',
+      exchange: stockData.exchange || '',
+      dailyChange: stockData.dailyChange || 0,
+      priceToBook: stockData.priceToBook || null,
+      returnOnEquity: stockData.returnOnEquity || null,
+    };
+
     // 快取資料
     const cacheFirestore = getFirestore();
     if (cacheFirestore) {
@@ -108,11 +129,17 @@ async function getStockData(symbol) {
       });
     }
 
-    return stockData;
+    return sanitizedData;
   } catch (error) {
     console.error(`Error fetching data for ${symbol}:`, error.message);
 
-    // 即使過期也嘗試從快取取得
+    // 如果有過期的快取資料，使用它
+    if (cachedData) {
+      console.log(`Using expired cache for ${symbol}`);
+      return cachedData.data;
+    }
+
+    // 嘗試從快取取得任何可用資料
     const fallbackFirestore = getFirestore();
     if (fallbackFirestore) {
       try {
@@ -121,7 +148,7 @@ async function getStockData(symbol) {
           .doc(`stock_${symbol}`)
           .get();
         if (cacheDoc.exists) {
-          console.log(`Using expired cache for ${symbol}`);
+          console.log(`Using any available cache for ${symbol}`);
           return cacheDoc.data().data;
         }
       } catch (cacheError) {

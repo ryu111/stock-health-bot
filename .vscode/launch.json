@@ -112,15 +112,12 @@
       }
     },
     {
-      "type": "shell",
+      "type": "node",
       "request": "launch",
       "name": "🔍 專案結構分析",
-      "command": "ls",
-      "args": [
-        "-la",
-        "${workspaceFolder}"
-      ],
+      "program": "${workspaceFolder}/scripts/project-structure.js",
       "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
       "presentation": {
         "reveal": "never",
         "panel": "shared",
@@ -129,31 +126,29 @@
     },
     {
       "name": "🚀 本地開發環境",
-      "type": "shell",
+      "type": "node",
       "request": "launch",
-      "command": "bash",
-      "args": ["${workspaceFolder}/scripts/dev-start.sh"],
+      "program": "${workspaceFolder}/scripts/dev-start.js",
       "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
       "presentation": {
         "reveal": "always",
         "panel": "new",
         "focus": true
-      },
-      "group": "build"
+      }
     },
     {
       "name": "🧪 本地功能測試",
-      "type": "shell",
+      "type": "node",
       "request": "launch",
-      "command": "bash",
-      "args": ["${workspaceFolder}/scripts/test-local.sh"],
+      "program": "${workspaceFolder}/scripts/test-local.js",
       "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
       "presentation": {
         "reveal": "always",
         "panel": "new",
         "focus": false
-      },
-      "group": "test"
+      }
     },
     {
       "name": "📡 測試本地 API",
@@ -166,8 +161,7 @@
         "reveal": "always",
         "panel": "new",
         "focus": false
-      },
-      "group": "test"
+      }
     }
   ]
 }
