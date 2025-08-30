@@ -23,10 +23,11 @@ const CACHE_DURATION = 5 * 60 * 1000;
  * @returns {Promise<Object>} 股票資料物件
  */
 async function getStockData(symbol) {
+  // 先檢查快取
+  const firestore = getFirestore();
+  let cachedData = null;
+
   try {
-    // 先檢查快取
-    const firestore = getFirestore();
-    let cachedData = null;
     if (firestore) {
       const cacheKey = `stock_${symbol}`;
       const cacheDoc = await firestore
@@ -134,7 +135,7 @@ async function getStockData(symbol) {
     console.error(`Error fetching data for ${symbol}:`, error.message);
 
     // 如果有過期的快取資料，使用它
-    if (cachedData) {
+    if (cachedData && cachedData.data) {
       console.log(`Using expired cache for ${symbol}`);
       return cachedData.data;
     }

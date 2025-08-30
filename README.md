@@ -226,4 +226,4 @@ Content-Type: application/json
 
 **🌟 一起為台股投資指南航！**
 
-如果您對此專案有興趣，歡迎 star 🌟 我們，以及參與貢獻！
+如果您對此專案有興趣，歡迎 star 🌟 我們，以及參與貢獻！# 測試 pre-commit hook

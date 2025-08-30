@@ -1,0 +1,15 @@
+{
+  "name": "stock-health-bot",
+  "version": "1.0.0",
+  "description": "🚀 股健檢 LINE Bot - 智能股票與 ETF 健康分析系統",
+  "scripts": {
+    "ci": "./scripts/ci-check.sh",
+    "ci:local": "cd functions && npm run verify",
+    "commit": "npm run ci && git add . && git commit",
+    "commit:msg": "npm run ci && git add . && git commit -m",
+    "pre-commit": "./scripts/ci-check.sh"
+  },
+  "keywords": ["line-bot", "stock-analysis", "etf", "firebase"],
+  "author": "ryu111",
+  "license": "MIT"
+}

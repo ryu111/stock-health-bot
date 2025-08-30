@@ -8,10 +8,10 @@
 async function getETFData(symbol) {
   try {
     console.log(`🔍 開始取得 ${symbol} ETF 資料...`);
-    
+
     // 移除 .TW 後綴以取得純代碼
     const cleanSymbol = symbol.replace('.TW', '');
-    
+
     // 嘗試從多個來源取得資料
     const data = await Promise.allSettled([
       getYahooFinanceData(symbol),
@@ -21,8 +21,8 @@ async function getETFData(symbol) {
 
     // 選擇最佳資料來源
     const successfulData = data
-      .filter(result => result.status === 'fulfilled' && result.value)
-      .map(result => result.value);
+      .filter((result) => result.status === 'fulfilled' && result.value)
+      .map((result) => result.value);
 
     if (successfulData.length === 0) {
       throw new Error(`無法從任何來源取得 ${symbol} 的資料`);
@@ -38,7 +38,6 @@ async function getETFData(symbol) {
 
     console.log(`✅ 成功取得 ${symbol} ETF 資料`);
     return bestData;
-
   } catch (error) {
     console.error(`❌ 取得 ${symbol} ETF 資料失敗:`, error.message);
     throw error;
@@ -52,7 +51,7 @@ async function getYahooFinanceData(symbol) {
   try {
     const yahooFinance = require('yahoo-finance2').default;
     const quote = await yahooFinance.quote(symbol);
-    
+
     return {
       symbol: quote.symbol,
       name: quote.shortName || quote.longName || quote.symbol,
@@ -63,7 +62,7 @@ async function getYahooFinanceData(symbol) {
       marketCap: quote.marketCap,
       currency: quote.currency || 'TWD',
       exchange: quote.exchange,
-      source: 'Yahoo Finance'
+      source: 'Yahoo Finance',
     };
   } catch (error) {
     console.warn(`Yahoo Finance 資料取得失敗 ${symbol}:`, error.message);
@@ -94,7 +93,7 @@ function getMockETFData(symbol) {
       lastDividend: 1.2,
       dividendFrequency: '季配',
       category: '市值型',
-      topHoldings: ['台積電', '鴻海', '聯發科', '台達電', '中華電']
+      topHoldings: ['台積電', '鴻海', '聯發科', '台達電', '中華電'],
     },
     '0051': {
       symbol: '0051',
@@ -112,9 +111,9 @@ function getMockETFData(symbol) {
       lastDividend: 1.2,
       dividendFrequency: '季配',
       category: '市值型',
-      topHoldings: ['聯發科', '台達電', '聯電', '日月光', '南亞科']
+      topHoldings: ['聯發科', '台達電', '聯電', '日月光', '南亞科'],
     },
-    
+
     // 高股息 ETF
     '0056': {
       symbol: '0056',
@@ -132,7 +131,7 @@ function getMockETFData(symbol) {
       lastDividend: 1.3,
       dividendFrequency: '季配',
       category: '高股息型',
-      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一']
+      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一'],
     },
     '00878': {
       symbol: '00878',
@@ -150,7 +149,7 @@ function getMockETFData(symbol) {
       lastDividend: 0.8,
       dividendFrequency: '季配',
       category: '高股息型',
-      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一']
+      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一'],
     },
     '00900': {
       symbol: '00900',
@@ -168,7 +167,7 @@ function getMockETFData(symbol) {
       lastDividend: 0.8,
       dividendFrequency: '季配',
       category: '高股息型',
-      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一']
+      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一'],
     },
     '00919': {
       symbol: '00919',
@@ -182,13 +181,13 @@ function getMockETFData(symbol) {
       exchange: 'TWSE',
       source: '模擬資料',
       description: '台灣精選高息指數，動態調整',
-      expenseRatio: 0.0040, // 0.40%
+      expenseRatio: 0.004, // 0.40%
       lastDividend: 1.2,
       dividendFrequency: '季配',
       category: '高股息型',
-      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一']
+      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一'],
     },
-    
+
     // 科技高股息 ETF
     '00929': {
       symbol: '00929',
@@ -206,9 +205,9 @@ function getMockETFData(symbol) {
       lastDividend: 0.8,
       dividendFrequency: '季配',
       category: '科技高股息型',
-      topHoldings: ['台積電', '聯發科', '台達電', '鴻海', '聯電']
+      topHoldings: ['台積電', '聯發科', '台達電', '鴻海', '聯電'],
     },
-    
+
     // 海外型 ETF
     '0061': {
       symbol: '0061',
@@ -226,8 +225,8 @@ function getMockETFData(symbol) {
       lastDividend: 1.2,
       dividendFrequency: '年配',
       category: '海外型',
-      topHoldings: ['貴州茅台', '平安銀行', '招商銀行', '五糧液', '中國平安']
-    }
+      topHoldings: ['貴州茅台', '平安銀行', '招商銀行', '五糧液', '中國平安'],
+    },
   };
 
   const etfData = etfDatabase[symbol];
@@ -238,7 +237,8 @@ function getMockETFData(symbol) {
   // 添加一些隨機波動以模擬真實市場
   const priceVariation = (Math.random() - 0.5) * 0.02; // ±1%
   etfData.price = etfData.price * (1 + priceVariation);
-  etfData.dailyChange = ((etfData.price - etfData.previousClose) / etfData.previousClose) * 100;
+  etfData.dailyChange =
+    ((etfData.price - etfData.previousClose) / etfData.previousClose) * 100;
 
   return etfData;
 }
@@ -296,10 +296,18 @@ function calculateETFHealthScore(etfData) {
  * 格式化 ETF 報告
  */
 function formatETFReport(etfData, healthScore) {
-  const dividendYieldPercent = etfData.dividendYield ? (etfData.dividendYield * 100).toFixed(2) : 'N/A';
-  const expenseRatioPercent = etfData.expenseRatio ? (etfData.expenseRatio * 100).toFixed(2) : 'N/A';
-  const dailyChangePercent = etfData.dailyChange ? etfData.dailyChange.toFixed(2) : '0.00';
-  const marketCapFormatted = etfData.marketCap ? formatMarketCap(etfData.marketCap) : 'N/A';
+  const dividendYieldPercent = etfData.dividendYield
+    ? (etfData.dividendYield * 100).toFixed(2)
+    : 'N/A';
+  const expenseRatioPercent = etfData.expenseRatio
+    ? (etfData.expenseRatio * 100).toFixed(2)
+    : 'N/A';
+  const dailyChangePercent = etfData.dailyChange
+    ? etfData.dailyChange.toFixed(2)
+    : '0.00';
+  const marketCapFormatted = etfData.marketCap
+    ? formatMarketCap(etfData.marketCap)
+    : 'N/A';
 
   return `📊 ${etfData.name} (${etfData.symbol}) ETF 健康報告
 
@@ -325,7 +333,7 @@ ${getETFRecommendation(healthScore, etfData)}`;
 /**
  * 取得 ETF 投資建議
  */
-function getETFRecommendation(healthScore, etfData) {
+function getETFRecommendation(healthScore) {
   if (healthScore >= 80) {
     return '🌟 優秀選擇 - 高股息率、低費用率，適合長期投資';
   } else if (healthScore >= 60) {
@@ -368,7 +376,7 @@ function getETFLookupTable() {
       dividendFrequency: '季配',
       typicalYield: '2.5-3.5%',
       expenseRatio: '0.32%',
-      topHoldings: ['台積電', '鴻海', '聯發科', '台達電', '中華電']
+      topHoldings: ['台積電', '鴻海', '聯發科', '台達電', '中華電'],
     },
     '0051': {
       name: '元大中型100',
@@ -377,9 +385,9 @@ function getETFLookupTable() {
       dividendFrequency: '季配',
       typicalYield: '3.0-4.0%',
       expenseRatio: '0.35%',
-      topHoldings: ['聯發科', '台達電', '聯電', '日月光', '南亞科']
+      topHoldings: ['聯發科', '台達電', '聯電', '日月光', '南亞科'],
     },
-    
+
     // 高股息 ETF
     '0056': {
       name: '元大高股息',
@@ -388,7 +396,7 @@ function getETFLookupTable() {
       dividendFrequency: '季配',
       typicalYield: '4.0-5.5%',
       expenseRatio: '0.35%',
-      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一']
+      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一'],
     },
     '00878': {
       name: '國泰永續高股息',
@@ -397,7 +405,7 @@ function getETFLookupTable() {
       dividendFrequency: '季配',
       typicalYield: '4.5-5.5%',
       expenseRatio: '0.35%',
-      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一']
+      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一'],
     },
     '00900': {
       name: '富邦特選高股息30',
@@ -406,7 +414,7 @@ function getETFLookupTable() {
       dividendFrequency: '季配',
       typicalYield: '5.0-6.0%',
       expenseRatio: '0.38%',
-      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一']
+      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一'],
     },
     '00919': {
       name: '群益台灣精選高息',
@@ -415,9 +423,9 @@ function getETFLookupTable() {
       dividendFrequency: '季配',
       typicalYield: '5.0-6.5%',
       expenseRatio: '0.40%',
-      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一']
+      topHoldings: ['中華電', '台塑', '南亞', '台化', '統一'],
     },
-    
+
     // 科技高股息 ETF
     '00929': {
       name: '復華台灣科技高息成長',
@@ -426,9 +434,9 @@ function getETFLookupTable() {
       dividendFrequency: '季配',
       typicalYield: '4.0-5.0%',
       expenseRatio: '0.42%',
-      topHoldings: ['台積電', '聯發科', '台達電', '鴻海', '聯電']
+      topHoldings: ['台積電', '聯發科', '台達電', '鴻海', '聯電'],
     },
-    
+
     // 海外型 ETF
     '0061': {
       name: '元大寶滬深',
@@ -437,8 +445,8 @@ function getETFLookupTable() {
       dividendFrequency: '年配',
       typicalYield: '2.5-3.5%',
       expenseRatio: '0.45%',
-      topHoldings: ['貴州茅台', '平安銀行', '招商銀行', '五糧液', '中國平安']
-    }
+      topHoldings: ['貴州茅台', '平安銀行', '招商銀行', '五糧液', '中國平安'],
+    },
   };
 }
 
@@ -448,37 +456,37 @@ function getETFLookupTable() {
 function formatETFLookupTable() {
   const etfTable = getETFLookupTable();
   let table = '📊 台灣常見 ETF 速查表\n\n';
-  
+
   // 按分類組織
   const categories = {
-    '市值型': [],
-    '高股息型': [],
-    '科技高股息型': [],
-    '海外型': []
+    市值型: [],
+    高股息型: [],
+    科技高股息型: [],
+    海外型: [],
   };
-  
+
   // 分類 ETF
   Object.entries(etfTable).forEach(([code, info]) => {
     if (categories[info.category]) {
       categories[info.category].push({ code, ...info });
     }
   });
-  
+
   // 生成表格
   Object.entries(categories).forEach(([category, etfs]) => {
     if (etfs.length > 0) {
       table += `🏷️ ${category} ETF:\n`;
-      etfs.forEach(etf => {
+      etfs.forEach((etf) => {
         table += `• ${etf.code} ${etf.name}\n`;
         table += `  └ 殖利率: ${etf.typicalYield} | 費用率: ${etf.expenseRatio} | 配息: ${etf.dividendFrequency}\n`;
       });
       table += '\n';
     }
   });
-  
+
   table += '💡 使用方式: 輸入「查詢 [代號]」即可獲得詳細分析\n';
   table += '📋 例如: 查詢 0050、查詢 00878、查詢 00929';
-  
+
   return table;
 }
 
@@ -488,5 +496,5 @@ module.exports = {
   formatETFReport,
   getMockETFData,
   getETFLookupTable,
-  formatETFLookupTable
+  formatETFLookupTable,
 };
