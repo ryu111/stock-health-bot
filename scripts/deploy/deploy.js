@@ -8,6 +8,17 @@ console.log('🚀 開始部署股健檢到 Firebase...');
 console.log('==============================================================');
 
 try {
+  // 檢查 Firebase 登入狀態
+  console.log('🔑 檢查 Firebase 登入狀態...');
+  try {
+    execSync('firebase projects:list', { stdio: 'pipe' });
+    console.log('✅ Firebase 已登入');
+  } catch (firebaseError) {
+    console.log('⚠️  需要 Firebase 登入');
+    console.log('請執行: firebase login');
+    process.exit(1);
+  }
+
   // 執行品質檢查
   console.log('🔍 執行品質檢查...');
   execSync('cd functions && npm run analyze', { 

@@ -1,0 +1,9 @@
+{
+  "terminal.integrated.env.osx": {
+    "SSH_AUTH_SOCK": "/private/tmp/com.apple.launchd.*/Listeners"
+  },
+  "terminal.integrated.shellArgs.osx": [
+    "-l"
+  ],
+  "terminal.integrated.inheritEnv": true
+}
