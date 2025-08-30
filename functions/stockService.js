@@ -52,22 +52,18 @@ async function getStockData(symbol) {
     try {
       // 預設 API 呼叫
       quote = await yahooFinance.quote(symbol);
+      console.log(`✅ 成功取得 ${symbol} 的資料`);
     } catch (error) {
-      console.warn(`First attempt failed for ${symbol}:`, error.message);
+      console.warn(`第一次嘗試失敗 ${symbol}:`, error.message);
 
       // 嘗試不使用 .TW 以支援潛在的 ETF 或國際代碼
       if (symbol.endsWith('.TW')) {
         const altSymbol = symbol.replace('.TW', '');
         try {
           quote = await yahooFinance.quote(altSymbol);
-          console.log(
-            `✅ Found data for ${altSymbol} (used instead of ${symbol})`
-          );
+          console.log(`✅ 找到 ${altSymbol} 的資料 (替代 ${symbol})`);
         } catch (altError) {
-          console.warn(
-            `Alternative symbol ${altSymbol} also failed:`,
-            altError.message
-          );
+          console.warn(`替代代碼 ${altSymbol} 也失敗:`, altError.message);
         }
       }
 
@@ -77,9 +73,9 @@ async function getStockData(symbol) {
           quote = await yahooFinance.quote(symbol, {
             modules: ['price', 'summaryDetail', 'fundProfile', 'assetProfile'],
           });
-          console.log(`✅ Found ETF data for ${symbol}`);
+          console.log(`✅ 找到 ETF 資料 ${symbol}`);
         } catch (etfError) {
-          console.error(`All attempts failed for ${symbol}:`, etfError.message);
+          console.error(`所有嘗試都失敗 ${symbol}:`, etfError.message);
           throw new Error(
             `無法取得 ${symbol} 的數據。請確認代碼正確性或稍後再試。`
           );
@@ -133,7 +129,7 @@ async function getStockData(symbol) {
       }
     }
 
-    throw new Error(`Unable to fetch data for symbol: ${symbol}`);
+    throw new Error(`無法取得 ${symbol} 的股票數據`);
   }
 }
 
@@ -327,6 +323,13 @@ async function analyzeTrend(symbol) {
  * @returns {Object} 處理後的股票資料
  */
 function processStockQuoteData(quote) {
+  console.log(`處理報價資料: ${quote.symbol}`, {
+    hasPrice: !!quote.price,
+    hasRegularMarketPrice: !!quote.regularMarketPrice,
+    hasFundProfile: !!quote.fundProfile,
+    hasAssetProfile: !!quote.assetProfile,
+  });
+
   // 處理不同的報價格式
   let processedData = {};
 
@@ -339,6 +342,7 @@ function processStockQuoteData(quote) {
       name:
         priceData.displayName ||
         priceData.shortName ||
+        priceData.longName ||
         priceData.symbol ||
         '未知',
       price: priceData.regularMarketPrice || priceData.price,
@@ -379,13 +383,35 @@ function processStockQuoteData(quote) {
       exchange: quote.exchange,
     };
   }
+  // 處理其他格式的資料
+  else {
+    console.log('使用通用格式處理資料:', Object.keys(quote));
+    processedData = {
+      symbol: quote.symbol,
+      name: quote.shortName || quote.longName || quote.symbol || '未知',
+      price: quote.regularMarketPrice || quote.price || null,
+      previousClose: quote.regularMarketPreviousClose || null,
+      marketCap: quote.marketCap || null,
+      volume: quote.regularMarketVolume || quote.volume || null,
+      peRatio: quote.trailingPE || quote.peRatio || null,
+      eps: quote.epsTrailingTwelveMonths || quote.eps || null,
+      dividendYield: quote.dividendYield || null,
+      fiftyTwoWeekHigh: quote.fiftyTwoWeekHigh || null,
+      fiftyTwoWeekLow: quote.fiftyTwoWeekLow || null,
+      currency: quote.currency || 'TWD',
+      exchange: quote.exchange,
+    };
+  }
 
   // 確保必要欄位存在
   if (!processedData.price) {
-    console.warn(`No price data found for ${quote.symbol}`);
+    console.warn(`未找到 ${quote.symbol} 的價格資料`);
     processedData.price = null;
   }
 
+  console.log(
+    `處理完成: ${processedData.symbol} - ${processedData.name} - 價格: ${processedData.price}`
+  );
   return processedData;
 }
 
