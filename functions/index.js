@@ -326,10 +326,10 @@ async function handleTestStockQuery(replyToken, userId, symbol) {
         isPremium: userData && userData.subscriptionType === 'premium',
       };
 
-              return {
-          type: 'text',
-          text: `📊 ${responseData.symbol} 股票健康報告\n\n🏥 健康分數: ${responseData.healthScore}/100\n💰 當前價格: $${responseData.price}\n📈 漲跌幅: ${responseData.monthlyChange}%\n📊 本益比: ${responseData.pe}\n💎 市值: ${responseData.marketCap}\n📊 成交量: ${responseData.volume}\n📈 趨勢: ${responseData.trend}\n💵 股息殖利率: ${responseData.dividendYield}\n📊 股東權益報酬率: ${responseData.returnOnEquity}\n📈 波動性: ${responseData.volatility}`
-        };
+      return {
+        type: 'text',
+        text: `📊 ${responseData.symbol} 股票健康報告\n\n🏥 健康分數: ${responseData.healthScore}/100\n💰 當前價格: $${responseData.price}\n📈 漲跌幅: ${responseData.monthlyChange}%\n📊 本益比: ${responseData.pe}\n💎 市值: ${responseData.marketCap}\n📊 成交量: ${responseData.volume}\n📈 趨勢: ${responseData.trend}\n💵 股息殖利率: ${responseData.dividendYield}\n📊 股東權益報酬率: ${responseData.returnOnEquity}\n📈 波動性: ${responseData.volatility}`
+      };
       }
     } catch (apiError) {
       console.error('股票 API 錯誤:', apiError);

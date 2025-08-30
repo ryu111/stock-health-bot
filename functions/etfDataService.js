@@ -1,5 +1,4 @@
 // ETF 資料服務 - 整合多個資料來源
-const axios = require('axios');
 
 /**
  * 取得 ETF 詳細資料
