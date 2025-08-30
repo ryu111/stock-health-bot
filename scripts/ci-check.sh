@@ -28,15 +28,21 @@ node --version
 echo -e "${GREEN}✅ Node.js version check passed${NC}\n"
 
 echo -e "${YELLOW}📦 Step 2: Installing dependencies...${NC}"
-if ! npm install 2>&1; then
+INSTALL_OUTPUT=$(npm install 2>&1)
+INSTALL_EXIT_CODE=$?
+if [ $INSTALL_EXIT_CODE -ne 0 ]; then
     echo -e "${RED}❌ Dependency installation failed!${NC}"
+    echo "$INSTALL_OUTPUT"
     exit 1
 fi
 echo -e "${GREEN}✅ Dependencies installed successfully${NC}\n"
 
 echo -e "${YELLOW}🔍 Step 3: Running ESLint...${NC}"
-if ! npm run lint 2>&1; then
+ESLINT_OUTPUT=$(npm run lint 2>&1)
+ESLINT_EXIT_CODE=$?
+if [ $ESLINT_EXIT_CODE -ne 0 ]; then
     echo -e "${RED}❌ ESLint check failed!${NC}"
+    echo "$ESLINT_OUTPUT"
     echo -e "${YELLOW}💡 Try: npm run lint:fix${NC}"
     exit 1
 fi

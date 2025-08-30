@@ -42,22 +42,18 @@ jobs:
     - name: 🔍 Run ESLint
       id: eslint
       run: cd functions && npm run lint
-      continue-on-error: true
 
     - name: 🎨 Check Prettier formatting
       id: prettier
       run: cd functions && npm run format:check
-      continue-on-error: true
 
     - name: 🏗️ Build project
       id: build
       run: cd functions && npm run build
-      continue-on-error: true
 
     - name: 🧪 Run local tests
       id: test
       run: cd functions && npm run local-test
-      continue-on-error: true
 
     - name: 📊 Generate lint results
       run: |
@@ -114,7 +110,6 @@ jobs:
 
     - name: 🔐 Run npm audit
       run: cd functions && npm audit --audit-level moderate
-      continue-on-error: true
 
     - name: 🛡️ Security Scan with Trivy
       uses: aquasecurity/trivy-action@master
@@ -124,7 +119,6 @@ jobs:
         scanners: 'vuln,secret,misconfig'
         format: 'sarif'
         output: 'trivy-results.sarif'
-      continue-on-error: true
 
     - name: 📋 Upload Trivy results
       uses: github/codeql-action/upload-sarif@v3
