@@ -126,6 +126,48 @@
         "panel": "shared",
         "focus": false
       }
+    },
+    {
+      "name": "🚀 本地開發環境",
+      "type": "shell",
+      "request": "launch",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/dev-start.sh"],
+      "cwd": "${workspaceFolder}",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      },
+      "group": "build"
+    },
+    {
+      "name": "🧪 本地功能測試",
+      "type": "shell",
+      "request": "launch",
+      "command": "bash",
+      "args": ["${workspaceFolder}/scripts/test-local.sh"],
+      "cwd": "${workspaceFolder}",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "group": "test"
+    },
+    {
+      "name": "📡 測試本地 API",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/test-api.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "group": "test"
     }
   ]
 }

@@ -1,0 +1,436 @@
+[debug] [2025-08-30T19:55:46.849Z] ----------------------------------------------------------------------
+[debug] [2025-08-30T19:55:46.852Z] Command:       /usr/local/Cellar/node/24.5.0/bin/node /usr/local/bin/firebase emulators:start --only functions
+[debug] [2025-08-30T19:55:46.853Z] CLI Version:   14.15.1
+[debug] [2025-08-30T19:55:46.853Z] Platform:      darwin
+[debug] [2025-08-30T19:55:46.853Z] Node Version:  v24.5.0
+[debug] [2025-08-30T19:55:46.853Z] Time:          Sun Aug 31 2025 03:55:46 GMT+0800 (台北標準時間)
+[debug] [2025-08-30T19:55:46.853Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-08-30T19:55:47.078Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-08-30T19:55:47.079Z] > authorizing via signed-in user (sbu19830208@gmail.com)
+[info] i  emulators: Starting emulators: functions {"metadata":{"emulator":{"name":"hub"},"message":"Starting emulators: functions"}}
+[debug] [2025-08-30T19:55:48.170Z] [logging] Logging Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-08-30T19:55:48.170Z] assigned listening specs for emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}]},"metadata":{"message":"assigned listening specs for emulators"}}
+[debug] [2025-08-30T19:55:48.176Z] [hub] writing locator at /var/folders/jp/jhx6_9gd73vg7yqw248kccdh0000gn/T/hub-stock-health-app.json
+[debug] [2025-08-30T19:55:49.037Z] [functions] Functions Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-08-30T19:55:49.037Z] [eventarc] Eventarc Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-08-30T19:55:49.037Z] [tasks] Cloud Tasks Emulator only supports listening on one address (127.0.0.1). Not listening on ::1
+[debug] [2025-08-30T19:55:49.037Z] late-assigned ports for functions and eventarc emulators {"user":{"hub":[{"address":"127.0.0.1","family":"IPv4","port":4400},{"address":"::1","family":"IPv6","port":4400}],"ui":[{"address":"127.0.0.1","family":"IPv4","port":4000},{"address":"::1","family":"IPv6","port":4000}],"logging":[{"address":"127.0.0.1","family":"IPv4","port":4500}],"functions":[{"address":"127.0.0.1","family":"IPv4","port":5001}],"eventarc":[{"address":"127.0.0.1","family":"IPv4","port":9299}],"tasks":[{"address":"127.0.0.1","family":"IPv4","port":9499}]},"metadata":{"message":"late-assigned ports for functions and eventarc emulators"}}
+[warn] ⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: apphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect {"metadata":{"emulator":{"name":"functions"},"message":"The following emulators are not running, calls to these services from the Functions emulator will affect production: \u001b[1mapphosting, auth, firestore, database, hosting, pubsub, storage, dataconnect\u001b[22m"}}
+[debug] [2025-08-30T19:55:49.067Z] defaultcredentials: writing to file /Users/sbu/.config/firebase/sbu19830208_gmail_com_application_default_credentials.json
+[debug] [2025-08-30T19:55:49.068Z] Setting GAC to /Users/sbu/.config/firebase/sbu19830208_gmail_com_application_default_credentials.json {"metadata":{"emulator":{"name":"functions"},"message":"Setting GAC to /Users/sbu/.config/firebase/sbu19830208_gmail_com_application_default_credentials.json"}}
+[debug] [2025-08-30T19:55:49.069Z] Checked if tokens are valid: true, expires at: 1756586686942
+[debug] [2025-08-30T19:55:49.069Z] Checked if tokens are valid: true, expires at: 1756586686942
+[debug] [2025-08-30T19:55:49.070Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/stock-health-app/adminSdkConfig [none]
+[debug] [2025-08-30T19:55:49.654Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/stock-health-app/adminSdkConfig 200
+[debug] [2025-08-30T19:55:49.654Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/stock-health-app/adminSdkConfig {"projectId":"stock-health-app","storageBucket":"stock-health-app.firebasestorage.app"}
+[info] i  ui: downloading ui-v1.15.0.zip... {"metadata":{"emulator":{"name":"ui"},"message":"downloading ui-v1.15.0.zip..."}}
+[debug] [2025-08-30T19:55:49.672Z] >>> [apiv2][query] GET https://storage.googleapis.com/firebase-preview-drop/emulator/ui-v1.15.0.zip 
+[debug] [2025-08-30T19:55:50.144Z] <<< [apiv2][status] GET https://storage.googleapis.com/firebase-preview-drop/emulator/ui-v1.15.0.zip 200
+[debug] [2025-08-30T19:55:50.144Z] <<< [apiv2][body] GET https://storage.googleapis.com/firebase-preview-drop/emulator/ui-v1.15.0.zip [stream]
+[debug] [2025-08-30T19:55:50.423Z] Data is 3538469
+[debug] [2025-08-30T19:55:50.423Z] [unzip] Entry: client/ (compressed_size=0 bytes, uncompressed_size=0 bytes)
+[debug] [2025-08-30T19:55:50.423Z] [unzip] Processing entry: client/
+[debug] [2025-08-30T19:55:50.423Z] [unzip] mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/
+[debug] [2025-08-30T19:55:50.423Z] [unzip] Entry: client/favicon-16x16.png (compressed_size=293 bytes, uncompressed_size=293 bytes)
+[debug] [2025-08-30T19:55:50.423Z] [unzip] Processing entry: client/favicon-16x16.png
+[debug] [2025-08-30T19:55:50.424Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.424Z] [unzip] Writing file: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/favicon-16x16.png
+[debug] [2025-08-30T19:55:50.425Z] [unzip] Entry: client/safari-pinned-tab.svg (compressed_size=1433 bytes, uncompressed_size=2611 bytes)
+[debug] [2025-08-30T19:55:50.425Z] [unzip] Processing entry: client/safari-pinned-tab.svg
+[debug] [2025-08-30T19:55:50.425Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.425Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/safari-pinned-tab.svg
+[debug] [2025-08-30T19:55:50.428Z] [unzip] Entry: client/favicon.ico (compressed_size=2933 bytes, uncompressed_size=13294 bytes)
+[debug] [2025-08-30T19:55:50.428Z] [unzip] Processing entry: client/favicon.ico
+[debug] [2025-08-30T19:55:50.428Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.428Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/favicon.ico
+[debug] [2025-08-30T19:55:50.429Z] [unzip] Entry: client/index.html (compressed_size=1364 bytes, uncompressed_size=3071 bytes)
+[debug] [2025-08-30T19:55:50.429Z] [unzip] Processing entry: client/index.html
+[debug] [2025-08-30T19:55:50.429Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.429Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/index.html
+[debug] [2025-08-30T19:55:50.430Z] [unzip] Entry: client/android-chrome-192x192.png (compressed_size=2684 bytes, uncompressed_size=2684 bytes)
+[debug] [2025-08-30T19:55:50.430Z] [unzip] Processing entry: client/android-chrome-192x192.png
+[debug] [2025-08-30T19:55:50.430Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.430Z] [unzip] Writing file: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/android-chrome-192x192.png
+[debug] [2025-08-30T19:55:50.431Z] [unzip] Entry: client/apple-touch-icon.png (compressed_size=2123 bytes, uncompressed_size=2152 bytes)
+[debug] [2025-08-30T19:55:50.431Z] [unzip] Processing entry: client/apple-touch-icon.png
+[debug] [2025-08-30T19:55:50.431Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.431Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/apple-touch-icon.png
+[debug] [2025-08-30T19:55:50.432Z] [unzip] Entry: client/android-chrome-512x512.png (compressed_size=5369 bytes, uncompressed_size=5411 bytes)
+[debug] [2025-08-30T19:55:50.432Z] [unzip] Processing entry: client/android-chrome-512x512.png
+[debug] [2025-08-30T19:55:50.432Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.432Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/android-chrome-512x512.png
+[debug] [2025-08-30T19:55:50.433Z] [unzip] Entry: client/manifest.json (compressed_size=245 bytes, uncompressed_size=551 bytes)
+[debug] [2025-08-30T19:55:50.433Z] [unzip] Processing entry: client/manifest.json
+[debug] [2025-08-30T19:55:50.433Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.433Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/manifest.json
+[debug] [2025-08-30T19:55:50.434Z] [unzip] Entry: client/robots.txt (compressed_size=26 bytes, uncompressed_size=26 bytes)
+[debug] [2025-08-30T19:55:50.434Z] [unzip] Processing entry: client/robots.txt
+[debug] [2025-08-30T19:55:50.434Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.434Z] [unzip] Writing file: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/robots.txt
+[debug] [2025-08-30T19:55:50.434Z] [unzip] Entry: client/mstile-150x150.png (compressed_size=2034 bytes, uncompressed_size=2034 bytes)
+[debug] [2025-08-30T19:55:50.434Z] [unzip] Processing entry: client/mstile-150x150.png
+[debug] [2025-08-30T19:55:50.434Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.434Z] [unzip] Writing file: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/mstile-150x150.png
+[debug] [2025-08-30T19:55:50.434Z] [unzip] Entry: client/assets/ (compressed_size=0 bytes, uncompressed_size=0 bytes)
+[debug] [2025-08-30T19:55:50.435Z] [unzip] Processing entry: client/assets/
+[debug] [2025-08-30T19:55:50.435Z] [unzip] mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/
+[debug] [2025-08-30T19:55:50.435Z] [unzip] Entry: client/assets/index-BX-A56oj.js (compressed_size=582089 bytes, uncompressed_size=2092775 bytes)
+[debug] [2025-08-30T19:55:50.435Z] [unzip] Processing entry: client/assets/index-BX-A56oj.js
+[debug] [2025-08-30T19:55:50.435Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets
+[debug] [2025-08-30T19:55:50.435Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/index-BX-A56oj.js
+[debug] [2025-08-30T19:55:50.458Z] [unzip] Entry: client/assets/index-CjB9C900.css (compressed_size=35979 bytes, uncompressed_size=298654 bytes)
+[debug] [2025-08-30T19:55:50.458Z] [unzip] Processing entry: client/assets/index-CjB9C900.css
+[debug] [2025-08-30T19:55:50.458Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets
+[debug] [2025-08-30T19:55:50.458Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/index-CjB9C900.css
+[debug] [2025-08-30T19:55:50.460Z] [unzip] Entry: client/assets/index-BX-A56oj.js.map (compressed_size=2362482 bytes, uncompressed_size=10036679 bytes)
+[debug] [2025-08-30T19:55:50.460Z] [unzip] Processing entry: client/assets/index-BX-A56oj.js.map
+[debug] [2025-08-30T19:55:50.461Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets
+[debug] [2025-08-30T19:55:50.461Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/index-BX-A56oj.js.map
+[debug] [2025-08-30T19:55:50.514Z] [unzip] Entry: client/assets/extensions/ (compressed_size=0 bytes, uncompressed_size=0 bytes)
+[debug] [2025-08-30T19:55:50.515Z] [unzip] Processing entry: client/assets/extensions/
+[debug] [2025-08-30T19:55:50.515Z] [unzip] mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/extensions/
+[debug] [2025-08-30T19:55:50.515Z] [unzip] Entry: client/assets/extensions/default-extension.png (compressed_size=1646 bytes, uncompressed_size=1657 bytes)
+[debug] [2025-08-30T19:55:50.515Z] [unzip] Processing entry: client/assets/extensions/default-extension.png
+[debug] [2025-08-30T19:55:50.515Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/extensions
+[debug] [2025-08-30T19:55:50.515Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/extensions/default-extension.png
+[debug] [2025-08-30T19:55:50.516Z] [unzip] Entry: client/assets/img/ (compressed_size=0 bytes, uncompressed_size=0 bytes)
+[debug] [2025-08-30T19:55:50.516Z] [unzip] Processing entry: client/assets/img/
+[debug] [2025-08-30T19:55:50.516Z] [unzip] mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/img/
+[debug] [2025-08-30T19:55:50.516Z] [unzip] Entry: client/assets/img/database.png (compressed_size=29449 bytes, uncompressed_size=29988 bytes)
+[debug] [2025-08-30T19:55:50.516Z] [unzip] Processing entry: client/assets/img/database.png
+[debug] [2025-08-30T19:55:50.516Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/img
+[debug] [2025-08-30T19:55:50.516Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/img/database.png
+[debug] [2025-08-30T19:55:50.517Z] [unzip] Entry: client/assets/provider-icons/ (compressed_size=0 bytes, uncompressed_size=0 bytes)
+[debug] [2025-08-30T19:55:50.517Z] [unzip] Processing entry: client/assets/provider-icons/
+[debug] [2025-08-30T19:55:50.517Z] [unzip] mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/
+[debug] [2025-08-30T19:55:50.517Z] [unzip] Entry: client/assets/provider-icons/auth_service_saml.svg (compressed_size=575 bytes, uncompressed_size=1226 bytes)
+[debug] [2025-08-30T19:55:50.517Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_saml.svg
+[debug] [2025-08-30T19:55:50.517Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.517Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_saml.svg
+[debug] [2025-08-30T19:55:50.518Z] [unzip] Entry: client/assets/provider-icons/auth_service_phone.svg (compressed_size=261 bytes, uncompressed_size=414 bytes)
+[debug] [2025-08-30T19:55:50.518Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_phone.svg
+[debug] [2025-08-30T19:55:50.518Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.518Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_phone.svg
+[debug] [2025-08-30T19:55:50.519Z] [unzip] Entry: client/assets/provider-icons/auth_service_facebook.svg (compressed_size=289 bytes, uncompressed_size=457 bytes)
+[debug] [2025-08-30T19:55:50.519Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_facebook.svg
+[debug] [2025-08-30T19:55:50.519Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.519Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_facebook.svg
+[debug] [2025-08-30T19:55:50.520Z] [unzip] Entry: client/assets/provider-icons/auth_service_game_center.svg (compressed_size=991 bytes, uncompressed_size=3921 bytes)
+[debug] [2025-08-30T19:55:50.520Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_game_center.svg
+[debug] [2025-08-30T19:55:50.520Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.520Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_game_center.svg
+[debug] [2025-08-30T19:55:50.521Z] [unzip] Entry: client/assets/provider-icons/auth_service_apple.svg (compressed_size=230 bytes, uncompressed_size=334 bytes)
+[debug] [2025-08-30T19:55:50.521Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_apple.svg
+[debug] [2025-08-30T19:55:50.521Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.522Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_apple.svg
+[debug] [2025-08-30T19:55:50.522Z] [unzip] Entry: client/assets/provider-icons/auth_service_github.svg (compressed_size=466 bytes, uncompressed_size=838 bytes)
+[debug] [2025-08-30T19:55:50.522Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_github.svg
+[debug] [2025-08-30T19:55:50.522Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.523Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_github.svg
+[debug] [2025-08-30T19:55:50.523Z] [unzip] Entry: client/assets/provider-icons/auth_service_mslive.svg (compressed_size=203 bytes, uncompressed_size=378 bytes)
+[debug] [2025-08-30T19:55:50.523Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_mslive.svg
+[debug] [2025-08-30T19:55:50.523Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.523Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_mslive.svg
+[debug] [2025-08-30T19:55:50.524Z] [unzip] Entry: client/assets/provider-icons/auth_service_yahoo.svg (compressed_size=577 bytes, uncompressed_size=1182 bytes)
+[debug] [2025-08-30T19:55:50.524Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_yahoo.svg
+[debug] [2025-08-30T19:55:50.524Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.524Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_yahoo.svg
+[debug] [2025-08-30T19:55:50.525Z] [unzip] Entry: client/assets/provider-icons/auth_service_twitter.svg (compressed_size=444 bytes, uncompressed_size=751 bytes)
+[debug] [2025-08-30T19:55:50.525Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_twitter.svg
+[debug] [2025-08-30T19:55:50.525Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.525Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_twitter.svg
+[debug] [2025-08-30T19:55:50.526Z] [unzip] Entry: client/assets/provider-icons/auth_service_play_games.svg (compressed_size=565 bytes, uncompressed_size=1173 bytes)
+[debug] [2025-08-30T19:55:50.526Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_play_games.svg
+[debug] [2025-08-30T19:55:50.526Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.526Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_play_games.svg
+[debug] [2025-08-30T19:55:50.527Z] [unzip] Entry: client/assets/provider-icons/auth_service_email.svg (compressed_size=228 bytes, uncompressed_size=326 bytes)
+[debug] [2025-08-30T19:55:50.527Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_email.svg
+[debug] [2025-08-30T19:55:50.527Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.527Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_email.svg
+[debug] [2025-08-30T19:55:50.528Z] [unzip] Entry: client/assets/provider-icons/auth_service_google.svg (compressed_size=409 bytes, uncompressed_size=720 bytes)
+[debug] [2025-08-30T19:55:50.528Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_google.svg
+[debug] [2025-08-30T19:55:50.528Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.528Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_google.svg
+[debug] [2025-08-30T19:55:50.529Z] [unzip] Entry: client/assets/provider-icons/auth_service_oidc.svg (compressed_size=414 bytes, uncompressed_size=858 bytes)
+[debug] [2025-08-30T19:55:50.529Z] [unzip] Processing entry: client/assets/provider-icons/auth_service_oidc.svg
+[debug] [2025-08-30T19:55:50.529Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons
+[debug] [2025-08-30T19:55:50.529Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/assets/provider-icons/auth_service_oidc.svg
+[debug] [2025-08-30T19:55:50.530Z] [unzip] Entry: client/browserconfig.xml (compressed_size=491 bytes, uncompressed_size=822 bytes)
+[debug] [2025-08-30T19:55:50.530Z] [unzip] Processing entry: client/browserconfig.xml
+[debug] [2025-08-30T19:55:50.530Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.530Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/browserconfig.xml
+[debug] [2025-08-30T19:55:50.531Z] [unzip] Entry: client/favicon-32x32.png (compressed_size=475 bytes, uncompressed_size=475 bytes)
+[debug] [2025-08-30T19:55:50.531Z] [unzip] Processing entry: client/favicon-32x32.png
+[debug] [2025-08-30T19:55:50.531Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client
+[debug] [2025-08-30T19:55:50.531Z] [unzip] Writing file: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/client/favicon-32x32.png
+[debug] [2025-08-30T19:55:50.531Z] [unzip] Entry: server/ (compressed_size=0 bytes, uncompressed_size=0 bytes)
+[debug] [2025-08-30T19:55:50.531Z] [unzip] Processing entry: server/
+[debug] [2025-08-30T19:55:50.531Z] [unzip] mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/server/
+[debug] [2025-08-30T19:55:50.532Z] [unzip] Entry: server/server.mjs.map (compressed_size=217845 bytes, uncompressed_size=944978 bytes)
+[debug] [2025-08-30T19:55:50.532Z] [unzip] Processing entry: server/server.mjs.map
+[debug] [2025-08-30T19:55:50.532Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/server
+[debug] [2025-08-30T19:55:50.532Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/server/server.mjs.map
+[debug] [2025-08-30T19:55:50.536Z] [unzip] Entry: server/server.mjs (compressed_size=276407 bytes, uncompressed_size=933701 bytes)
+[debug] [2025-08-30T19:55:50.536Z] [unzip] Processing entry: server/server.mjs
+[debug] [2025-08-30T19:55:50.536Z] [unzip] else mkdir: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/server
+[debug] [2025-08-30T19:55:50.536Z] [unzip] deflating: /Users/sbu/.cache/firebase/emulators/ui-v1.15.0/server/server.mjs
+[info] i  functions: Watching "/Users/sbu/Desktop/股健檢/functions" for Cloud Functions... {"metadata":{"emulator":{"name":"functions"},"message":"Watching \"/Users/sbu/Desktop/股健檢/functions\" for Cloud Functions..."}}
+[debug] [2025-08-30T19:55:50.548Z] Validating nodejs source
+[debug] [2025-08-30T19:55:51.703Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "@eslint/eslintrc": "^2.1.4",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T19:55:51.703Z] Building nodejs source
+[debug] [2025-08-30T19:55:51.704Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T19:55:51.710Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T19:55:51.728Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8377
+
+[info] LINE Bot 初始化成功
+
+[info] 股健檢 LINE Bot 伺服器已初始化
+
+[debug] [2025-08-30T19:55:53.139Z] Got response from /__/functions.yaml {"endpoints":{"api":{"timeoutSeconds":60,"minInstances":null,"maxInstances":5,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[info] ✔  functions[us-central1-api]: http function initialized (http://127.0.0.1:5001/stock-health-app/us-central1/api). {"metadata":{"emulator":{"name":"functions"},"message":"\u001b[1mhttp\u001b[22m function initialized (http://127.0.0.1:5001/stock-health-app/us-central1/api)."}}
+[debug] [2025-08-30T19:55:57.177Z] Could not find VSCode notification endpoint: FetchError: request to http://localhost:40001/vscode/notify failed, reason: . If you are not running the Firebase Data Connect VSCode extension, this is expected and not an issue.
+[info] 
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://127.0.0.1:4000/               │
+└─────────────────────────────────────────────────────────────┘
+
+┌───────────┬────────────────┬─────────────────────────────────┐
+│ Emulator  │ Host:Port      │ View in Emulator UI             │
+├───────────┼────────────────┼─────────────────────────────────┤
+│ Functions │ 127.0.0.1:5001 │ http://127.0.0.1:4000/functions │
+└───────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub host: 127.0.0.1 port: 4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+[debug] [2025-08-30T19:56:06.435Z] [work-queue] {"queuedWork":["/stock-health-app/us-central1/api/test-2025-08-30T19:56:06.434Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T19:56:06.435Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/stock-health-app/us-central1/api/test-2025-08-30T19:56:06.434Z"],"workRunningCount":1}
+[debug] [2025-08-30T19:56:06.435Z] Accepted request GET /stock-health-app/us-central1/api/test --> us-central1-api
+[debug] [2025-08-30T19:56:06.436Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-08-30T19:56:06.437Z] [functions] Got req.url=/stock-health-app/us-central1/api/test, mapping to path=/test {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/stock-health-app/us-central1/api/test, mapping to path=/test"}}
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T19:56:06.441Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2025-08-30T19:56:06.442Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2025-08-30T19:56:07.456Z] [runtime-status] [12692] Resolved module firebase-admin {"declared":true,"installed":true,"version":"13.5.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"13.5.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2025-08-30T19:56:07.456Z] [runtime-status] [12692] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T19:56:07.457Z] [runtime-status] [12692] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2025-08-30T19:56:07.457Z] [runtime-status] [12692] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T19:56:07.797Z] [runtime-status] [12692] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Checked functions.config() {\"config\":{}}"}}
+[debug] [2025-08-30T19:56:07.797Z] [runtime-status] [12692] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}}"}}
+[debug] [2025-08-30T19:56:07.798Z] [runtime-status] [12692] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T19:56:07.800Z] [runtime-status] [12692] Resolved module firebase-admin {"declared":true,"installed":true,"version":"13.5.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"13.5.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2025-08-30T19:56:07.802Z] [runtime-status] [12692] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T19:56:07.803Z] [runtime-status] [12692] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"13.5.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"13.5.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2025-08-30T19:56:08.323Z] [runtime-status] [12692] initializeApp(DEFAULT) {"storageBucket":"stock-health-app.firebasestorage.app","projectId":"stock-health-app"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] initializeApp(DEFAULT) {\"storageBucket\":\"stock-health-app.firebasestorage.app\",\"projectId\":\"stock-health-app\"}"}}
+[warn] ⚠  functions: The Cloud Firestore emulator is not running, so calls to Firestore will affect production. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"The Cloud Firestore emulator is not running, so calls to Firestore will affect production."}}
+[info] >  LINE Bot 初始化成功 {"user":"LINE Bot 初始化成功","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m LINE Bot 初始化成功"}}
+[info] >  股健檢 LINE Bot 伺服器已初始化 {"user":"股健檢 LINE Bot 伺服器已初始化","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m 股健檢 LINE Bot 伺服器已初始化"}}
+[debug] [2025-08-30T19:56:08.336Z] [runtime-status] [12692] Functions runtime initialized. {"cwd":"/Users/sbu/Desktop/股健檢/functions","node_version":"24.5.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Functions runtime initialized. {\"cwd\":\"/Users/sbu/Desktop/股健檢/functions\",\"node_version\":\"24.5.0\"}"}}
+[debug] [2025-08-30T19:56:08.336Z] [runtime-status] [12692] Listening to port: /var/folders/jp/jhx6_9gd73vg7yqw248kccdh0000gn/T/fire_emu_049580e2e1520410.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [12692] Listening to port: /var/folders/jp/jhx6_9gd73vg7yqw248kccdh0000gn/T/fire_emu_049580e2e1520410.sock"}}
+[debug] [2025-08-30T19:56:08.367Z] [worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: IDLE"}}
+[debug] [2025-08-30T19:56:08.367Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-08-30T19:56:08.368Z] [worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: BUSY"}}
+[debug] [2025-08-30T19:56:08.375Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 7.093339ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 7.093339ms"}}
+[debug] [2025-08-30T19:56:08.376Z] [worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: IDLE"}}
+[debug] [2025-08-30T19:56:08.376Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-08-30T19:56:08.377Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-08-30T19:56:08.377Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T19:57:42.943Z] File /Users/sbu/Desktop/股健檢/functions/package.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/package.json changed, reloading triggers"}}
+[debug] [2025-08-30T19:57:43.044Z] File /Users/sbu/Desktop/股健檢/functions/package-lock.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/package-lock.json changed, reloading triggers"}}
+[debug] [2025-08-30T19:57:44.045Z] Validating nodejs source
+[debug] [2025-08-30T19:57:44.818Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T19:57:44.818Z] Building nodejs source
+[debug] [2025-08-30T19:57:44.818Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T19:57:44.820Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T19:57:44.823Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8040
+
+[info] LINE Bot 初始化成功
+
+[info] 股健檢 LINE Bot 伺服器已初始化
+
+[debug] [2025-08-30T19:57:46.122Z] Got response from /__/functions.yaml {"endpoints":{"api":{"timeoutSeconds":60,"minInstances":null,"maxInstances":5,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-08-30T19:57:50.159Z] [worker-pool] Shutting down IDLE worker (us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-api)"}}
+[debug] [2025-08-30T19:57:50.159Z] [worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: FINISHING"}}
+[debug] [2025-08-30T19:57:50.183Z] [worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: exited"}}
+[debug] [2025-08-30T19:57:50.183Z] [worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-60cf61bd-e5b8-4286-802c-5f9cfa5a834a]: FINISHED"}}
+[debug] [2025-08-30T19:58:20.979Z] [work-queue] {"queuedWork":["/stock-health-app/us-central1/api/-2025-08-30T19:58:20.979Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T19:58:20.979Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/stock-health-app/us-central1/api/-2025-08-30T19:58:20.979Z"],"workRunningCount":1}
+[debug] [2025-08-30T19:58:20.979Z] Accepted request GET /stock-health-app/us-central1/api/ --> us-central1-api
+[debug] [2025-08-30T19:58:20.980Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-08-30T19:58:20.981Z] [functions] Got req.url=/stock-health-app/us-central1/api/, mapping to path=/ {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/stock-health-app/us-central1/api/, mapping to path=/"}}
+[debug] [2025-08-30T19:58:20.981Z] [worker-pool] Cleaned up workers for us-central1-api: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-api: 1 --> 0"}}
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T19:58:20.983Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2025-08-30T19:58:20.983Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2025-08-30T19:58:22.132Z] [runtime-status] [14048] Resolved module firebase-admin {"declared":true,"installed":true,"version":"13.5.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"13.5.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2025-08-30T19:58:22.133Z] [runtime-status] [14048] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T19:58:22.133Z] [runtime-status] [14048] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2025-08-30T19:58:22.134Z] [runtime-status] [14048] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T19:58:22.438Z] [runtime-status] [14048] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Checked functions.config() {\"config\":{}}"}}
+[debug] [2025-08-30T19:58:22.438Z] [runtime-status] [14048] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}}"}}
+[debug] [2025-08-30T19:58:22.438Z] [runtime-status] [14048] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T19:58:22.443Z] [runtime-status] [14048] Resolved module firebase-admin {"declared":true,"installed":true,"version":"13.5.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"13.5.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2025-08-30T19:58:22.444Z] [runtime-status] [14048] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T19:58:22.444Z] [runtime-status] [14048] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"13.5.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"13.5.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2025-08-30T19:58:22.813Z] [runtime-status] [14048] initializeApp(DEFAULT) {"storageBucket":"stock-health-app.firebasestorage.app","projectId":"stock-health-app"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] initializeApp(DEFAULT) {\"storageBucket\":\"stock-health-app.firebasestorage.app\",\"projectId\":\"stock-health-app\"}"}}
+[info] >  LINE Bot 初始化成功 {"user":"LINE Bot 初始化成功","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m LINE Bot 初始化成功"}}
+[info] >  股健檢 LINE Bot 伺服器已初始化 {"user":"股健檢 LINE Bot 伺服器已初始化","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m 股健檢 LINE Bot 伺服器已初始化"}}
+[debug] [2025-08-30T19:58:22.824Z] [runtime-status] [14048] Functions runtime initialized. {"cwd":"/Users/sbu/Desktop/股健檢/functions","node_version":"24.5.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Functions runtime initialized. {\"cwd\":\"/Users/sbu/Desktop/股健檢/functions\",\"node_version\":\"24.5.0\"}"}}
+[debug] [2025-08-30T19:58:22.824Z] [runtime-status] [14048] Listening to port: /var/folders/jp/jhx6_9gd73vg7yqw248kccdh0000gn/T/fire_emu_26d2d4c4d9cd82aa.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [14048] Listening to port: /var/folders/jp/jhx6_9gd73vg7yqw248kccdh0000gn/T/fire_emu_26d2d4c4d9cd82aa.sock"}}
+[debug] [2025-08-30T19:58:22.906Z] [worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE"}}
+[debug] [2025-08-30T19:58:22.906Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-08-30T19:58:22.906Z] [worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: BUSY"}}
+[debug] [2025-08-30T19:58:22.912Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 5.546898ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 5.546898ms"}}
+[debug] [2025-08-30T19:58:22.912Z] [worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE"}}
+[debug] [2025-08-30T19:58:22.912Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-08-30T19:58:22.912Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-08-30T19:58:22.912Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T19:58:22.934Z] [work-queue] {"queuedWork":["/stock-health-app/us-central1/api/test-2025-08-30T19:58:22.934Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T19:58:22.934Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/stock-health-app/us-central1/api/test-2025-08-30T19:58:22.934Z"],"workRunningCount":1}
+[debug] [2025-08-30T19:58:22.935Z] Accepted request GET /stock-health-app/us-central1/api/test --> us-central1-api
+[debug] [2025-08-30T19:58:22.935Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-08-30T19:58:22.935Z] [functions] Got req.url=/stock-health-app/us-central1/api/test, mapping to path=/test {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/stock-health-app/us-central1/api/test, mapping to path=/test"}}
+[debug] [2025-08-30T19:58:22.935Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-08-30T19:58:22.935Z] [worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: BUSY"}}
+[debug] [2025-08-30T19:58:22.937Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1.67708ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1.67708ms"}}
+[debug] [2025-08-30T19:58:22.937Z] [worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE"}}
+[debug] [2025-08-30T19:58:22.937Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-08-30T19:58:22.937Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-08-30T19:58:22.937Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T19:58:22.957Z] [work-queue] {"queuedWork":["/stock-health-app/us-central1/api/webhook-2025-08-30T19:58:22.957Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T19:58:22.957Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/stock-health-app/us-central1/api/webhook-2025-08-30T19:58:22.957Z"],"workRunningCount":1}
+[debug] [2025-08-30T19:58:22.957Z] Accepted request POST /stock-health-app/us-central1/api/webhook --> us-central1-api
+[debug] [2025-08-30T19:58:22.957Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-08-30T19:58:22.958Z] [functions] Got req.url=/stock-health-app/us-central1/api/webhook, mapping to path=/webhook {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/stock-health-app/us-central1/api/webhook, mapping to path=/webhook"}}
+[debug] [2025-08-30T19:58:22.958Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-08-30T19:58:22.958Z] [worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: BUSY"}}
+[debug] [2025-08-30T19:58:22.972Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 13.991213ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 13.991213ms"}}
+[debug] [2025-08-30T19:58:22.972Z] [worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE"}}
+[debug] [2025-08-30T19:58:22.972Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-08-30T19:58:22.972Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-08-30T19:58:22.972Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[info] >  SignatureValidationFailed: signature validation failed {"user":"SignatureValidationFailed: signature validation failed","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m SignatureValidationFailed: signature validation failed"}}
+[info] >      at _middleware (/Users/sbu/Desktop/股健檢/functions/node_modules/@line/bot-sdk/dist/cjs/middleware.js:71:18) {"user":"    at _middleware (/Users/sbu/Desktop/股健檢/functions/node_modules/@line/bot-sdk/dist/cjs/middleware.js:71:18)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     at _middleware (/Users/sbu/Desktop/股健檢/functions/node_modules/@line/bot-sdk/dist/cjs/middleware.js:71:18)"}}
+[info] >      at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {"user":"    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"}}
+[debug] [2025-08-30T19:58:22.994Z] [work-queue] {"queuedWork":["/stock-health-app/us-central1/api/webhook-2025-08-30T19:58:22.994Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T19:58:22.994Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/stock-health-app/us-central1/api/webhook-2025-08-30T19:58:22.994Z"],"workRunningCount":1}
+[debug] [2025-08-30T19:58:22.994Z] Accepted request POST /stock-health-app/us-central1/api/webhook --> us-central1-api
+[debug] [2025-08-30T19:58:22.995Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-08-30T19:58:22.995Z] [functions] Got req.url=/stock-health-app/us-central1/api/webhook, mapping to path=/webhook {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/stock-health-app/us-central1/api/webhook, mapping to path=/webhook"}}
+[debug] [2025-08-30T19:58:22.995Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-08-30T19:58:22.995Z] [worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: BUSY"}}
+[debug] [2025-08-30T19:58:22.997Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1.929343ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1.929343ms"}}
+[debug] [2025-08-30T19:58:22.997Z] [worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-3904f9fd-d344-4a0f-80a0-c554df27b76b]: IDLE"}}
+[debug] [2025-08-30T19:58:22.997Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-08-30T19:58:22.997Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-08-30T19:58:22.997Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[info] >  SignatureValidationFailed: signature validation failed {"user":"SignatureValidationFailed: signature validation failed","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m SignatureValidationFailed: signature validation failed"}}
+[info] >      at _middleware (/Users/sbu/Desktop/股健檢/functions/node_modules/@line/bot-sdk/dist/cjs/middleware.js:71:18) {"user":"    at _middleware (/Users/sbu/Desktop/股健檢/functions/node_modules/@line/bot-sdk/dist/cjs/middleware.js:71:18)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     at _middleware (/Users/sbu/Desktop/股健檢/functions/node_modules/@line/bot-sdk/dist/cjs/middleware.js:71:18)"}}
+[info] >      at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {"user":"    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"}}
