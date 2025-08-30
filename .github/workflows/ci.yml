@@ -1,7 +1,7 @@
-# 🔍 CI Pipeline for Stock Health LINE Bot
-# This workflow provides automated code quality checks, similar to Flutter analyze
+# 🔍 股健檢 LINE Bot CI 管道
+# 此工作流程提供自動化程式碼品質檢查，類似 Flutter analyze
 
-name: CI Pipeline
+name: CI 管道
 
 on:
   push:
@@ -19,67 +19,67 @@ on:
   workflow_dispatch:
 
 jobs:
-  # 🎯 Code Quality Check
+  # 🎯 程式碼品質檢查
   code-quality:
-    name: 'Code Quality Check'
+    name: '程式碼品質檢查'
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
     steps:
-    - name: 📥 Checkout code
+    - name: 📥 檢出程式碼
       uses: actions/checkout@v4
 
-    - name: 🟢 Setup Node.js
+    - name: 🟢 設定 Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '24'
         cache: 'npm'
         cache-dependency-path: functions/package-lock.json
 
-    - name: 📦 Install dependencies
+    - name: 📦 安裝依賴套件
       run: cd functions && npm ci
 
-    - name: 🔍 Run ESLint
+    - name: 🔍 執行 ESLint
       id: eslint
       run: cd functions && npm run lint
 
-    - name: 🎨 Check Prettier formatting
+    - name: 🎨 檢查 Prettier 格式
       id: prettier
       run: cd functions && npm run format:check
 
-    - name: 🏗️ Build project
+    - name: 🏗️ 建置專案
       id: build
       run: cd functions && npm run build
 
-    - name: 🧪 Run local tests
+    - name: 🧪 執行本地測試
       id: test
       run: cd functions && npm run local-test
 
-    - name: 📊 Generate lint results
+    - name: 📊 產生檢查結果
       run: |
-        echo "# 🚀 CI Quality Report" > ci-report.md
+        echo "# 🚀 CI 品質報告" > ci-report.md
         echo "" >> ci-report.md
-        echo "## 📊 Results Summary" >> ci-report.md
-        echo "| Check | Status |" >> ci-report.md
+        echo "## 📊 結果摘要" >> ci-report.md
+        echo "| 檢查項目 | 狀態 |" >> ci-report.md
         echo "|-------|--------|" >> ci-report.md
-        echo "| ESLint | $([ "${{ steps.eslint.outcome }}" == "success" ] && echo "✅ Pass" || echo "❌ Fail") |" >> ci-report.md
-        echo "| Prettier | $([ "${{ steps.prettier.outcome }}" == "success" ] && echo "✅ Pass" || echo "❌ Fail") |" >> ci-report.md
-        echo "| Build | $([ "${{ steps.build.outcome }}" == "success" ] && echo "✅ Pass" || echo "❌ Fail") |" >> ci-report.md
-        echo "| Tests | $([ "${{ steps.test.outcome }}" == "success" ] && echo "✅ Pass" || echo "❌ Fail") |" >> ci-report.md
+        echo "| ESLint | $([ "${{ steps.eslint.outcome }}" == "success" ] && echo "✅ 通過" || echo "❌ 失敗") |" >> ci-report.md
+        echo "| Prettier | $([ "${{ steps.prettier.outcome }}" == "success" ] && echo "✅ 通過" || echo "❌ 失敗") |" >> ci-report.md
+        echo "| 建置 | $([ "${{ steps.build.outcome }}" == "success" ] && echo "✅ 通過" || echo "❌ 失敗") |" >> ci-report.md
+        echo "| 測試 | $([ "${{ steps.test.outcome }}" == "success" ] && echo "✅ 通過" || echo "❌ 失敗") |" >> ci-report.md
         echo "" >> ci-report.md
-        echo "## 📋 Details" >> ci-report.md
-        echo "- **Node.js Version**: $(node --version)" >> ci-report.md
-        echo "- **NPM Version**: $(npm --version)" >> ci-report.md
-        echo "- **Run Time**: ${{ github.event.head_commit.timestamp }}" >> ci-report.md
+        echo "## 📋 詳細資訊" >> ci-report.md
+        echo "- **Node.js 版本**: $(node --version)" >> ci-report.md
+        echo "- **NPM 版本**: $(npm --version)" >> ci-report.md
+        echo "- **執行時間**: ${{ github.event.head_commit.timestamp }}" >> ci-report.md
 
-    - name: 📋 Upload CI Report
+    - name: 📋 上傳 CI 報告
       uses: actions/upload-artifact@v4
       with:
         name: ci-report
         path: ci-report.md
       if: always()
 
-    - name: 📡 Send Slack notification (optional)
+    - name: 📡 發送 Slack 通知 (可選)
       uses: 8398a7/action-slack@v3
       with:
         status: custom
