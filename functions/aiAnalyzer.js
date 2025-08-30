@@ -1,4 +1,4 @@
-// AI Analysis Engine - Mix of rule-based and AI algorithms
+// AI 分析引擎 - 混合規則基礎和 AI 演算法
 const { calculateHealthScore } = require('./stockService');
 
 /**
@@ -12,19 +12,19 @@ const { calculateHealthScore } = require('./stockService');
 async function performAnalysis(stockData, historicalData) {
   const baseScore = calculateHealthScore(stockData);
 
-  // Technical Analysis
+  // 技術分析
   const technicalAnalysis = analyzeTechnical(stockData, historicalData);
 
-  // Fundamental Analysis
+  // 基本面分析
   const fundamentalAnalysis = analyzeFundamental(stockData);
 
-  // Risk Assessment
+  // 風險評估
   const riskAnalysis = assessRisk(stockData, historicalData);
 
-  // Sentiment Analysis (rule-based)
+  // 情緒分析 (規則基礎)
   const sentimentAnalysis = analyzeSentiment(stockData, historicalData);
 
-  // Generate comprehensive recommendation
+  // 產生綜合建議
   const recommendation = generateRecommendation({
     baseScore,
     technical: technicalAnalysis,
@@ -33,7 +33,7 @@ async function performAnalysis(stockData, historicalData) {
     sentiment: sentimentAnalysis,
   });
 
-  // Confidence level based on data availability
+  // 基於資料可用性的信心水準
   const confidence = calculateConfidence(stockData, historicalData);
 
   return {
@@ -79,12 +79,12 @@ function analyzeTechnical(stockData, historicalData) {
     };
   }
 
-  // Calculate moving averages
+  // 計算移動平均線
   const prices = historicalData.map((d) => d.close);
   const sma20 = calculateSMA(prices, 20);
   const sma50 = calculateSMA(prices, 50);
 
-  // Trend analysis
+  // 趨勢分析
   let trend = 'neutral';
   const lastPrice = stockData.price;
 
@@ -94,7 +94,7 @@ function analyzeTechnical(stockData, historicalData) {
     trend = 'bearish';
   }
 
-  // Momentum (RSI approximation)
+  // 動量 (RSI 近似值)
   const gains = prices
     .slice(-10)
     .map((price, index, arr) =>
@@ -113,7 +113,7 @@ function analyzeTechnical(stockData, historicalData) {
   if (avgGain > avgLoss * 1.5) momentum = 'strong';
   else if (avgLoss > avgGain * 1.5) momentum = 'weak';
 
-  // Simple support and resistance levels (rough estimation)
+  // 簡單支撐和阻力位 (粗略估計)
   const recentHigh = Math.max(...prices.slice(-10));
   const recentLow = Math.min(...prices.slice(-10));
 
@@ -136,20 +136,20 @@ function analyzeFundamental(stockData) {
   let overallRating = 'neutral';
   let valuation = 'fair';
 
-  // PE Ratio analysis
+  // 本益比分析
   if (stockData.peRatio) {
     if (stockData.peRatio < 15) valuation = 'attractive';
     else if (stockData.peRatio > 25) valuation = 'expensive';
   }
 
-  // Dividend yield analysis
+  // 股息率分析
   let dividendStrength = 'none';
   if (stockData.dividendYield) {
     if (stockData.dividendYield > 0.04) dividendStrength = 'strong';
     else if (stockData.dividendYield > 0.02) dividendStrength = 'moderate';
   }
 
-  // Determine overall fundamental rating
+  // 決定整體基本面評級
   if (valuation === 'attractive' && dividendStrength !== 'none') {
     overallRating = 'positive';
   } else if (valuation === 'expensive' && dividendStrength === 'none') {
@@ -177,7 +177,7 @@ function assessRisk(stockData, historicalData) {
   let riskLevel = 'medium';
 
   if (historicalData && historicalData.length > 5) {
-    // Calculate volatility based on price range
+    // 基於價格範圍計算波動性
     const prices = historicalData.map((d) => d.close);
     const maxPrice = Math.max(...prices);
     const minPrice = Math.min(...prices);
@@ -188,7 +188,7 @@ function assessRisk(stockData, historicalData) {
     if (volatility > 0.3) volatilityRating = 'high';
     else if (volatility < 0.1) volatilityRating = 'low';
 
-    // Daily change risk
+    // 日漲跌幅風險
     const dailyChange = Math.abs(stockData.dailyChange || 0);
     if (dailyChange > 5) riskLevel = 'high';
     else if (dailyChange < 2) riskLevel = 'low';
@@ -211,13 +211,13 @@ function analyzeSentiment(stockData, historicalData) {
   let marketSentiment = 'neutral';
   let institutionalInterest = 'moderate';
 
-  // Volume analysis for institutional interest
+  // 成交量分析以了解機構興趣
   if (stockData.volume) {
-    // High volume indicates strong interest
-    institutionalInterest = 'moderate'; // Placeholder based on volume availability
+    // 高成交量表示強烈興趣
+    institutionalInterest = 'moderate'; // 基於成交量可用性的佔位符
   }
 
-  // Price vs moving averages
+  // 價格與移動平均線比較
   if (historicalData && historicalData.length > 5) {
     const prices = historicalData.map((d) => d.close);
     const avgPrice =
@@ -230,8 +230,8 @@ function analyzeSentiment(stockData, historicalData) {
   return {
     marketSentiment: marketSentiment,
     institutionalInterest: institutionalInterest,
-    fearGreedIndex: 'neutral', // Would require external data source
-    newsImpact: 'minimal', // Would require news analysis
+    fearGreedIndex: 'neutral', // 需要外部資料來源
+    newsImpact: 'minimal', // 需要新聞分析
   };
 }
 
@@ -246,7 +246,7 @@ function generateRecommendation(analysis) {
   let timeframe = 'medium';
   let reasoning = [];
 
-  // Technical factors
+  // 技術因素
   if (technical.trend === 'bullish') {
     reasoning.push('技術指標顯示上升趨勢');
     if (action === 'hold') action = 'buy';
@@ -255,7 +255,7 @@ function generateRecommendation(analysis) {
     if (action === 'hold') action = 'wait';
   }
 
-  // Fundamental factors
+  // 基本面因素
   if (fundamental.overallRating === 'positive') {
     reasoning.push('基本面分析正面');
     if (action === 'buy' || action === 'hold') score += 10;
@@ -264,7 +264,7 @@ function generateRecommendation(analysis) {
     action = 'cautious';
   }
 
-  // Risk factors
+  // 風險因素
   if (risk.riskLevel === 'high') {
     reasoning.push('風險水平較高，建議謹慎');
     action = 'cautious';
@@ -274,12 +274,12 @@ function generateRecommendation(analysis) {
     score = Math.min(90, score + 5);
   }
 
-  // Sentiment factors
+  // 情緒因素
   if (sentiment.marketSentiment === 'positive') {
     reasoning.push('市場情緒正面');
   }
 
-  // Adjust final score
+  // 調整最終分數
   score = Math.max(0, Math.min(100, score));
 
   return {
@@ -294,9 +294,9 @@ function generateRecommendation(analysis) {
  * Calculate analysis confidence level
  */
 function calculateConfidence(stockData, historicalData) {
-  let confidence = 0.5; // Base 50%
+  let confidence = 0.5; // 基礎 50%
 
-  // Available data factors
+  // 可用資料因素
   if (stockData.peRatio) confidence += 0.1;
   if (stockData.dividendYield && stockData.dividendYield > 0) confidence += 0.1;
   if (historicalData && historicalData.length > 20) confidence += 0.15;
@@ -357,7 +357,7 @@ function getOpportunities(stockData, historicalData) {
     opportunities.push('高股息，為投資人帶來穩定收入');
   }
 
-  // Market condition opportunities
+  // 市場條件機會
   if (historicalData && historicalData.length > 10) {
     const prices = historicalData.map((d) => d.close);
     const recentLow = Math.min(...prices.slice(-5));
@@ -435,11 +435,11 @@ async function performEnhancedAnalysis(
     userPreferences
   );
 
-  // Enhanced features for premium users
+  // 付費用戶的增強功能
   if (userPreferences.isPremium) {
-    // Add premium features here
+    // 在此添加付費功能
     basicAnalysis.prediction = {
-      shortTerm: 'bullish', // Would use ML model
+      shortTerm: 'bullish', // 將使用機器學習模型
       confidence: 0.75,
     };
 
@@ -457,7 +457,7 @@ async function performEnhancedAnalysis(
  * This would require OPENAI_API_KEY environment variable
  */
 async function analyzeWithAI() {
-  // Placeholder for future OpenAI integration
+  // 未來 OpenAI 整合的佔位符
   // const openai = require('openai');
   // const client = new openai({ apiKey: functions.config().openai.key });
   // const response = await client.chat.completions.create({
@@ -465,7 +465,7 @@ async function analyzeWithAI() {
   //   messages: [{ role: 'user', content: buildPrompt(symbol, data, historicalData) }]
   // });
 
-  // Return mock response for now
+  // 目前返回模擬回應
   return {
     ai: 'OpenAI integration placeholder',
     recommendation:

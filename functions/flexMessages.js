@@ -1,5 +1,5 @@
-// Flex Messages utilities for LINE Bot
-// const line = require('@line/bot-sdk'); // Not used in this module
+// LINE Bot 的 Flex Messages 工具
+// const line = require('@line/bot-sdk'); // 此模組中未使用
 
 /**
  * Generate health report Flex Message for stock analysis

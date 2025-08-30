@@ -4,7 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const line = require('@line/bot-sdk');
 
-// Load environment variables from .env file
+// 從 .env 檔案載入環境變數
 require('dotenv').config();
 const {
   generateHealthReportMessage,
@@ -20,13 +20,13 @@ const {
 } = require('./stockService');
 const { performAnalysis, performEnhancedAnalysis } = require('./aiAnalyzer');
 
-// Initialize Firebase Admin
+// 初始化 Firebase Admin
 admin.initializeApp();
 
-// Firestore reference
+// Firestore 參考
 const db = admin.firestore();
 
-// LINE Bot configuration
+// LINE Bot 配置
 const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
   channelSecret: process.env.LINE_CHANNEL_SECRET,
@@ -37,20 +37,20 @@ if (!lineConfig.channelAccessToken || !lineConfig.channelSecret) {
   throw new Error('請設置環境變數: LINE_ACCESS_TOKEN 和 LINE_CHANNEL_SECRET');
 }
 
-// No validation needed - tokens are configured via Firebase config
+// 無需驗證 - 令牌透過 Firebase 配置設定
 console.log('LINE Bot initialized successfully');
 
-// Create LINE client
+// 建立 LINE 客戶端
 const lineClient = new line.Client(lineConfig);
 
-// Create Express app
+// 建立 Express 應用程式
 const app = express();
 
-// Middleware
+// 中介軟體
 app.use(cors({ origin: true }));
 app.use(express.json());
 
-// For Cloud Run compatibility - make sure the server is ready for Cloud Run to manage port assignment
+// 為了 Cloud Run 相容性 - 確保伺服器準備好讓 Cloud Run 管理端口分配
 console.log('Stock Health LINE Bot server initialized');
 
 app.get('/', (req, res) => {
@@ -60,15 +60,15 @@ app.get('/', (req, res) => {
   });
 });
 
-// Middleware to handle LINE webhook verification
+// 處理 LINE webhook 驗證的中介軟體
 const lineMiddleware = line.middleware(lineConfig);
 
-// Basic test endpoint
+// 基本測試端點
 app.get('/test', (req, res) => {
   res.send('Stock Health Check API is running!');
 });
 
-// LINE Webhook endpoint
+// LINE Webhook 端點
 app.post('/webhook', lineMiddleware, async (req, res) => {
   try {
     const events = req.body.events;
@@ -92,18 +92,18 @@ app.post('/webhook', lineMiddleware, async (req, res) => {
   }
 });
 
-// Handle incoming messages
+// 處理傳入訊息
 async function handleMessage(event) {
   const userId = event.source.userId;
   const messageText = event.message.text;
 
   try {
-    // Ensure user profile exists
+    // 確保使用者檔案存在
     await ensureUserProfile(userId);
 
-    // Command parsing
+    // 指令解析
     if (messageText.startsWith('查詢')) {
-      // Extract stock symbol from message (e.g., "查詢 2330")
+      // 從訊息中提取股票代碼 (例如: "查詢 2330")
       const symbol = messageText.split(' ')[1]?.trim();
       if (symbol) {
         await handleStockQuery(event.replyToken, userId, symbol);

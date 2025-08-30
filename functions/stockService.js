@@ -1,16 +1,16 @@
-// Stock Data Service
+// 股票資料服務
 const yahooFinance = require('yahoo-finance2').default;
 const admin = require('firebase-admin');
 
-// Function to get Firestore reference (ensure admin is initialized)
+// 取得 Firestore 參考的函數 (確保 admin 已初始化)
 function getFirestore() {
   return admin.firestore();
 }
 
-// Cache duration (5 minutes)
+// 快取持續時間 (5 分鐘)
 const CACHE_DURATION = 5 * 60 * 1000;
 
-// Cache duration (5 minutes)
+// 快取持續時間 (5 分鐘)
 
 /**
  * Get stock data with caching
@@ -19,7 +19,7 @@ const CACHE_DURATION = 5 * 60 * 1000;
  */
 async function getStockData(symbol) {
   try {
-    // Check cache first
+    // 先檢查快取
     const cacheKey = `stock_${symbol}`;
     const cacheDoc = await getFirestore()
       .collection('stockCache')
@@ -37,17 +37,17 @@ async function getStockData(symbol) {
       }
     }
 
-    // Fetch from Yahoo Finance with better handling
+    // 從 Yahoo Finance 取得資料，改善處理方式
     let quote;
-    // const isETF = /\d{4}/.test(symbol.replace('.TW', '')); // ETF detection for future use
+    // const isETF = /\d{4}/.test(symbol.replace('.TW', '')); // ETF 偵測，供未來使用
 
     try {
-      // Default API call
+      // 預設 API 呼叫
       quote = await yahooFinance.quote(symbol);
     } catch (error) {
       console.warn(`First attempt failed for ${symbol}:`, error.message);
 
-      // Try without .TW for potential ETF or international symbols
+      // 嘗試不使用 .TW 以支援潛在的 ETF 或國際代碼
       if (symbol.endsWith('.TW')) {
         const altSymbol = symbol.replace('.TW', '');
         try {
@@ -63,7 +63,7 @@ async function getStockData(symbol) {
         }
       }
 
-      // If still no data, try ETF-specific modules
+      // 如果仍然沒有資料，嘗試 ETF 特定模組
       if (!quote) {
         try {
           quote = await yahooFinance.quote(symbol, {
@@ -83,10 +83,10 @@ async function getStockData(symbol) {
       throw new Error(`No data found for symbol: ${symbol}`);
     }
 
-    // Enhanced data processing
+    // 增強資料處理
     const stockData = processStockQuoteData(quote);
 
-    // Calculate additional metrics
+    // 計算額外指標
     stockData.dailyChange = calculatePercentageChange(
       quote.regularMarketPrice,
       quote.regularMarketPreviousClose
@@ -94,7 +94,7 @@ async function getStockData(symbol) {
     stockData.priceToBook = quote.priceToBook || null;
     stockData.returnOnEquity = quote.returnOnEquity || null;
 
-    // Cache the data
+    // 快取資料
     await getFirestore().collection('stockCache').doc(cacheKey).set({
       data: stockData,
       timestamp: new Date().toISOString(),
@@ -104,7 +104,7 @@ async function getStockData(symbol) {
   } catch (error) {
     console.error(`Error fetching data for ${symbol}:`, error.message);
 
-    // Try to get from cache even if expired
+    // 即使過期也嘗試從快取取得
     try {
       const cacheDoc = await getFirestore()
         .collection('stockCache')
