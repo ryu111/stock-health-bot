@@ -5010,3 +5010,883 @@ SyntaxError: Unexpected token 'catch'
 
 [debug] [2025-08-30T20:56:03.055Z] Got response from /__/functions.yaml {"endpoints":{"api":{"timeoutSeconds":60,"minInstances":null,"maxInstances":5,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
 [info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-08-30T20:56:30.179Z] File /Users/sbu/Desktop/股健檢/functions/package-lock.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/package-lock.json changed, reloading triggers"}}
+[debug] [2025-08-30T20:56:31.180Z] Validating nodejs source
+[debug] [2025-08-30T20:56:31.700Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:56:31.700Z] Building nodejs source
+[debug] [2025-08-30T20:56:31.700Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:56:31.702Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:56:31.703Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8800
+
+[info] LINE Bot 初始化成功
+
+[info] 股健檢 LINE Bot 伺服器已初始化
+
+[debug] [2025-08-30T20:56:32.490Z] Got response from /__/functions.yaml {"endpoints":{"api":{"timeoutSeconds":60,"minInstances":null,"maxInstances":5,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-08-30T20:58:16.509Z] File /Users/sbu/Desktop/股健檢/functions/config/firebase.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/config/firebase.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:58:17.510Z] Validating nodejs source
+[debug] [2025-08-30T20:58:18.644Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:58:18.644Z] Building nodejs source
+[debug] [2025-08-30T20:58:18.644Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:58:18.645Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:58:18.646Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8742
+
+[error] Error: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)
+    at Module._load (node:internal/modules/cjs/loader:1219:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)
+    at Module.require (node:internal/modules/cjs/loader:1493:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/sbu/Desktop/股健檢/functions/index.js:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1738:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/sbu/Desktop/股健檢/functions/index.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js'
+  ]
+}
+
+[debug] [2025-08-30T20:58:19.139Z] Got response code 400; body Failed to generate manifest from function source: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2025-08-30T20:58:26.132Z] File /Users/sbu/Desktop/股健檢/functions/config/line.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/config/line.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:58:27.133Z] Validating nodejs source
+[debug] [2025-08-30T20:58:27.604Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:58:27.604Z] Building nodejs source
+[debug] [2025-08-30T20:58:27.604Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:58:27.605Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:58:27.607Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8481
+
+[error] Error: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)
+    at Module._load (node:internal/modules/cjs/loader:1219:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)
+    at Module.require (node:internal/modules/cjs/loader:1493:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/sbu/Desktop/股健檢/functions/index.js:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1738:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/sbu/Desktop/股健檢/functions/index.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js'
+  ]
+}
+
+[debug] [2025-08-30T20:58:28.085Z] Got response code 400; body Failed to generate manifest from function source: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2025-08-30T20:58:40.430Z] File /Users/sbu/Desktop/股健檢/functions/utils/formatters.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/utils/formatters.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:58:41.430Z] Validating nodejs source
+[debug] [2025-08-30T20:58:41.870Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:58:41.870Z] Building nodejs source
+[debug] [2025-08-30T20:58:41.870Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:58:41.871Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:58:41.872Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8360
+
+[error] Error: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)
+    at Module._load (node:internal/modules/cjs/loader:1219:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)
+    at Module.require (node:internal/modules/cjs/loader:1493:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/sbu/Desktop/股健檢/functions/index.js:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1738:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/sbu/Desktop/股健檢/functions/index.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js'
+  ]
+}
+
+[debug] [2025-08-30T20:58:42.357Z] Got response code 400; body Failed to generate manifest from function source: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2025-08-30T20:59:20.305Z] File /Users/sbu/Desktop/股健檢/functions/controllers/lineController.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/controllers/lineController.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:59:21.306Z] Validating nodejs source
+[debug] [2025-08-30T20:59:21.751Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:59:21.752Z] Building nodejs source
+[debug] [2025-08-30T20:59:21.752Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:59:21.752Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:59:21.753Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8240
+
+[error] Error: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)
+    at Module._load (node:internal/modules/cjs/loader:1219:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)
+    at Module.require (node:internal/modules/cjs/loader:1493:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/sbu/Desktop/股健檢/functions/index.js:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1738:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/sbu/Desktop/股健檢/functions/index.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js'
+  ]
+}
+
+[debug] [2025-08-30T20:59:22.245Z] Got response code 400; body Failed to generate manifest from function source: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2025-08-30T20:59:42.194Z] File /Users/sbu/Desktop/股健檢/functions/controllers/webhookController.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/controllers/webhookController.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:59:43.195Z] Validating nodejs source
+[debug] [2025-08-30T20:59:43.662Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:59:43.662Z] Building nodejs source
+[debug] [2025-08-30T20:59:43.662Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:59:43.663Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:59:43.664Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8024
+
+[error] Error: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)
+    at Module._load (node:internal/modules/cjs/loader:1219:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)
+    at Module.require (node:internal/modules/cjs/loader:1493:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/sbu/Desktop/股健檢/functions/index.js:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1738:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/sbu/Desktop/股健檢/functions/index.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js'
+  ]
+}
+
+[debug] [2025-08-30T20:59:44.202Z] Got response code 400; body Failed to generate manifest from function source: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2025-08-30T20:59:53.039Z] File /Users/sbu/Desktop/股健檢/functions/index-new.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/index-new.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:59:54.042Z] Validating nodejs source
+[debug] [2025-08-30T20:59:54.491Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:59:54.491Z] Building nodejs source
+[debug] [2025-08-30T20:59:54.491Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:59:54.492Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:59:54.493Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8907
+
+[error] Error: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)
+    at Module._load (node:internal/modules/cjs/loader:1219:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)
+    at Module.require (node:internal/modules/cjs/loader:1493:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/sbu/Desktop/股健檢/functions/index.js:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1738:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/sbu/Desktop/股健檢/functions/index.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js'
+  ]
+}
+
+[debug] [2025-08-30T20:59:54.977Z] Got response code 400; body Failed to generate manifest from function source: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2025-08-30T21:00:09.554Z] File /Users/sbu/Desktop/股健檢/functions/README.md changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/README.md changed, reloading triggers"}}
+[debug] [2025-08-30T21:00:10.554Z] Validating nodejs source
+[debug] [2025-08-30T21:00:11.015Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T21:00:11.015Z] Building nodejs source
+[debug] [2025-08-30T21:00:11.015Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T21:00:11.016Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T21:00:11.017Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8398
+
+[error] Error: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)
+    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)
+    at Module._load (node:internal/modules/cjs/loader:1219:37)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)
+    at Module.require (node:internal/modules/cjs/loader:1493:12)
+    at require (node:internal/modules/helpers:152:16)
+    at Object.<anonymous> (/Users/sbu/Desktop/股健檢/functions/index.js:13:5)
+    at Module._compile (node:internal/modules/cjs/loader:1738:14) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [
+    '/Users/sbu/Desktop/股健檢/functions/index.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js',
+    '/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js'
+  ]
+}
+
+[debug] [2025-08-30T21:00:11.523Z] Got response code 400; body Failed to generate manifest from function source: Cannot find module './flexMessages'
+Require stack:
+- /Users/sbu/Desktop/股健檢/functions/index.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js
+- /Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/bin/firebase-functions.js
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2025-08-30T21:00:35.380Z] File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers"}}
+[debug] [2025-08-30T21:00:36.381Z] Validating nodejs source
+[debug] [2025-08-30T21:00:36.897Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T21:00:36.897Z] Building nodejs source
+[debug] [2025-08-30T21:00:36.897Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T21:00:36.898Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T21:00:36.899Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8715
+
+[info] LINE Bot 初始化成功
+
+[info] 股健檢 LINE Bot 伺服器已初始化
+
+[debug] [2025-08-30T21:00:37.609Z] Got response from /__/functions.yaml {"endpoints":{"api":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-08-30T21:00:47.976Z] File /Users/sbu/Desktop/股健檢/functions/config/firebase.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/config/firebase.js changed, reloading triggers"}}
+[debug] [2025-08-30T21:00:48.978Z] Validating nodejs source
+[debug] [2025-08-30T21:00:49.501Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T21:00:49.501Z] Building nodejs source
+[debug] [2025-08-30T21:00:49.501Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T21:00:49.502Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T21:00:49.503Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8108
+
+[info] LINE Bot 初始化成功
+
+[info] 股健檢 LINE Bot 伺服器已初始化
+
+[debug] [2025-08-30T21:00:50.196Z] Got response from /__/functions.yaml {"endpoints":{"api":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-08-30T21:00:56.083Z] File /Users/sbu/Desktop/股健檢/functions/package-lock.json changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/package-lock.json changed, reloading triggers"}}
+[debug] [2025-08-30T21:00:57.084Z] Validating nodejs source
+[debug] [2025-08-30T21:00:57.586Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T21:00:57.586Z] Building nodejs source
+[debug] [2025-08-30T21:00:57.586Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T21:00:57.588Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T21:00:57.589Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8050
+
+[info] LINE Bot 初始化成功
+
+[info] 股健檢 LINE Bot 伺服器已初始化
+
+[debug] [2025-08-30T21:00:58.363Z] Got response from /__/functions.yaml {"endpoints":{"api":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-08-30T21:01:04.119Z] File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers"}}
+[debug] [2025-08-30T21:01:05.122Z] Validating nodejs source
+[debug] [2025-08-30T21:01:05.621Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T21:01:05.621Z] Building nodejs source
+[debug] [2025-08-30T21:01:05.621Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T21:01:05.622Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T21:01:05.623Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8126
+
+[info] LINE Bot 初始化成功
+
+[info] 股健檢 LINE Bot 伺服器已初始化
+
+[debug] [2025-08-30T21:01:06.319Z] Got response from /__/functions.yaml {"endpoints":{"api":{"availableMemoryMb":null,"timeoutSeconds":null,"minInstances":null,"maxInstances":null,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
