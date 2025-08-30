@@ -4,7 +4,12 @@ const admin = require('firebase-admin');
 
 // 取得 Firestore 參考的函數 (確保 admin 已初始化)
 function getFirestore() {
-  return admin.firestore();
+  try {
+    return admin.firestore();
+  } catch (error) {
+    console.warn('Firebase 未初始化，跳過快取功能');
+    return null;
+  }
 }
 
 // 快取持續時間 (5 分鐘)
@@ -20,20 +25,23 @@ const CACHE_DURATION = 5 * 60 * 1000;
 async function getStockData(symbol) {
   try {
     // 先檢查快取
-    const cacheKey = `stock_${symbol}`;
-    const cacheDoc = await getFirestore()
-      .collection('stockCache')
-      .doc(cacheKey)
-      .get();
+    const firestore = getFirestore();
+    if (firestore) {
+      const cacheKey = `stock_${symbol}`;
+      const cacheDoc = await firestore
+        .collection('stockCache')
+        .doc(cacheKey)
+        .get();
 
-    if (cacheDoc.exists) {
-      const cachedData = cacheDoc.data();
-      const cacheTime = new Date(cachedData.timestamp);
-      const now = new Date();
+      if (cacheDoc.exists) {
+        const cachedData = cacheDoc.data();
+        const cacheTime = new Date(cachedData.timestamp);
+        const now = new Date();
 
-      if (now.getTime() - cacheTime.getTime() < CACHE_DURATION) {
-        console.log(`Using cached data for ${symbol}`);
-        return cachedData.data;
+        if (now.getTime() - cacheTime.getTime() < CACHE_DURATION) {
+          console.log(`Using cached data for ${symbol}`);
+          return cachedData.data;
+        }
       }
     }
 
@@ -95,27 +103,34 @@ async function getStockData(symbol) {
     stockData.returnOnEquity = quote.returnOnEquity || null;
 
     // 快取資料
-    await getFirestore().collection('stockCache').doc(cacheKey).set({
-      data: stockData,
-      timestamp: new Date().toISOString(),
-    });
+    const cacheFirestore = getFirestore();
+    if (cacheFirestore) {
+      const cacheKey = `stock_${symbol}`;
+      await cacheFirestore.collection('stockCache').doc(cacheKey).set({
+        data: stockData,
+        timestamp: new Date().toISOString(),
+      });
+    }
 
     return stockData;
   } catch (error) {
     console.error(`Error fetching data for ${symbol}:`, error.message);
 
     // 即使過期也嘗試從快取取得
-    try {
-      const cacheDoc = await getFirestore()
-        .collection('stockCache')
-        .doc(`stock_${symbol}`)
-        .get();
-      if (cacheDoc.exists) {
-        console.log(`Using expired cache for ${symbol}`);
-        return cacheDoc.data().data;
+    const fallbackFirestore = getFirestore();
+    if (fallbackFirestore) {
+      try {
+        const cacheDoc = await fallbackFirestore
+          .collection('stockCache')
+          .doc(`stock_${symbol}`)
+          .get();
+        if (cacheDoc.exists) {
+          console.log(`Using expired cache for ${symbol}`);
+          return cacheDoc.data().data;
+        }
+      } catch (cacheError) {
+        console.error('快取回退失敗:', cacheError.message);
       }
-    } catch (cacheError) {
-      console.error('快取回退失敗:', cacheError.message);
     }
 
     throw new Error(`Unable to fetch data for symbol: ${symbol}`);

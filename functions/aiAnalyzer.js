@@ -468,8 +468,7 @@ async function analyzeWithAI() {
   // 目前返回模擬回應
   return {
     ai: 'OpenAI 整合佔位符',
-    recommendation:
-      '基於包含市場條件和歷史資料的綜合分析',
+    recommendation: '基於包含市場條件和歷史資料的綜合分析',
   };
 }
 
