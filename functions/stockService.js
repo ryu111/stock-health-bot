@@ -275,9 +275,9 @@ async function getMultipleStocks(symbols) {
 }
 
 /**
- * Analyze stock trend
- * @param {string} symbol - Stock symbol
- * @returns {Promise<Object>} Trend analysis
+ * 分析股票趨勢
+ * @param {string} symbol - 股票代碼
+ * @returns {Promise<Object>} 趨勢分析
  */
 async function analyzeTrend(symbol) {
   try {
@@ -307,9 +307,9 @@ async function analyzeTrend(symbol) {
 }
 
 /**
- * Process stock quote data with better ETF support
- * @param {Object} quote - Yahoo Finance quote data
- * @returns {Object} Processed stock data
+ * 處理股票報價資料，改善 ETF 支援
+ * @param {Object} quote - Yahoo Finance 報價資料
+ * @returns {Object} 處理後的股票資料
  */
 function processStockQuoteData(quote) {
   // Handle different quote formats

@@ -170,7 +170,7 @@ function analyzeFundamental(stockData) {
 }
 
 /**
- * Risk assessment analysis
+ * 風險評估分析
  */
 function assessRisk(stockData, historicalData) {
   let volatilityRating = 'moderate';
@@ -205,7 +205,7 @@ function assessRisk(stockData, historicalData) {
 }
 
 /**
- * Rule-based sentiment analysis
+ * 規則基礎情緒分析
  */
 function analyzeSentiment(stockData, historicalData) {
   let marketSentiment = 'neutral';
@@ -236,7 +236,7 @@ function analyzeSentiment(stockData, historicalData) {
 }
 
 /**
- * Generate recommendation based on all analysis
+ * 基於所有分析產生建議
  */
 function generateRecommendation(analysis) {
   const { baseScore, technical, fundamental, risk, sentiment } = analysis;
@@ -291,7 +291,7 @@ function generateRecommendation(analysis) {
 }
 
 /**
- * Calculate analysis confidence level
+ * 計算分析信心水準
  */
 function calculateConfidence(stockData, historicalData) {
   let confidence = 0.5; // 基礎 50%
@@ -307,7 +307,7 @@ function calculateConfidence(stockData, historicalData) {
 }
 
 /**
- * Get strengths based on analysis
+ * 基於分析取得優勢
  */
 function getStrengths(stockData, technical, fundamental) {
   const strengths = [];
@@ -325,7 +325,7 @@ function getStrengths(stockData, technical, fundamental) {
 }
 
 /**
- * Get weaknesses based on analysis
+ * 基於分析取得弱點
  */
 function getWeaknesses(stockData, technical, fundamental) {
   const weaknesses = [];
@@ -341,7 +341,7 @@ function getWeaknesses(stockData, technical, fundamental) {
 }
 
 /**
- * Get opportunities
+ * 取得機會
  */
 function getOpportunities(stockData, historicalData) {
   const opportunities = [];
@@ -370,7 +370,7 @@ function getOpportunities(stockData, historicalData) {
 }
 
 /**
- * Get threats
+ * 取得威脅
  */
 function getThreats(stockData, historicalData) {
   const threats = [];
@@ -396,7 +396,7 @@ function getThreats(stockData, historicalData) {
 }
 
 /**
- * Helper functions
+ * 輔助函數
  */
 function calculateSMA(prices, period) {
   if (prices.length < period) return null;
@@ -421,8 +421,8 @@ function calculateVolatility(prices) {
 }
 
 /**
- * Enhanced analysis for premium users
- * This could integrate with OpenAI API in the future
+ * 付費用戶的增強分析
+ * 未來可以整合 OpenAI API
  */
 async function performEnhancedAnalysis(
   stockData,
@@ -453,8 +453,8 @@ async function performEnhancedAnalysis(
 }
 
 /**
- * Placeholder for OpenAI API integration
- * This would require OPENAI_API_KEY environment variable
+ * OpenAI API 整合的佔位符
+ * 這需要 OPENAI_API_KEY 環境變數
  */
 async function analyzeWithAI() {
   // 未來 OpenAI 整合的佔位符

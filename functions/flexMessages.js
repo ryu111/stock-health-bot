@@ -265,8 +265,8 @@ function generateWatchlistMessage(userId, watchlist) {
 }
 
 /**
- * Generate help message with buttons
- * @returns {object} Flex Message object for help
+ * 產生帶有按鈕的幫助訊息
+ * @returns {object} 幫助的 Flex Message 物件
  */
 function generateHelpMessage() {
   return {
@@ -345,10 +345,10 @@ function generateHelpMessage() {
 }
 
 /**
- * Generate simpler text message for when Flex Message fails
- * @param {string} symbol - Stock symbol
- * @param {object} data - Stock data
- * @returns {object} Text message object
+ * 當 Flex Message 失敗時產生簡單的文字訊息
+ * @param {string} symbol - 股票代碼
+ * @param {object} data - 股票資料
+ * @returns {object} 文字訊息物件
  */
 function generateSimpleHealthMessage(symbol, data) {
   const healthScore = data.healthScore || 0;
