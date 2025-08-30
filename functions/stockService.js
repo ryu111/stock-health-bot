@@ -115,7 +115,7 @@ async function getStockData(symbol) {
         return cacheDoc.data().data;
       }
     } catch (cacheError) {
-      console.error('Cache fallback failed:', cacheError.message);
+      console.error('快取回退失敗:', cacheError.message);
     }
 
     throw new Error(`Unable to fetch data for symbol: ${symbol}`);

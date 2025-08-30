@@ -38,7 +38,7 @@ if (!lineConfig.channelAccessToken || !lineConfig.channelSecret) {
 }
 
 // 無需驗證 - 令牌透過 Firebase 配置設定
-console.log('LINE Bot initialized successfully');
+console.log('LINE Bot 初始化成功');
 
 // 建立 LINE 客戶端
 const lineClient = new line.Client(lineConfig);
@@ -51,11 +51,11 @@ app.use(cors({ origin: true }));
 app.use(express.json());
 
 // 為了 Cloud Run 相容性 - 確保伺服器準備好讓 Cloud Run 管理端口分配
-console.log('Stock Health LINE Bot server initialized');
+console.log('股健檢 LINE Bot 伺服器已初始化');
 
 app.get('/', (req, res) => {
   res.json({
-    status: 'Stock Health Bot Running',
+    status: '股健檢 Bot 運行中',
     timestamp: new Date().toISOString(),
   });
 });
@@ -65,7 +65,7 @@ const lineMiddleware = line.middleware(lineConfig);
 
 // 基本測試端點
 app.get('/test', (req, res) => {
-  res.send('Stock Health Check API is running!');
+  res.send('股健檢 API 正在運行！');
 });
 
 // LINE Webhook 端點
@@ -87,8 +87,8 @@ app.post('/webhook', lineMiddleware, async (req, res) => {
 
     res.status(200).json({});
   } catch (error) {
-    console.error('Webhook error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Webhook 錯誤:', error);
+    res.status(500).json({ error: '內部伺服器錯誤' });
   }
 });
 
@@ -159,7 +159,7 @@ async function handleMessage(event) {
       );
     }
   } catch (error) {
-    console.error('Message handling error:', error);
+    console.error('訊息處理錯誤:', error);
     await replyWithText(event.replyToken, '處理訊息時發生錯誤，請稍後再試。');
   }
 }
@@ -191,7 +191,7 @@ async function handleStockQuery(replyToken, userId, symbol) {
       const stockData = await getStockData(stockSymbol);
 
       if (!stockData || !stockData.price) {
-        throw new Error('No stock data available');
+        throw new Error('無股票資料可用');
       }
 
       // 計算健康分數
@@ -242,7 +242,7 @@ async function handleStockQuery(replyToken, userId, symbol) {
       );
       await replyWithFlex(replyToken, flexMessage);
     } catch (apiError) {
-      console.error('Stock API error:', apiError);
+      console.error('股票 API 錯誤:', apiError);
 
       // 回退到簡單文字訊息
       const simpleMessage = {
@@ -254,7 +254,7 @@ async function handleStockQuery(replyToken, userId, symbol) {
       return;
     }
   } catch (error) {
-    console.error('Stock query error:', error);
+    console.error('股票查詢錯誤:', error);
     await replyWithText(replyToken, '查詢過程中發生錯誤，請稍後再試。');
   }
 }
@@ -326,7 +326,7 @@ async function addToWatchlist(userId, symbol, replyToken) {
       await replyWithText(replyToken, `ℹ️ ${symbol} 已經在您的觀察清單中`);
     }
   } catch (error) {
-    console.error('Add to watchlist error:', error);
+    console.error('加入觀察清單錯誤:', error);
     await replyWithText(replyToken, '加入清單失敗，請稍後再試');
   }
 }
@@ -353,7 +353,7 @@ async function removeFromWatchlist(userId, symbol, replyToken) {
       await replyWithText(replyToken, '您的觀察清單為空');
     }
   } catch (error) {
-    console.error('Remove from watchlist error:', error);
+    console.error('從觀察清單移除錯誤:', error);
     await replyWithText(replyToken, '移除失敗，請稍後再試');
   }
 }
@@ -390,7 +390,7 @@ async function getWatchlist(userId) {
     }
     return [];
   } catch (error) {
-    console.error('Get watchlist error:', error);
+    console.error('取得觀察清單錯誤:', error);
     return [];
   }
 }
@@ -402,7 +402,7 @@ async function handleMyWatchlist(replyToken, userId) {
     const flexMessage = generateWatchlistMessage(userId, watchlist);
     await replyWithFlex(replyToken, flexMessage);
   } catch (error) {
-    console.error('Handle watchlist error:', error);
+    console.error('處理觀察清單錯誤:', error);
     await replyWithText(replyToken, '取得觀察清單失敗，請稍後再試');
   }
 }
@@ -457,7 +457,7 @@ async function handleDetailedAnalysis(replyToken, userId, symbol) {
 
     await lineClient.replyMessage(replyToken, analysisMessage);
   } catch (error) {
-    console.error('Detailed analysis error:', error);
+    console.error('詳細分析錯誤:', error);
     await replyWithText(replyToken, '詳細分析處理失敗，請稍後再試');
   }
 }

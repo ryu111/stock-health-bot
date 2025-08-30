@@ -467,9 +467,9 @@ async function analyzeWithAI() {
 
   // 目前返回模擬回應
   return {
-    ai: 'OpenAI integration placeholder',
+    ai: 'OpenAI 整合佔位符',
     recommendation:
-      'Based on comprehensive analysis including market conditions and historical data',
+      '基於包含市場條件和歷史資料的綜合分析',
   };
 }
 
