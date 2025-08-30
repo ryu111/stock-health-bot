@@ -3639,3 +3639,290 @@ SyntaxError: Unexpected token 'catch'
 [debug] [2025-08-30T20:26:56.724Z] [worker-us-central1-api-4c4cf7f3-c03a-4129-b0c2-cc55eef7494a]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-4c4cf7f3-c03a-4129-b0c2-cc55eef7494a]: exited"}}
 [debug] [2025-08-30T20:26:56.724Z] [worker-us-central1-api-4c4cf7f3-c03a-4129-b0c2-cc55eef7494a]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-4c4cf7f3-c03a-4129-b0c2-cc55eef7494a]: FINISHED"}}
 [info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-08-30T20:30:09.410Z] File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:30:09.492Z] File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:30:10.493Z] Validating nodejs source
+[debug] [2025-08-30T20:30:11.119Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:30:11.119Z] Building nodejs source
+[debug] [2025-08-30T20:30:11.119Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:30:11.120Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:30:11.122Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8985
+
+[error] /Users/sbu/Desktop/股健檢/functions/index.js:446
+    } catch (apiError) {
+      ^^^^^
+
+SyntaxError: Unexpected token 'catch'
+    at wrapSafe (node:internal/modules/cjs/loader:1669:18)
+    at Module._compile (node:internal/modules/cjs/loader:1712:20)
+    at Object..js (node:internal/modules/cjs/loader:1871:10)
+    at Module.load (node:internal/modules/cjs/loader:1470:32)
+    at Module._load (node:internal/modules/cjs/loader:1290:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)
+    at Module.require (node:internal/modules/cjs/loader:1493:12)
+    at require (node:internal/modules/helpers:152:16)
+    at loadModule (/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/runtime/loader.js:40:16)
+
+[debug] [2025-08-30T20:30:11.314Z] Got response code 400; body Failed to generate manifest from function source: Unexpected token 'catch'
+[error] ⬢  functions: Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error {"metadata":{"emulator":{"name":"functions"},"message":"Failed to load function definition from source: FirebaseError: Functions codebase could not be analyzed successfully. It may have a syntax or runtime error"}}
+[debug] [2025-08-30T20:30:15.780Z] File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:30:16.782Z] Validating nodejs source
+[debug] [2025-08-30T20:30:17.325Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:30:17.325Z] Building nodejs source
+[debug] [2025-08-30T20:30:17.326Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:30:17.327Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:30:17.329Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8579
+
+[info] LINE Bot 初始化成功
+
+[info] 股健檢 LINE Bot 伺服器已初始化
+
+[debug] [2025-08-30T20:30:18.050Z] Got response from /__/functions.yaml {"endpoints":{"api":{"timeoutSeconds":60,"minInstances":null,"maxInstances":5,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-08-30T20:30:25.756Z] [work-queue] {"queuedWork":["/stock-health-app/us-central1/api/test-webhook-2025-08-30T20:30:25.756Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T20:30:25.756Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/stock-health-app/us-central1/api/test-webhook-2025-08-30T20:30:25.756Z"],"workRunningCount":1}
+[debug] [2025-08-30T20:30:25.756Z] Accepted request POST /stock-health-app/us-central1/api/test-webhook --> us-central1-api
+[debug] [2025-08-30T20:30:25.757Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-08-30T20:30:25.757Z] [functions] Got req.url=/stock-health-app/us-central1/api/test-webhook, mapping to path=/test-webhook {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/stock-health-app/us-central1/api/test-webhook, mapping to path=/test-webhook"}}
+[debug] [2025-08-30T20:30:25.757Z] [worker-pool] Cleaned up workers for us-central1-api: 1 --> 0 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Cleaned up workers for us-central1-api: 1 --> 0"}}
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:30:25.759Z] [worker-pool] addWorker(us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] addWorker(us-central1-api)"}}
+[debug] [2025-08-30T20:30:25.759Z] [worker-pool] Adding worker with key us-central1-api, total=1 {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Adding worker with key us-central1-api, total=1"}}
+[debug] [2025-08-30T20:30:26.440Z] [runtime-status] [41666] Resolved module firebase-admin {"declared":true,"installed":true,"version":"13.5.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"13.5.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2025-08-30T20:30:26.441Z] [runtime-status] [41666] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T20:30:26.441Z] [runtime-status] [41666] Outgoing network have been stubbed. [{"name":"http","status":"mocked"},{"name":"http","status":"mocked"},{"name":"https","status":"mocked"},{"name":"https","status":"mocked"},{"name":"net","status":"mocked"}] {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Outgoing network have been stubbed. [{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"http\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"https\",\"status\":\"mocked\"},{\"name\":\"net\",\"status\":\"mocked\"}]"}}
+[debug] [2025-08-30T20:30:26.441Z] [runtime-status] [41666] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T20:30:26.660Z] [runtime-status] [41666] Checked functions.config() {"config":{}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Checked functions.config() {\"config\":{}}"}}
+[debug] [2025-08-30T20:30:26.661Z] [runtime-status] [41666] firebase-functions has been stubbed. {"functionsResolution":{"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] firebase-functions has been stubbed. {\"functionsResolution\":{\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}}"}}
+[debug] [2025-08-30T20:30:26.661Z] [runtime-status] [41666] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T20:30:26.663Z] [runtime-status] [41666] Resolved module firebase-admin {"declared":true,"installed":true,"version":"13.5.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Resolved module firebase-admin {\"declared\":true,\"installed\":true,\"version\":\"13.5.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js\"}"}}
+[debug] [2025-08-30T20:30:26.664Z] [runtime-status] [41666] Resolved module firebase-functions {"declared":true,"installed":true,"version":"6.4.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Resolved module firebase-functions {\"declared\":true,\"installed\":true,\"version\":\"6.4.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-functions/lib/v2/index.js\"}"}}
+[debug] [2025-08-30T20:30:26.665Z] [runtime-status] [41666] firebase-admin has been stubbed. {"adminResolution":{"declared":true,"installed":true,"version":"13.5.0","resolution":"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js"}} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] firebase-admin has been stubbed. {\"adminResolution\":{\"declared\":true,\"installed\":true,\"version\":\"13.5.0\",\"resolution\":\"/Users/sbu/Desktop/股健檢/functions/node_modules/firebase-admin/lib/index.js\"}}"}}
+[debug] [2025-08-30T20:30:27.008Z] [runtime-status] [41666] initializeApp(DEFAULT) {"storageBucket":"stock-health-app.firebasestorage.app","projectId":"stock-health-app"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] initializeApp(DEFAULT) {\"storageBucket\":\"stock-health-app.firebasestorage.app\",\"projectId\":\"stock-health-app\"}"}}
+[info] >  LINE Bot 初始化成功 {"user":"LINE Bot 初始化成功","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m LINE Bot 初始化成功"}}
+[info] >  股健檢 LINE Bot 伺服器已初始化 {"user":"股健檢 LINE Bot 伺服器已初始化","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m 股健檢 LINE Bot 伺服器已初始化"}}
+[debug] [2025-08-30T20:30:27.019Z] [runtime-status] [41666] Functions runtime initialized. {"cwd":"/Users/sbu/Desktop/股健檢/functions","node_version":"24.5.0"} {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Functions runtime initialized. {\"cwd\":\"/Users/sbu/Desktop/股健檢/functions\",\"node_version\":\"24.5.0\"}"}}
+[debug] [2025-08-30T20:30:27.020Z] [runtime-status] [41666] Listening to port: /var/folders/jp/jhx6_9gd73vg7yqw248kccdh0000gn/T/fire_emu_1439a31129fec203.sock {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[runtime-status] [41666] Listening to port: /var/folders/jp/jhx6_9gd73vg7yqw248kccdh0000gn/T/fire_emu_1439a31129fec203.sock"}}
+[debug] [2025-08-30T20:30:27.077Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: IDLE"}}
+[debug] [2025-08-30T20:30:27.077Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-08-30T20:30:27.077Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: BUSY"}}
+[warn] ⚠  Google API requested!
+   - URL: "https://oauth2.googleapis.com/token"
+   - Be careful, this may be a production service. {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Google API requested!\n   - URL: \"https://oauth2.googleapis.com/token\"\n   - Be careful, this may be a production service."}}
+[info] >  🔍 開始取得 0050 ETF 資料... {"user":"🔍 開始取得 0050 ETF 資料...","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m 🔍 開始取得 0050 ETF 資料..."}}
+[info] >  Please consider completing the survey at https://bit.ly/yahoo-finance-api-feedback if you haven't already; for more info see https://github.com/gadicc/node-yahoo-finance2/issues/764#issuecomment-2056623851.  This will only be shown once, but you can suppress this message in future with `yahooFinance.suppressNotices(['yahooSurvey'])`. {"user":"Please consider completing the survey at https://bit.ly/yahoo-finance-api-feedback if you haven't already; for more info see https://github.com/gadicc/node-yahoo-finance2/issues/764#issuecomment-2056623851.  This will only be shown once, but you can suppress this message in future with `yahooFinance.suppressNotices(['yahooSurvey'])`.","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Please consider completing the survey at https://bit.ly/yahoo-finance-api-feedback if you haven't already; for more info see https://github.com/gadicc/node-yahoo-finance2/issues/764#issuecomment-2056623851.  This will only be shown once, but you can suppress this message in future with `yahooFinance.suppressNotices(['yahooSurvey'])`."}}
+[info] >  Fetching crumb and cookies from https://finance.yahoo.com/quote/AAPL... {"user":"Fetching crumb and cookies from https://finance.yahoo.com/quote/AAPL...","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Fetching crumb and cookies from https://finance.yahoo.com/quote/AAPL..."}}
+[info] >  We expected a redirect to guce.yahoo.com, but got https://finance.yahoo.com/quote/AAPL/ {"user":"We expected a redirect to guce.yahoo.com, but got https://finance.yahoo.com/quote/AAPL/","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m We expected a redirect to guce.yahoo.com, but got https://finance.yahoo.com/quote/AAPL/"}}
+[info] >  We'll try to continue anyway - you can safely ignore this if the request succeeds {"user":"We'll try to continue anyway - you can safely ignore this if the request succeeds","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m We'll try to continue anyway - you can safely ignore this if the request succeeds"}}
+[info] >  Success. Cookie expires on Mon Aug 31 2026 02:30:32 GMT+0000 (世界標準時間) {"user":"Success. Cookie expires on Mon Aug 31 2026 02:30:32 GMT+0000 (世界標準時間)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Success. Cookie expires on Mon Aug 31 2026 02:30:32 GMT+0000 (世界標準時間)"}}
+[info] >  fetch https://query1.finance.yahoo.com/v1/test/getcrumb {"user":"fetch https://query1.finance.yahoo.com/v1/test/getcrumb","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m fetch https://query1.finance.yahoo.com/v1/test/getcrumb"}}
+[info] >  New crumb: JRITvwPgzie {"user":"New crumb: JRITvwPgzie","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m New crumb: JRITvwPgzie"}}
+[info] >  Yahoo Finance 資料取得失敗 0050: Cannot read properties of undefined (reading 'symbol') {"user":"Yahoo Finance 資料取得失敗 0050: Cannot read properties of undefined (reading 'symbol')","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Yahoo Finance 資料取得失敗 0050: Cannot read properties of undefined (reading 'symbol')"}}
+[info] >  Yahoo Finance 資料取得失敗 0050: Cannot read properties of undefined (reading 'symbol') {"user":"Yahoo Finance 資料取得失敗 0050: Cannot read properties of undefined (reading 'symbol')","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Yahoo Finance 資料取得失敗 0050: Cannot read properties of undefined (reading 'symbol')"}}
+[info] >  ✅ 成功取得 0050 ETF 資料 {"user":"✅ 成功取得 0050 ETF 資料","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m ✅ 成功取得 0050 ETF 資料"}}
+[debug] [2025-08-30T20:30:28.946Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1868.366943ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1868.366943ms"}}
+[debug] [2025-08-30T20:30:28.946Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: IDLE"}}
+[debug] [2025-08-30T20:30:28.946Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-08-30T20:30:28.946Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-08-30T20:30:28.946Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T20:30:38.977Z] [work-queue] {"queuedWork":["/stock-health-app/us-central1/api/test-webhook-2025-08-30T20:30:38.977Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T20:30:38.978Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/stock-health-app/us-central1/api/test-webhook-2025-08-30T20:30:38.977Z"],"workRunningCount":1}
+[debug] [2025-08-30T20:30:38.978Z] Accepted request POST /stock-health-app/us-central1/api/test-webhook --> us-central1-api
+[debug] [2025-08-30T20:30:38.978Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-08-30T20:30:38.979Z] [functions] Got req.url=/stock-health-app/us-central1/api/test-webhook, mapping to path=/test-webhook {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/stock-health-app/us-central1/api/test-webhook, mapping to path=/test-webhook"}}
+[debug] [2025-08-30T20:30:38.979Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-08-30T20:30:38.979Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: BUSY"}}
+[info] >  ✅ 成功取得 2330.TW 的資料 {"user":"✅ 成功取得 2330.TW 的資料","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m ✅ 成功取得 2330.TW 的資料"}}
+[info] >  處理報價資料: 2330.TW { {"user":"處理報價資料: 2330.TW {","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m 處理報價資料: 2330.TW {"}}
+[info] >    hasPrice: false, {"user":"  hasPrice: false,","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   hasPrice: false,"}}
+[info] >    hasRegularMarketPrice: true, {"user":"  hasRegularMarketPrice: true,","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   hasRegularMarketPrice: true,"}}
+[info] >    hasFundProfile: false, {"user":"  hasFundProfile: false,","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   hasFundProfile: false,"}}
+[info] >    hasAssetProfile: false {"user":"  hasAssetProfile: false","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m   hasAssetProfile: false"}}
+[info] >  } {"user":"}","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m }"}}
+[info] >  處理完成: 2330.TW - TAIWAN SEMICONDUCTOR MANUFACTUR - 價格: 1160 {"user":"處理完成: 2330.TW - TAIWAN SEMICONDUCTOR MANUFACTUR - 價格: 1160","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m 處理完成: 2330.TW - TAIWAN SEMICONDUCTOR MANUFACTUR - 價格: 1160"}}
+[info] >  [Deprecated] historical() relies on an API that Yahoo have removed.  We'll map this request to chart() for convenience, but, please consider using chart() directly instead; for more info see https://github.com/gadicc/node-yahoo-finance2/issues/795.  This will only be shown once, but you can suppress this message in future with `yahooFinance.suppressNotices(['ripHistorical'])`. {"user":"[Deprecated] historical() relies on an API that Yahoo have removed.  We'll map this request to chart() for convenience, but, please consider using chart() directly instead; for more info see https://github.com/gadicc/node-yahoo-finance2/issues/795.  This will only be shown once, but you can suppress this message in future with `yahooFinance.suppressNotices(['ripHistorical'])`.","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m [Deprecated] historical() relies on an API that Yahoo have removed.  We'll map this request to chart() for convenience, but, please consider using chart() directly instead; for more info see https://github.com/gadicc/node-yahoo-finance2/issues/795.  This will only be shown once, but you can suppress this message in future with `yahooFinance.suppressNotices(['ripHistorical'])`."}}
+[info] >  Error fetching historical data for 2330.TW: Parameter=period1 has an invalid type {"user":"Error fetching historical data for 2330.TW: Parameter=period1 has an invalid type","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Error fetching historical data for 2330.TW: Parameter=period1 has an invalid type"}}
+[info] >  Error fetching historical data for 2330.TW: Parameter=period1 has an invalid type {"user":"Error fetching historical data for 2330.TW: Parameter=period1 has an invalid type","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m Error fetching historical data for 2330.TW: Parameter=period1 has an invalid type"}}
+[debug] [2025-08-30T20:30:40.157Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 1177.936791ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 1177.936791ms"}}
+[debug] [2025-08-30T20:30:40.157Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: IDLE"}}
+[debug] [2025-08-30T20:30:40.157Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-08-30T20:30:40.157Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-08-30T20:30:40.157Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T20:30:51.419Z] [work-queue] {"queuedWork":["/stock-health-app/us-central1/api/webhook-2025-08-30T20:30:51.418Z"],"queueLength":1,"runningWork":[],"workRunningCount":0}
+[debug] [2025-08-30T20:30:51.419Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":["/stock-health-app/us-central1/api/webhook-2025-08-30T20:30:51.418Z"],"workRunningCount":1}
+[debug] [2025-08-30T20:30:51.419Z] Accepted request POST /stock-health-app/us-central1/api/webhook --> us-central1-api
+[debug] [2025-08-30T20:30:51.420Z] [functions] Runtime ready! Sending request! {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Runtime ready! Sending request!"}}
+[debug] [2025-08-30T20:30:51.420Z] [functions] Got req.url=/stock-health-app/us-central1/api/webhook, mapping to path=/webhook {"metadata":{"emulator":{"name":"functions"},"message":"[functions] Got req.url=/stock-health-app/us-central1/api/webhook, mapping to path=/webhook"}}
+[debug] [2025-08-30T20:30:51.420Z] [worker-pool] submitRequest(triggerId=us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] submitRequest(triggerId=us-central1-api)"}}
+[info] i  functions: Beginning execution of "us-central1-api" {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Beginning execution of \"us-central1-api\""}}
+[debug] [2025-08-30T20:30:51.420Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: BUSY {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: BUSY"}}
+[debug] [2025-08-30T20:30:51.422Z] Finishing up request with event=pause {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=pause"}}
+[info] i  functions: Finished "us-central1-api" in 2.673929ms {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finished \"us-central1-api\" in 2.673929ms"}}
+[debug] [2025-08-30T20:30:51.423Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: IDLE {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: IDLE"}}
+[debug] [2025-08-30T20:30:51.423Z] Finishing up request with event=finish {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=finish"}}
+[debug] [2025-08-30T20:30:51.423Z] Finishing up request with event=close {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"Finishing up request with event=close"}}
+[debug] [2025-08-30T20:30:51.423Z] [work-queue] {"queuedWork":[],"queueLength":0,"runningWork":[],"workRunningCount":0}
+[info] >  SignatureValidationFailed: signature validation failed {"user":"SignatureValidationFailed: signature validation failed","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m SignatureValidationFailed: signature validation failed"}}
+[info] >      at _middleware (/Users/sbu/Desktop/股健檢/functions/node_modules/@line/bot-sdk/dist/cjs/middleware.js:71:18) {"user":"    at _middleware (/Users/sbu/Desktop/股健檢/functions/node_modules/@line/bot-sdk/dist/cjs/middleware.js:71:18)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     at _middleware (/Users/sbu/Desktop/股健檢/functions/node_modules/@line/bot-sdk/dist/cjs/middleware.js:71:18)"}}
+[info] >      at process.processTicksAndRejections (node:internal/process/task_queues:105:5) {"user":"    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"\u001b[90m> \u001b[39m     at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"}}
+[debug] [2025-08-30T20:31:02.306Z] File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers {"metadata":{"emulator":{"name":"functions"},"message":"File /Users/sbu/Desktop/股健檢/functions/index.js changed, reloading triggers"}}
+[debug] [2025-08-30T20:31:03.308Z] Validating nodejs source
+[debug] [2025-08-30T20:31:03.801Z] > [functions] package.json contents: {
+  "name": "functions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
+    "build": "echo '✅ 建置檢查完成'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 健康檢查端點: http://localhost:5001/stock-health-app/us-central1/api/health')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@line/bot-sdk": "^10.2.0",
+    "axios": "^1.11.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.5.0",
+    "firebase-functions": "^6.4.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^2.1.4",
+    "eslint": "^8.57.0",
+    "prettier": "^3.3.3"
+  }
+}
+[debug] [2025-08-30T20:31:03.801Z] Building nodejs source
+[debug] [2025-08-30T20:31:03.801Z] Failed to find version of module node: reached end of search path /Users/sbu/Desktop/股健檢/functions/node_modules
+[warn] ⚠  functions: Your requested "node" version "22" doesn't match your global version "24". Using node@24 from host. 
+[info] i  functions: Loaded environment variables from .env. 
+[debug] [2025-08-30T20:31:03.802Z] Could not find functions.yaml. Must use http discovery
+[debug] [2025-08-30T20:31:03.803Z] Found firebase-functions binary at '/Users/sbu/Desktop/股健檢/functions/node_modules/.bin/firebase-functions'
+[info] Serving at port 8513
+
+[info] LINE Bot 初始化成功
+
+[info] 股健檢 LINE Bot 伺服器已初始化
+
+[debug] [2025-08-30T20:31:04.507Z] Got response from /__/functions.yaml {"endpoints":{"api":{"timeoutSeconds":60,"minInstances":null,"maxInstances":5,"ingressSettings":null,"concurrency":null,"serviceAccountEmail":null,"vpc":null,"platform":"gcfv2","labels":{},"httpsTrigger":{},"entryPoint":"api"}},"specVersion":"v1alpha1","requiredAPIs":[],"extensions":{}}
+[info] ✔  functions: Loaded functions definitions from source: api. {"metadata":{"emulator":{"name":"functions"},"message":"Loaded functions definitions from source: api."}}
+[debug] [2025-08-30T20:31:08.524Z] [worker-pool] Shutting down IDLE worker (us-central1-api) {"metadata":{"emulator":{"name":"functions"},"message":"[worker-pool] Shutting down IDLE worker (us-central1-api)"}}
+[debug] [2025-08-30T20:31:08.524Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: FINISHING {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: FINISHING"}}
+[debug] [2025-08-30T20:31:08.542Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: exited {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: exited"}}
+[debug] [2025-08-30T20:31:08.542Z] [worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: FINISHED {"metadata":{"emulator":{"name":"functions"},"function":{"name":"us-central1-api"},"extension":{},"message":"[worker-us-central1-api-303730da-b2c4-45c3-a844-8b06234f2816]: FINISHED"}}

@@ -364,15 +364,33 @@ async function handleStockQuery(replyToken, userId, symbol) {
     // 跳過所有查詢計數以進行開發測試
 
     try {
-      // 取得真實股票資料
-      let stockSymbol = symbol.toUpperCase();
+      // 根據台灣市場代號慣例判斷是否為 ETF
+      // ETF 代號規則：開頭為 00 或 00X 的 4-5 位數字代號
+      const isETF = /^00\d{2,3}$/.test(symbol);
+      
+      if (isETF) {
+        // 使用 ETF 專用服務
+        const etfData = await getETFData(symbol);
+        const healthScore = calculateETFHealthScore(etfData);
+        
+        // 發送 ETF 報告
+        const etfMessage = {
+          type: 'text',
+          text: formatETFReport(etfData, healthScore)
+        };
+        
+        await lineClient.replyMessage(replyToken, etfMessage);
+        return;
+      } else {
+        // 使用一般股票服務
+        let stockSymbol = symbol.toUpperCase();
 
-      // 如果未指定，為台股添加 .TW
-      if (!stockSymbol.includes('.')) {
-        stockSymbol = stockSymbol + '.TW';
-      }
+        // 如果未指定，為台股添加 .TW
+        if (!stockSymbol.includes('.')) {
+          stockSymbol = stockSymbol + '.TW';
+        }
 
-      const stockData = await getStockData(stockSymbol);
+        const stockData = await getStockData(stockSymbol);
 
       if (!stockData || !stockData.price) {
         throw new Error('無股票資料可用');
@@ -420,11 +438,12 @@ async function handleStockQuery(replyToken, userId, symbol) {
       };
 
       // 發送包含真實股票資訊的 Flex Message
-      const flexMessage = generateHealthReportMessage(
-        flexData.symbol,
-        flexData
-      );
-      await replyWithFlex(replyToken, flexMessage);
+              const flexMessage = generateHealthReportMessage(
+          flexData.symbol,
+          flexData
+        );
+        await replyWithFlex(replyToken, flexMessage);
+      }
     } catch (apiError) {
       console.error('股票 API 錯誤:', apiError);
 
