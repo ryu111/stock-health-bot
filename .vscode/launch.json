@@ -55,6 +55,19 @@
         "panel": "new",
         "focus": false
       }
+    },
+    {
+      "name": "🚀 部署到 Firebase",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/deploy/deploy.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      }
     }
   ]
 }
