@@ -128,61 +128,61 @@ async function getStockData(symbol) {
  * @returns {number} 健康分數 (0-100)
  */
 function calculateHealthScore(data) {
-  let score = 50; // Base score
+  let score = 50; // 基礎分數
 
-  // Price vs 52-week range (30% weight)
+  // 價格與 52 週範圍比較 (30% 權重)
   if (data.price && data.fiftyTwoWeekLow && data.fiftyTwoWeekHigh) {
     const pricePosition =
       (data.price - data.fiftyTwoWeekLow) /
       (data.fiftyTwoWeekHigh - data.fiftyTwoWeekLow);
     if (pricePosition < 0.3) {
-      score += 20; // Oversold - good buying opportunity
+      score += 20; // 超賣 - 良好買入機會
     } else if (pricePosition > 0.7) {
-      score -= 15; // Overbought - potential concern
+      score -= 15; // 超買 - 潛在疑慮
     }
   }
 
-  // PE Ratio analysis (20% weight)
+  // 本益比分析 (20% 權重)
   if (data.peRatio) {
     if (data.peRatio < 15) {
-      score += 15; // Potentially undervalued
+      score += 15; // 可能被低估
     } else if (data.peRatio > 30) {
-      score -= 15; // Potentially overvalued
+      score -= 15; // 可能被高估
     }
   }
 
-  // Daily change (15% weight)
+  // 日漲跌幅 (15% 權重)
   if (data.dailyChange > 3) {
-    score -= 10; // Large positive daily change might indicate volatility
+    score -= 10; // 大幅正漲跌幅可能表示波動性
   } else if (data.dailyChange < -3) {
-    score += 10; // Large negative daily change might indicate buying opportunity
+    score += 10; // 大幅負漲跌幅可能表示買入機會
   }
 
-  // Volume analysis (15% weight)
+  // 成交量分析 (15% 權重)
   if (data.volume) {
-    // High volume generally indicates strong trading interest
+    // 高成交量通常表示強烈的交易興趣
     score += 5;
   }
 
-  // Dividend yield (10% weight)
+  // 股息率 (10% 權重)
   if (data.dividendYield) {
     if (data.dividendYield > 0.03) {
       // >3%
-      score += 8; // Good dividend yield
+      score += 8; // 良好股息率
     }
   }
 
-  // Return on Equity (10% weight)
+  // 權益報酬率 (10% 權重)
   if (data.returnOnEquity) {
     if (data.returnOnEquity > 0.1) {
       // >10%
-      score += 7; // Strong ROE
+      score += 7; // 強勁 ROE
     } else if (data.returnOnEquity < 0) {
-      score -= 10; // Negative ROE is concerning
+      score -= 10; // 負 ROE 令人擔憂
     }
   }
 
-  // Ensure score is within bounds
+  // 確保分數在範圍內
   return Math.max(0, Math.min(100, Math.round(score)));
 }
 
@@ -288,8 +288,8 @@ async function analyzeTrend(symbol) {
     }
 
     const prices = historicalData.map((item) => item.close);
-    const recentPrices = prices.slice(-10); // Last 10 days
-    const olderPrices = prices.slice(-30, -20); // 10-20 days ago
+    const recentPrices = prices.slice(-10); // 最近 10 天
+    const olderPrices = prices.slice(-30, -20); // 10-20 天前
 
     const recentAvg =
       recentPrices.reduce((sum, price) => sum + price, 0) / recentPrices.length;
@@ -312,10 +312,10 @@ async function analyzeTrend(symbol) {
  * @returns {Object} 處理後的股票資料
  */
 function processStockQuoteData(quote) {
-  // Handle different quote formats
+  // 處理不同的報價格式
   let processedData = {};
 
-  // Handle regular stocks
+  // 處理一般股票
   if (quote.price || quote.regularMarketPrice) {
     const priceData = quote.price || quote;
 
@@ -340,7 +340,7 @@ function processStockQuoteData(quote) {
       exchange: priceData.exchange || quote.exchange,
     };
   }
-  // Handle ETFs and Funds
+  // 處理 ETF 和基金
   else if (quote.fundProfile || quote.assetProfile) {
     const profileData = quote.fundProfile || quote.assetProfile || {};
 
@@ -355,7 +355,7 @@ function processStockQuoteData(quote) {
       previousClose: quote.regularMarketPreviousClose || null,
       marketCap: quote.marketCap || profileData.totalAssets || null,
       volume: quote.regularMarketVolume || quote.averageVolume10days || null,
-      peRatio: null, // ETFs typically don't have PE ratios
+      peRatio: null, // ETF 通常沒有本益比
       eps: null,
       dividendYield: quote.dividendYield || profileData.yield || null,
       fiftyTwoWeekHigh: quote.fiftyTwoWeekHigh || null,
@@ -365,7 +365,7 @@ function processStockQuoteData(quote) {
     };
   }
 
-  // Ensure required fields exist
+  // 確保必要欄位存在
   if (!processedData.price) {
     console.warn(`No price data found for ${quote.symbol}`);
     processedData.price = null;

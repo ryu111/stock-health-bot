@@ -164,26 +164,26 @@ async function handleMessage(event) {
   }
 }
 
-// Stock query handler
+// 股票查詢處理器
 async function handleStockQuery(replyToken, userId, symbol) {
   try {
-    // Check user subscription and query limits
+    // 檢查使用者訂閱和查詢限制
     const userRef = db.collection('users').doc(userId);
     const userDoc = await userRef.get();
     const userData = userDoc.data();
 
-    // DEVELOPMENT STAGE: Skip query counting for testing
+    // 開發階段：跳過查詢計數以進行測試
     // const today = new Date().toISOString().split('T')[0];
     // let dailyQueries = userData.dailyQueries || 0;
 
-    // DEVELOPMENT STAGE: Remove query limits
-    // Skip all query counting for development testing
+    // 開發階段：移除查詢限制
+    // 跳過所有查詢計數以進行開發測試
 
     try {
-      // Get real stock data
+      // 取得真實股票資料
       let stockSymbol = symbol.toUpperCase();
 
-      // Add .TW for Taiwanese stocks if not specified
+      // 如果未指定，為台股添加 .TW
       if (!stockSymbol.includes('.')) {
         stockSymbol = stockSymbol + '.TW';
       }
@@ -194,14 +194,14 @@ async function handleStockQuery(replyToken, userId, symbol) {
         throw new Error('No stock data available');
       }
 
-      // Calculate health score
+      // 計算健康分數
       const healthScore = calculateHealthScore(stockData);
 
-      // Get historical data and perform basic analysis for all users
+      // 取得歷史資料並為所有使用者執行基本分析
       const historicalData = await getHistoricalData(stockSymbol, '1mo');
       const trendAnalysis = await analyzeTrend(stockSymbol);
 
-      // Basic analysis for free users, enhanced for premium
+      // 免費使用者基本分析，付費使用者增強分析
       let analysisScore = healthScore;
       if (userData.subscriptionType === 'premium') {
         const basicAnalysis = await performAnalysis(
@@ -212,7 +212,7 @@ async function handleStockQuery(replyToken, userId, symbol) {
         analysisScore = basicAnalysis.overallScore;
       }
 
-      // Prepare data for Flex Message
+      // 準備 Flex Message 的資料
       const flexData = {
         symbol: stockData.name || stockSymbol,
         healthScore: analysisScore,
@@ -235,7 +235,7 @@ async function handleStockQuery(replyToken, userId, symbol) {
         isPremium: userData.subscriptionType === 'premium',
       };
 
-      // Send Flex Message with real stock info
+      // 發送包含真實股票資訊的 Flex Message
       const flexMessage = generateHealthReportMessage(
         flexData.symbol,
         flexData
@@ -244,7 +244,7 @@ async function handleStockQuery(replyToken, userId, symbol) {
     } catch (apiError) {
       console.error('Stock API error:', apiError);
 
-      // Fallback to simple text message
+      // 回退到簡單文字訊息
       const simpleMessage = {
         type: 'text',
         text: `❌ 無法取得 ${symbol} 的股票數據\n\n🚀 可能的原因：\n• 股票代碼格式錯誤\n• 當前非交易時間\n• 網路連接問題\n\n請確認代碼並稍後再試\n例如：2330 (台積電)`,
@@ -259,13 +259,13 @@ async function handleStockQuery(replyToken, userId, symbol) {
   }
 }
 
-// Help message using Flex Message
+// 使用 Flex Message 的幫助訊息
 async function replyWithHelp(replyToken) {
   const helpMessage = generateHelpMessage();
   await replyWithFlex(replyToken, helpMessage);
 }
 
-// Send text reply
+// 發送文字回覆
 async function replyWithText(replyToken, text) {
   await lineClient.replyMessage(replyToken, {
     type: 'text',
@@ -273,14 +273,14 @@ async function replyWithText(replyToken, text) {
   });
 }
 
-// Send flex message
+// 發送 flex 訊息
 async function replyWithFlex(replyToken, flexMessage) {
   await lineClient.replyMessage(replyToken, flexMessage);
 }
 
-// Removed replyWithStockInfo function as it's not being used
+// 移除 replyWithStockInfo 函數，因為未使用
 
-// Handle postback events (button clicks)
+// 處理 postback 事件 (按鈕點擊)
 async function handlePostback(event) {
   const userId = event.source.userId;
   const data = event.postback.data;
@@ -296,18 +296,18 @@ async function handlePostback(event) {
   }
 }
 
-// Handle follow events (when user adds the bot)
+// 處理追蹤事件 (當使用者加入機器人時)
 async function handleFollow(event) {
   const userId = event.source.userId;
   const welcomeMessage = generateHelpMessage();
 
   await replyWithFlex(event.replyToken, welcomeMessage);
 
-  // Initialize user profile
+  // 初始化使用者檔案
   await initializeUserProfile(userId);
 }
 
-// Add stock to user's watchlist
+// 將股票加入使用者的觀察清單
 async function addToWatchlist(userId, symbol, replyToken) {
   try {
     await ensureUserProfile(userId);
@@ -331,7 +331,7 @@ async function addToWatchlist(userId, symbol, replyToken) {
   }
 }
 
-// Remove stock from user's watchlist
+// 從使用者的觀察清單移除股票
 async function removeFromWatchlist(userId, symbol, replyToken) {
   try {
     const watchlistRef = db.collection('watchlists').doc(userId);
@@ -358,7 +358,7 @@ async function removeFromWatchlist(userId, symbol, replyToken) {
   }
 }
 
-// Initialize user profile
+// 初始化使用者檔案
 async function initializeUserProfile(userId) {
   const userRef = db.collection('users').doc(userId);
   const userDoc = await userRef.get();
@@ -366,7 +366,7 @@ async function initializeUserProfile(userId) {
   if (!userDoc.exists) {
     await userRef.set({
       userId: userId,
-      subscriptionType: 'free', // free or premium
+      subscriptionType: 'free', // 免費或付費
       dailyQueries: 0,
       lastQueryDate: new Date().toISOString().split('T')[0],
       joinedAt: new Date(),
@@ -374,12 +374,12 @@ async function initializeUserProfile(userId) {
   }
 }
 
-// Ensure user profile exists
+// 確保使用者檔案存在
 async function ensureUserProfile(userId) {
   await initializeUserProfile(userId);
 }
 
-// Get user's watchlist
+// 取得使用者的觀察清單
 async function getWatchlist(userId) {
   try {
     const watchlistRef = db.collection('watchlists').doc(userId);
@@ -395,7 +395,7 @@ async function getWatchlist(userId) {
   }
 }
 
-// "My watchlist" command handler
+// "我的清單" 指令處理器
 async function handleMyWatchlist(replyToken, userId) {
   try {
     const watchlist = await getWatchlist(userId);
