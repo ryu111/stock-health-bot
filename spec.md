@@ -204,4 +204,265 @@ https://us-central1-stock-health-app.cloudfunctions.net/api/webhook
 
 2. 加 LINE Bot 好友並測試基本功能
 
+## 10. CI/CD 持續整合與部署
+
+### 10.1 CI 目標與功能
+
+我們將為股健檢專案實施完整的 CI/CD 管道，提供類似 Flutter SDK analyze 的品質檢查系統，讓每次代碼變更都能自動驗證代碼品質和功能正確性。
+
+#### 🎯 CI 主要目標
+- **自動化代碼品質檢查**：語法檢查、格式化驗證、依賴分析
+- **測試執行**：單元測試、整合測試、端到端測試
+- **安全漏洞掃描**：檢查依賴安全性
+- **構建驗證**：確保代碼可編譯並通過環境測試
+- **部署自動化**：通過檢查後自動部署到生產環境
+
+### 10.2 支援的 CI 平台
+
+#### 🏆 GitHub Actions (推薦)
+```yaml
+# .github/workflows/ci.yml
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: cd functions && npm ci
+
+    - name: Run ESLint
+      run: cd functions && npm run lint
+
+    - name: Run Prettier check
+      run: cd functions && npm run format:check
+
+    - name: Run verification
+      run: cd functions && npm run verify
+
+    - name: Test functions
+      run: cd functions && npm run local-test
+```
+
+#### 🐳 Docker-based CI
+```dockerfile
+# Dockerfile.ci
+FROM node:22-alpine
+WORKDIR /app
+COPY functions/package*.json ./
+RUN npm ci
+COPY functions/ ./
+RUN npm run analyze
+```
+
+#### 🔧 本地 CI 腳本 (shell)
+```bash
+#!/bin/bash
+# scripts/ci-check.sh
+set -e
+
+echo "🤖 Starting CI Quality Checks..."
+
+# Node.js version check
+node --version || exit 1
+
+# Dependencies installation
+echo "📦 Installing dependencies..."
+npm install || exit 1
+
+# Code quality checks
+echo "🔍 Running code quality checks..."
+npm run lint || exit 1
+
+# Format check
+echo "🎨 Checking code formatting..."
+npm run format:check || exit 1
+
+# Build check
+echo "🏗️ Building project..."
+npm run build || exit 1
+
+# Local tests
+echo "🧪 Running tests..."
+npm run local-test || exit 1
+
+echo "✅ All CI checks passed successfully!"
+```
+
+### 10.3 CI 檢查矩陣
+
+#### 🔍 代碼品質檢查
+| 檢查項目 | 工具 | 狀態 |
+|---------|-----|-----|
+| 語法檢查 | ESLint | ✅ 已實施 |
+| 代碼格式 | Prettier | ✅ 已實施 |
+| 結構分析 | 依賴樹分析 | 🏗️ 計劃中 |
+| 安全掃描 | npm audit | 🏗️ 計劃中 |
+
+#### 🧪 測試類型
+| 測試層級 | 範圍 | 命令 |
+|---------|-----|-----|
+| 單元測試 | 分析引擎功能 | `npm test` |
+| 整合測試 | API 互動測試 | `npm run test:api` |
+| 端到端測試 | LINE Bot 對話流程 | `npm run test:e2e` |
+
+#### 📊 CI 監控指標
+- **構建時間**：平均 < 90 秒
+- **失敗率**：< 5%
+- **測試覆蓋率**：目標 > 80%
+- **語法錯誤數**：目標 = 0
+- **格式化錯誤數**：目標 = 0
+
+### 10.4 CI/CD 管道設計
+
+#### 🔄 管道階段
+```mermaid
+graph LR
+    A[Push/PR] --> B[Code Quality]
+    B --> C[Testing]
+    C --> D[Build]
+    D --> E{Branch?}
+    E -->|Main| F[Deploy Staging]
+    E -->|Develop| G[Deploy Staging]
+    E -->|PR| H[Security Scan]
+    H --> I[Code Review]
+    I --> J[Merge]
+    J --> K[Deploy Production]
+```
+
+#### 🚀 部署策略
+1. **Push 到 develop 分支** → 自動部署到測試環境
+2. **Pull Request** → 觸發完整驗證流程
+3. **Merge 到 main 分支** → 自動部署到生產環境
+4. **標籤推送** → 手動觸發特定版本部署
+
+### 10.5 分支保護規則
+
+為確保代碼品質，建議設置以下分支保護規則：
+
+#### 🛡️ Main 分支
+- **必須通過 CI 檢查**：檢查必須通過才可合併
+- **代碼審查**：至少 1 位審查者批准
+- **Push 限制**：僅允許 Pull Request 合併
+- **狀態檢查**：所有 CI 檢查必須通過
+
+#### 🛡️ Develop 分支
+- **必須通過 CI 檢查**
+- **Push 限制**：允許直接推送但需要 CI 通過
+
+#### 🔄 Pull Request 模板
+```markdown
+## PR 類型
+- [ ] 新功能
+- [ ] 缺陷修復
+- [ ] 文檔更新
+- [ ] 測試增加
+- [ ] 重構
+
+## 變更內容
+<!-- 描述此次變更的目的和內容 -->
+
+## 相關問題
+<!-- 如果有關聯的需求或問題，請列出 -->
+
+## 測試結果
+- [ ] 通過本地測試: `npm run verify`
+- [ ] 通過 CI 檢查
+- [ ] 新增單元測試
+```
+
+### 10.6 CI 狀態徽章
+
+在專案根目錄添加狀態徽章：
+
+```markdown
+[![CI Status](https://github.com/your-repo/stock-health-linebot/workflows/CI/badge.svg)](https://github.com/your-repo/stock-health-linebot/actions)
+[![Code Quality](https://img.shields.io/badge/Linting-ESLint-brightgreen)](https://eslint.org/)
+[![Formatting](https://img.shields.io/badge/Formatting-Prettier-blue)](https://prettier.io/)
+[![License](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
+```
+
+### 10.7 本地開發 CI 整合
+
+開發者可在本機運行完整 CI 檢查：
+
+```bash
+# 運行完整 CI 檢查
+./scripts/ci-check.sh
+
+# 或使用 npm scripts（無需安裝 GitHub Actions）
+npm run ci
+
+# 格式化代碼後檢查
+npm run format
+npm run format:check
+```
+
+### 10.8 故障排除指南
+
+#### 常見 CI 失敗原因
+1. **ESLint 錯誤**：運行 `npm run lint:fix` 自動修復
+2. **格式化錯誤**：運行 `npm run format` 自動格式化
+3. **依賴問題**：確保 `package-lock.json` 最新
+4. **環境變數缺失**：檢查 `.env` 文件存在
+
+#### 手動 CI 跳過
+緊急情況下可以使用 `[skip ci]` 標記跳過 CI：
+- Commit 訊息：`feat: add new feature [skip ci]`
+- 只對語法檢查有效，部署仍會進行
+
+### 10.9 部署至生產環境
+
+#### 🐙 GitHub Actions 部署流程
+```yaml
+deploy:
+  needs: ci
+  runs-on: ubuntu-latest
+  environment: production
+  steps:
+  - name: Deploy to Firebase
+    run: firebase deploy --only functions --token ${{ secrets.FIREBASE_TOKEN }}
+  - name: Update Webhook
+    run: curl -X PATCH "${{ secrets.LINE_WEBHOOK_URL }}"
+```
+
+#### 📱 Firebase Functions 部署
+```bash
+# 自動部署（認證過期時需要手動）
+firebase deploy --only functions --token $FIREBASE_TOKEN
+
+# 手動部署（認證互動式）
+firebase login
+firebase deploy --only functions
+```
+
+### 10.10 效能優化
+
+#### ⏱️ CI 效能最佳化
+- **Node.js 快取**：使用 GitHub Actions 的 Node 快取
+- **依賴快取**：不用重複安裝依賴
+- **並行作業**：測試和構建並行執行
+- **選擇性檢查**：只有相關文件變更才觸發檢查
+
+#### 📊 效能指標监控
+- **構建時間跟踪**：記錄每次構建時間變化
+- **失敗率分析**：定期檢查 CI 健康狀況
+- **快取命中率**：優化快取策略
+
+---
+
+此 CI/CD 系統將確保股健檢專案保持最高代碼品質標準，讓每個變更都經由自動化檢驗。CI 系統不僅檢查代碼品質，還會驗證功能完整性和部署準備狀態，類似於 Flutter 的嚴格品質管控流程。
+
 此為完整 spec 與實施，基於您的需求輸入生成。如有調整，請提供進一步細節以進行迭代優化。

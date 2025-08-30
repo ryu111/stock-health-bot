@@ -1,0 +1,30 @@
+{
+  "version": "1.0.0",
+  "lastRun": "2024-01-XXTXX:XX:XX.XXXZ",
+  "totalRuns": 0,
+  "successRuns": 0,
+  "failureRuns": 0,
+  "avgDuration": 0,
+  "reports": {
+    "eslint": {
+      "totalErrors": 0,
+      "lastCheck": null,
+      "status": "unknown"
+    },
+    "prettier": {
+      "totalIssues": 0,
+      "lastCheck": null,
+      "status": "unknown"
+    },
+    "build": {
+      "totalFailures": 0,
+      "lastCheck": null,
+      "status": "unknown"
+    },
+    "tests": {
+      "totalFailures": 0,
+      "lastCheck": null,
+      "status": "unknown"
+    }
+  }
+}

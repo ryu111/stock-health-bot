@@ -21,7 +21,10 @@ async function getStockData(symbol) {
   try {
     // Check cache first
     const cacheKey = `stock_${symbol}`;
-    const cacheDoc = await getFirestore().collection('stockCache').doc(cacheKey).get();
+    const cacheDoc = await getFirestore()
+      .collection('stockCache')
+      .doc(cacheKey)
+      .get();
 
     if (cacheDoc.exists) {
       const cachedData = cacheDoc.data();
@@ -36,7 +39,7 @@ async function getStockData(symbol) {
 
     // Fetch from Yahoo Finance with better handling
     let quote;
-    const isETF = /\d{4}/.test(symbol.replace('.TW', '')); // Detect potential ETF (4 digits)
+    // const isETF = /\d{4}/.test(symbol.replace('.TW', '')); // ETF detection for future use
 
     try {
       // Default API call
@@ -49,9 +52,14 @@ async function getStockData(symbol) {
         const altSymbol = symbol.replace('.TW', '');
         try {
           quote = await yahooFinance.quote(altSymbol);
-          console.log(`✅ Found data for ${altSymbol} (used instead of ${symbol})`);
+          console.log(
+            `✅ Found data for ${altSymbol} (used instead of ${symbol})`
+          );
         } catch (altError) {
-          console.warn(`Alternative symbol ${altSymbol} also failed:`, altError.message);
+          console.warn(
+            `Alternative symbol ${altSymbol} also failed:`,
+            altError.message
+          );
         }
       }
 
@@ -59,12 +67,14 @@ async function getStockData(symbol) {
       if (!quote) {
         try {
           quote = await yahooFinance.quote(symbol, {
-            modules: ['price', 'summaryDetail', 'fundProfile', 'assetProfile']
+            modules: ['price', 'summaryDetail', 'fundProfile', 'assetProfile'],
           });
           console.log(`✅ Found ETF data for ${symbol}`);
         } catch (etfError) {
           console.error(`All attempts failed for ${symbol}:`, etfError.message);
-          throw new Error(`無法取得 ${symbol} 的數據。請確認代碼正確性或稍後再試。`);
+          throw new Error(
+            `無法取得 ${symbol} 的數據。請確認代碼正確性或稍後再試。`
+          );
         }
       }
     }
@@ -77,14 +87,17 @@ async function getStockData(symbol) {
     const stockData = processStockQuoteData(quote);
 
     // Calculate additional metrics
-    stockData.dailyChange = calculatePercentageChange(quote.regularMarketPrice, quote.regularMarketPreviousClose);
+    stockData.dailyChange = calculatePercentageChange(
+      quote.regularMarketPrice,
+      quote.regularMarketPreviousClose
+    );
     stockData.priceToBook = quote.priceToBook || null;
     stockData.returnOnEquity = quote.returnOnEquity || null;
 
     // Cache the data
     await getFirestore().collection('stockCache').doc(cacheKey).set({
       data: stockData,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
     return stockData;
@@ -93,7 +106,10 @@ async function getStockData(symbol) {
 
     // Try to get from cache even if expired
     try {
-      const cacheDoc = await getFirestore().collection('stockCache').doc(`stock_${symbol}`).get();
+      const cacheDoc = await getFirestore()
+        .collection('stockCache')
+        .doc(`stock_${symbol}`)
+        .get();
       if (cacheDoc.exists) {
         console.log(`Using expired cache for ${symbol}`);
         return cacheDoc.data().data;
@@ -116,7 +132,9 @@ function calculateHealthScore(data) {
 
   // Price vs 52-week range (30% weight)
   if (data.price && data.fiftyTwoWeekLow && data.fiftyTwoWeekHigh) {
-    const pricePosition = (data.price - data.fiftyTwoWeekLow) / (data.fiftyTwoWeekHigh - data.fiftyTwoWeekLow);
+    const pricePosition =
+      (data.price - data.fiftyTwoWeekLow) /
+      (data.fiftyTwoWeekHigh - data.fiftyTwoWeekLow);
     if (pricePosition < 0.3) {
       score += 20; // Oversold - good buying opportunity
     } else if (pricePosition > 0.7) {
@@ -148,14 +166,16 @@ function calculateHealthScore(data) {
 
   // Dividend yield (10% weight)
   if (data.dividendYield) {
-    if (data.dividendYield > 0.03) { // >3%
+    if (data.dividendYield > 0.03) {
+      // >3%
       score += 8; // Good dividend yield
     }
   }
 
   // Return on Equity (10% weight)
   if (data.returnOnEquity) {
-    if (data.returnOnEquity > 0.1) { // >10%
+    if (data.returnOnEquity > 0.1) {
+      // >10%
       score += 7; // Strong ROE
     } else if (data.returnOnEquity < 0) {
       score -= 10; // Negative ROE is concerning
@@ -204,19 +224,35 @@ function calculatePercentageChange(current, previous) {
  */
 async function getHistoricalData(symbol, period = '3mo') {
   try {
-    const queryOptions = { period1: Date.now() / 1000 - (period === '1mo' ? 30 : period === '3mo' ? 90 : period === '6mo' ? 180 : 365) * 24 * 60 * 60 };
+    const queryOptions = {
+      period1:
+        Date.now() / 1000 -
+        (period === '1mo'
+          ? 30
+          : period === '3mo'
+            ? 90
+            : period === '6mo'
+              ? 180
+              : 365) *
+          24 *
+          60 *
+          60,
+    };
     const result = await yahooFinance.historical(symbol, queryOptions);
 
-    return result.map(item => ({
+    return result.map((item) => ({
       date: item.date,
       open: item.open,
       high: item.high,
       low: item.low,
       close: item.close,
-      volume: item.volume
+      volume: item.volume,
     }));
   } catch (error) {
-    console.error(`Error fetching historical data for ${symbol}:`, error.message);
+    console.error(
+      `Error fetching historical data for ${symbol}:`,
+      error.message
+    );
     return [];
   }
 }
@@ -227,13 +263,15 @@ async function getHistoricalData(symbol, period = '3mo') {
  * @returns {Promise<Array>} Array of stock data objects
  */
 async function getMultipleStocks(symbols) {
-  const promises = symbols.map(symbol => getStockData(symbol).catch(error => {
-    console.error(`Failed to fetch ${symbol}:`, error.message);
-    return null;
-  }));
+  const promises = symbols.map((symbol) =>
+    getStockData(symbol).catch((error) => {
+      console.error(`Failed to fetch ${symbol}:`, error.message);
+      return null;
+    })
+  );
 
   const results = await Promise.all(promises);
-  return results.filter(result => result !== null);
+  return results.filter((result) => result !== null);
 }
 
 /**
@@ -249,12 +287,14 @@ async function analyzeTrend(symbol) {
       return { trend: 'unknown', strength: 0 };
     }
 
-    const prices = historicalData.map(item => item.close);
+    const prices = historicalData.map((item) => item.close);
     const recentPrices = prices.slice(-10); // Last 10 days
     const olderPrices = prices.slice(-30, -20); // 10-20 days ago
 
-    const recentAvg = recentPrices.reduce((sum, price) => sum + price, 0) / recentPrices.length;
-    const olderAvg = olderPrices.reduce((sum, price) => sum + price, 0) / olderPrices.length;
+    const recentAvg =
+      recentPrices.reduce((sum, price) => sum + price, 0) / recentPrices.length;
+    const olderAvg =
+      olderPrices.reduce((sum, price) => sum + price, 0) / olderPrices.length;
 
     const trend = recentAvg > olderAvg ? 'up' : 'down';
     const strength = Math.abs((recentAvg - olderAvg) / olderAvg) * 100;
@@ -281,9 +321,14 @@ function processStockQuoteData(quote) {
 
     processedData = {
       symbol: quote.symbol || priceData.symbol,
-      name: priceData.displayName || priceData.shortName || priceData.symbol || '未知',
+      name:
+        priceData.displayName ||
+        priceData.shortName ||
+        priceData.symbol ||
+        '未知',
       price: priceData.regularMarketPrice || priceData.price,
-      previousClose: priceData.regularMarketPreviousClose || priceData.previousClose,
+      previousClose:
+        priceData.regularMarketPreviousClose || priceData.previousClose,
       marketCap: priceData.marketCap || quote.marketCap,
       volume: priceData.regularMarketVolume || priceData.volume,
       peRatio: priceData.trailingPE || priceData.peRatio || null,
@@ -292,7 +337,7 @@ function processStockQuoteData(quote) {
       fiftyTwoWeekHigh: priceData.fiftyTwoWeekHigh || null,
       fiftyTwoWeekLow: priceData.fiftyTwoWeekLow || null,
       currency: priceData.currency || 'TWD',
-      exchange: priceData.exchange || quote.exchange
+      exchange: priceData.exchange || quote.exchange,
     };
   }
   // Handle ETFs and Funds
@@ -301,7 +346,11 @@ function processStockQuoteData(quote) {
 
     processedData = {
       symbol: quote.symbol,
-      name: profileData.longBusinessSummary || profileData.family || profileData.category || quote.symbol,
+      name:
+        profileData.longBusinessSummary ||
+        profileData.family ||
+        profileData.category ||
+        quote.symbol,
       price: quote.regularMarketPrice || quote.lastPrice || null,
       previousClose: quote.regularMarketPreviousClose || null,
       marketCap: quote.marketCap || profileData.totalAssets || null,
@@ -312,7 +361,7 @@ function processStockQuoteData(quote) {
       fiftyTwoWeekHigh: quote.fiftyTwoWeekHigh || null,
       fiftyTwoWeekLow: quote.fiftyTwoWeekLow || null,
       currency: quote.currency || 'TWD',
-      exchange: quote.exchange
+      exchange: quote.exchange,
     };
   }
 
@@ -332,5 +381,5 @@ module.exports = {
   formatMarketCap,
   calculatePercentageChange,
   getHistoricalData,
-  analyzeTrend
+  analyzeTrend,
 };

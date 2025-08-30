@@ -10,14 +10,13 @@ const {
   generateHealthReportMessage,
   generateWatchlistMessage,
   generateHelpMessage,
-  generateSimpleHealthMessage
 } = require('./flexMessages');
 const {
   getStockData,
   calculateHealthScore,
   formatMarketCap,
   analyzeTrend,
-  getHistoricalData
+  getHistoricalData,
 } = require('./stockService');
 const { performAnalysis, performEnhancedAnalysis } = require('./aiAnalyzer');
 
@@ -30,7 +29,7 @@ const db = admin.firestore();
 // LINE Bot configuration
 const lineConfig = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
-  channelSecret: process.env.LINE_CHANNEL_SECRET
+  channelSecret: process.env.LINE_CHANNEL_SECRET,
 };
 
 // 驗證必需的環境變數
@@ -48,17 +47,17 @@ const lineClient = new line.Client(lineConfig);
 const app = express();
 
 // Middleware
-app.use(cors({origin: true}));
+app.use(cors({ origin: true }));
 app.use(express.json());
-
-// Ensure the app can handle the PORT environment variable set by Cloud Run
-const PORT = process.env.PORT || 8080;
 
 // For Cloud Run compatibility - make sure the server is ready for Cloud Run to manage port assignment
 console.log('Stock Health LINE Bot server initialized');
 
 app.get('/', (req, res) => {
-  res.json({ status: 'Stock Health Bot Running', timestamp: new Date().toISOString() });
+  res.json({
+    status: 'Stock Health Bot Running',
+    timestamp: new Date().toISOString(),
+  });
 });
 
 // Middleware to handle LINE webhook verification
@@ -74,15 +73,17 @@ app.post('/webhook', lineMiddleware, async (req, res) => {
   try {
     const events = req.body.events;
 
-    await Promise.all(events.map(async (event) => {
-      if (event.type === 'message' && event.message.type === 'text') {
-        return await handleMessage(event);
-      } else if (event.type === 'postback') {
-        return await handlePostback(event);
-      } else if (event.type === 'follow') {
-        return await handleFollow(event);
-      }
-    }));
+    await Promise.all(
+      events.map(async (event) => {
+        if (event.type === 'message' && event.message.type === 'text') {
+          return await handleMessage(event);
+        } else if (event.type === 'postback') {
+          return await handlePostback(event);
+        } else if (event.type === 'follow') {
+          return await handleFollow(event);
+        }
+      })
+    );
 
     res.status(200).json({});
   } catch (error) {
@@ -107,7 +108,10 @@ async function handleMessage(event) {
       if (symbol) {
         await handleStockQuery(event.replyToken, userId, symbol);
       } else {
-        await replyWithText(event.replyToken, '請提供股票代碼，例如：查詢 2330');
+        await replyWithText(
+          event.replyToken,
+          '請提供股票代碼，例如：查詢 2330'
+        );
       }
     } else if (messageText === '幫助' || messageText === 'help') {
       await replyWithHelp(event.replyToken);
@@ -118,14 +122,23 @@ async function handleMessage(event) {
       if (symbol) {
         await addToWatchlist(userId, symbol, event.replyToken);
       } else {
-        await replyWithText(event.replyToken, '請提供股票代碼，例如：加入清單 2330');
+        await replyWithText(
+          event.replyToken,
+          '請提供股票代碼，例如：加入清單 2330'
+        );
       }
-    } else if (messageText.startsWith('移除') || messageText.startsWith('刪除')) {
+    } else if (
+      messageText.startsWith('移除') ||
+      messageText.startsWith('刪除')
+    ) {
       const symbol = messageText.split(' ')[1]?.trim();
       if (symbol) {
         await removeFromWatchlist(userId, symbol, event.replyToken);
       } else {
-        await replyWithText(event.replyToken, '請提供股票代碼，例如：移除 2330');
+        await replyWithText(
+          event.replyToken,
+          '請提供股票代碼，例如：移除 2330'
+        );
       }
     } else if (messageText === '健康') {
       await replyWithText(event.replyToken, '✅ Bot 運行正常！');
@@ -134,10 +147,16 @@ async function handleMessage(event) {
       if (symbol) {
         await handleDetailedAnalysis(event.replyToken, userId, symbol);
       } else {
-        await replyWithText(event.replyToken, '請提供股票代碼，例如：詳細分析 2330');
+        await replyWithText(
+          event.replyToken,
+          '請提供股票代碼，例如：詳細分析 2330'
+        );
       }
     } else {
-      await replyWithText(event.replyToken, '可用指令：\n• 查詢 [代碼] - 股票健康度\n• 詳細分析 [代碼] - AI 進階分析\n• 加入清單 [代碼] - 加入監控\n• 我的清單 - 查看觀察清單\n• 幫助 - 詳細功能');
+      await replyWithText(
+        event.replyToken,
+        '可用指令：\n• 查詢 [代碼] - 股票健康度\n• 詳細分析 [代碼] - AI 進階分析\n• 加入清單 [代碼] - 加入監控\n• 我的清單 - 查看觀察清單\n• 幫助 - 詳細功能'
+      );
     }
   } catch (error) {
     console.error('Message handling error:', error);
@@ -153,13 +172,9 @@ async function handleStockQuery(replyToken, userId, symbol) {
     const userDoc = await userRef.get();
     const userData = userDoc.data();
 
-    const today = new Date().toISOString().split('T')[0];
-    let dailyQueries = userData.dailyQueries || 0;
-
-    // Reset daily count if it's a new day
-    if (userData.lastQueryDate !== today) {
-      dailyQueries = 0;
-    }
+    // DEVELOPMENT STAGE: Skip query counting for testing
+    // const today = new Date().toISOString().split('T')[0];
+    // let dailyQueries = userData.dailyQueries || 0;
 
     // DEVELOPMENT STAGE: Remove query limits
     // Skip all query counting for development testing
@@ -185,11 +200,15 @@ async function handleStockQuery(replyToken, userId, symbol) {
       // Get historical data and perform basic analysis for all users
       const historicalData = await getHistoricalData(stockSymbol, '1mo');
       const trendAnalysis = await analyzeTrend(stockSymbol);
-  
+
       // Basic analysis for free users, enhanced for premium
       let analysisScore = healthScore;
       if (userData.subscriptionType === 'premium') {
-        const basicAnalysis = await performAnalysis(stockData, historicalData, {});
+        const basicAnalysis = await performAnalysis(
+          stockData,
+          historicalData,
+          {}
+        );
         analysisScore = basicAnalysis.overallScore;
       }
 
@@ -199,18 +218,28 @@ async function handleStockQuery(replyToken, userId, symbol) {
         healthScore: analysisScore,
         pe: stockData.peRatio ? stockData.peRatio.toFixed(2) : 'N/A',
         marketCap: formatMarketCap(stockData.marketCap),
-        monthlyChange: stockData.dailyChange ? stockData.dailyChange.toFixed(2) : 0,
+        monthlyChange: stockData.dailyChange
+          ? stockData.dailyChange.toFixed(2)
+          : 0,
         price: stockData.price ? stockData.price.toFixed(2) : 'N/A',
         volume: stockData.volume || 'N/A',
         trend: trendAnalysis,
-        dividendYield: stockData.dividendYield ? (stockData.dividendYield * 100).toFixed(2) + '%' : 'N/A',
-        returnOnEquity: stockData.returnOnEquity ? (stockData.returnOnEquity * 100).toFixed(2) + '%' : 'N/A',
-        volatility: historicalData && historicalData.length > 5 ? '可用' : '資料不足',
-        isPremium: userData.subscriptionType === 'premium'
+        dividendYield: stockData.dividendYield
+          ? (stockData.dividendYield * 100).toFixed(2) + '%'
+          : 'N/A',
+        returnOnEquity: stockData.returnOnEquity
+          ? (stockData.returnOnEquity * 100).toFixed(2) + '%'
+          : 'N/A',
+        volatility:
+          historicalData && historicalData.length > 5 ? '可用' : '資料不足',
+        isPremium: userData.subscriptionType === 'premium',
       };
 
       // Send Flex Message with real stock info
-      const flexMessage = generateHealthReportMessage(flexData.symbol, flexData);
+      const flexMessage = generateHealthReportMessage(
+        flexData.symbol,
+        flexData
+      );
       await replyWithFlex(replyToken, flexMessage);
     } catch (apiError) {
       console.error('Stock API error:', apiError);
@@ -218,7 +247,7 @@ async function handleStockQuery(replyToken, userId, symbol) {
       // Fallback to simple text message
       const simpleMessage = {
         type: 'text',
-        text: `❌ 無法取得 ${symbol} 的股票數據\n\n🚀 可能的原因：\n• 股票代碼格式錯誤\n• 當前非交易時間\n• 網路連接問題\n\n請確認代碼並稍後再試\n例如：2330 (台積電)`
+        text: `❌ 無法取得 ${symbol} 的股票數據\n\n🚀 可能的原因：\n• 股票代碼格式錯誤\n• 當前非交易時間\n• 網路連接問題\n\n請確認代碼並稍後再試\n例如：2330 (台積電)`,
       };
 
       await lineClient.replyMessage(replyToken, simpleMessage);
@@ -240,7 +269,7 @@ async function replyWithHelp(replyToken) {
 async function replyWithText(replyToken, text) {
   await lineClient.replyMessage(replyToken, {
     type: 'text',
-    text: text
+    text: text,
   });
 }
 
@@ -249,11 +278,7 @@ async function replyWithFlex(replyToken, flexMessage) {
   await lineClient.replyMessage(replyToken, flexMessage);
 }
 
-// Send stock info reply with Flex Message
-async function replyWithStockInfo(replyToken, stockData) {
-  const flexMessage = generateHealthReportMessage(stockData.symbol, stockData);
-  await replyWithFlex(replyToken, flexMessage);
-}
+// Removed replyWithStockInfo function as it's not being used
 
 // Handle postback events (button clicks)
 async function handlePostback(event) {
@@ -289,9 +314,11 @@ async function addToWatchlist(userId, symbol, replyToken) {
 
     const watchlistRef = db.collection('watchlists').doc(userId);
     const watchlistDoc = await watchlistRef.get();
-    const currentWatchlist = watchlistDoc.exists ? watchlistDoc.data().stocks || [] : [];
+    const currentWatchlist = watchlistDoc.exists
+      ? watchlistDoc.data().stocks || []
+      : [];
 
-    if (!currentWatchlist.find(stock => stock.symbol === symbol)) {
+    if (!currentWatchlist.find((stock) => stock.symbol === symbol)) {
       currentWatchlist.push({ symbol: symbol, addedAt: new Date() });
       await watchlistRef.set({ stocks: currentWatchlist });
       await replyWithText(replyToken, `✅ 已將 ${symbol} 加入您的觀察清單`);
@@ -312,7 +339,9 @@ async function removeFromWatchlist(userId, symbol, replyToken) {
 
     if (watchlistDoc.exists) {
       const currentWatchlist = watchlistDoc.data().stocks || [];
-      const updatedWatchlist = currentWatchlist.filter(stock => stock.symbol !== symbol);
+      const updatedWatchlist = currentWatchlist.filter(
+        (stock) => stock.symbol !== symbol
+      );
 
       if (updatedWatchlist.length !== currentWatchlist.length) {
         await watchlistRef.set({ stocks: updatedWatchlist });
@@ -340,7 +369,7 @@ async function initializeUserProfile(userId) {
       subscriptionType: 'free', // free or premium
       dailyQueries: 0,
       lastQueryDate: new Date().toISOString().split('T')[0],
-      joinedAt: new Date()
+      joinedAt: new Date(),
     });
   }
 }
@@ -396,7 +425,8 @@ async function handleDetailedAnalysis(replyToken, userId, symbol) {
     const userData = userDoc.data();
 
     if (userData.subscriptionType !== 'premium') {
-      await replyWithText(replyToken,
+      await replyWithText(
+        replyToken,
         '🤖 詳細分析為訂閱版專屬功能\n💎 升級至訂閱版解鎖進階 AI 分析！\n\n包含：\n• 技術分析\n• 基本面評估\n• 風險分析\n• 投資建議\n• 優勢/劣勢/機會/威脅分析'
       );
       return;
@@ -419,14 +449,13 @@ async function handleDetailedAnalysis(replyToken, userId, symbol) {
     // Perform comprehensive analysis
     const analysis = await performEnhancedAnalysis(stockData, historicalData, {
       isPremium: true,
-      userId: userId
+      userId: userId,
     });
 
     // Create detailed analysis message
     const analysisMessage = createDetailedAnalysisMessage(stockData, analysis);
 
     await lineClient.replyMessage(replyToken, analysisMessage);
-
   } catch (error) {
     console.error('Detailed analysis error:', error);
     await replyWithText(replyToken, '詳細分析處理失敗，請稍後再試');
@@ -454,9 +483,9 @@ function createDetailedAnalysisMessage(stockData, analysis) {
                 text: '🔍 AI 詳細分析報告',
                 weight: 'bold',
                 size: 'lg',
-                color: '#1DB446'
-              }
-            ]
+                color: '#1DB446',
+              },
+            ],
           },
           hero: {
             type: 'box',
@@ -466,22 +495,27 @@ function createDetailedAnalysisMessage(stockData, analysis) {
                 type: 'text',
                 text: stockData.name || stockData.symbol,
                 size: 'xl',
-                weight: 'bold'
+                weight: 'bold',
               },
               {
                 type: 'text',
                 text: `綜合評分: ${overallScore}/100`,
                 size: 'lg',
-                color: overallScore >= 70 ? '#00C500' : overallScore >= 50 ? '#FFB800' : '#FF0000',
-                weight: 'bold'
+                color:
+                  overallScore >= 70
+                    ? '#00C500'
+                    : overallScore >= 50
+                      ? '#FFB800'
+                      : '#FF0000',
+                weight: 'bold',
               },
               {
                 type: 'text',
                 text: `投資建議: ${translateRecommendation(recommendation.action)}`,
                 size: 'md',
-                color: '#555555'
-              }
-            ]
+                color: '#555555',
+              },
+            ],
           },
           body: {
             type: 'box',
@@ -492,25 +526,25 @@ function createDetailedAnalysisMessage(stockData, analysis) {
                 text: '分析摘要',
                 weight: 'bold',
                 size: 'md',
-                margin: 'md'
+                margin: 'md',
               },
               {
                 type: 'text',
                 text: recommendation.reasoning || 'AI 分析完成',
                 size: 'sm',
                 wrap: true,
-                color: '#666666'
-              }
-            ]
-          }
+                color: '#666666',
+              },
+            ],
+          },
         },
         // Analysis Details Bubbles
         createAnalysisBubble('💹 技術分析', analysis.technicalAnalysis),
         createAnalysisBubble('🏢 基本面分析', analysis.fundamentalAnalysis),
         createAnalysisBubble('⚠️ 風險評估', analysis.riskAnalysis),
-        createAnalysisBubble('🎯 SWOT 分析', analysisDetails)
-      ]
-    }
+        createAnalysisBubble('🎯 SWOT 分析', analysisDetails),
+      ],
+    },
   };
 }
 
@@ -520,9 +554,9 @@ function createAnalysisBubble(title, analysisData) {
 
   if (typeof analysisData === 'object' && analysisData !== null) {
     const entries = Object.entries(analysisData).slice(0, 5); // Limit to 5 items
-    content = entries.map(([key, value]) =>
-      `${formatKey(key)}: ${formatValue(value)}`
-    ).join('\n');
+    content = entries
+      .map(([key, value]) => `${formatKey(key)}: ${formatValue(value)}`)
+      .join('\n');
   }
 
   return {
@@ -536,47 +570,47 @@ function createAnalysisBubble(title, analysisData) {
           text: title,
           weight: 'bold',
           size: 'md',
-          color: '#1DB446'
+          color: '#1DB446',
         },
         {
           type: 'text',
           text: content,
           size: 'sm',
           wrap: true,
-          margin: 'md'
-        }
-      ]
-    }
+          margin: 'md',
+        },
+      ],
+    },
   };
 }
 
 // Helper functions for formatting
 function translateRecommendation(action) {
   const translations = {
-    'buy': '積極買進',
-    'hold': '持有觀望',
-    'wait': '謹慎等待',
-    'cautious': '謹慎投資',
-    'sell': '考慮賣出'
+    buy: '積極買進',
+    hold: '持有觀望',
+    wait: '謹慎等待',
+    cautious: '謹慎投資',
+    sell: '考慮賣出',
   };
   return translations[action] || action;
 }
 
 function formatKey(key) {
   const keyTranslations = {
-    'trend': '趨勢',
-    'momentum': '動能',
-    'supportLevels': '支撐位',
-    'resistanceLevels': '壓力位',
-    'valuation': '估值',
-    'dividendStrength': '股息強度',
-    'overallRating': '整體評分',
-    'volatilityRating': '波動性',
-    'riskLevel': '風險等級',
-    'strengths': '優勢',
-    'weaknesses': '劣勢',
-    'opportunities': '機會',
-    'threats': '威脅'
+    trend: '趨勢',
+    momentum: '動能',
+    supportLevels: '支撐位',
+    resistanceLevels: '壓力位',
+    valuation: '估值',
+    dividendStrength: '股息強度',
+    overallRating: '整體評分',
+    volatilityRating: '波動性',
+    riskLevel: '風險等級',
+    strengths: '優勢',
+    weaknesses: '劣勢',
+    opportunities: '機會',
+    threats: '威脅',
   };
   return keyTranslations[key] || key;
 }
@@ -595,8 +629,11 @@ function formatValue(value) {
 }
 
 // Firebase Functions 2nd Gen exports for Cloud Run compatibility
-exports.api = functions.https.onRequest({
-  memory: '256MB',
-  timeoutSeconds: 60,
-  maxInstances: 5
-}, app);
+exports.api = functions.https.onRequest(
+  {
+    memory: '256MB',
+    timeoutSeconds: 60,
+    maxInstances: 5,
+  },
+  app
+);

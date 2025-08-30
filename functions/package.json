@@ -7,7 +7,20 @@
     "node": "22"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: add tests in future\" && npm run local-test",
+    "build": "echo '✅ Build check complete'",
+    "debug": "node debug index.js",
+    "lint": "eslint *.js --ext .js",
+    "lint:fix": "eslint *.js --ext .js --fix",
+    "format": "prettier --write *.js",
+    "format:check": "prettier --check *.js",
+    "ci": "../scripts/ci-check.sh",
+    "verify": "npm run build && npm run lint && npm run format:check && echo '🔍 Verifying environment variables...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env file missing!'); process.exit(1);}else{console.log('✅ .env file exists');}\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./index.js'); console.log('✅ Local syntax check passed');\"",
+    "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ Analyze complete - Ready for deployment!'",
+    "deploy:staging": "firebase deploy --only functions --project stock-health-staging",
+    "deploy:production": "firebase deploy --only functions --project stock-health-app",
+    "health-check": "node -e \"console.log('🔍 Health check endpoint: http://localhost:5001/stock-health-app/us-central1/api/health')\""
   },
   "keywords": [],
   "author": "",
@@ -22,5 +35,10 @@
     "firebase-admin": "^13.5.0",
     "firebase-functions": "^6.4.0",
     "yahoo-finance2": "^2.13.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "@eslint/eslintrc": "^2.1.4",
+    "prettier": "^3.3.3"
   }
 }

@@ -1,5 +1,5 @@
 // AI Analysis Engine - Mix of rule-based and AI algorithms
-const { calculateHealthScore, getHistoricalData } = require('./stockService');
+const { calculateHealthScore } = require('./stockService');
 
 /**
  * Advanced AI-style analysis using rule-based algorithms
@@ -9,7 +9,7 @@ const { calculateHealthScore, getHistoricalData } = require('./stockService');
  * @param {Object} userPreferences - User analysis preferences (optional)
  * @returns {Object} Analysis result with recommendations
  */
-async function performAnalysis(stockData, historicalData, userPreferences = {}) {
+async function performAnalysis(stockData, historicalData) {
   const baseScore = calculateHealthScore(stockData);
 
   // Technical Analysis
@@ -30,7 +30,7 @@ async function performAnalysis(stockData, historicalData, userPreferences = {}) 
     technical: technicalAnalysis,
     fundamental: fundamentalAnalysis,
     risk: riskAnalysis,
-    sentiment: sentimentAnalysis
+    sentiment: sentimentAnalysis,
   });
 
   // Confidence level based on data availability
@@ -47,14 +47,22 @@ async function performAnalysis(stockData, historicalData, userPreferences = {}) 
       action: recommendation.action,
       confidence: confidence,
       timeframe: recommendation.timeframe,
-      reasoning: recommendation.reasoning
+      reasoning: recommendation.reasoning,
     },
     analysisDetails: {
-      strengths: getStrengths(stockData, technicalAnalysis, fundamentalAnalysis),
-      weaknesses: getWeaknesses(stockData, technicalAnalysis, fundamentalAnalysis),
+      strengths: getStrengths(
+        stockData,
+        technicalAnalysis,
+        fundamentalAnalysis
+      ),
+      weaknesses: getWeaknesses(
+        stockData,
+        technicalAnalysis,
+        fundamentalAnalysis
+      ),
       opportunities: getOpportunities(stockData, historicalData),
-      threats: getThreats(stockData, historicalData)
-    }
+      threats: getThreats(stockData, historicalData),
+    },
   };
 }
 
@@ -67,12 +75,12 @@ function analyzeTechnical(stockData, historicalData) {
       trend: 'insufficient_data',
       momentum: 'unknown',
       supportLevels: [],
-      resistanceLevels: []
+      resistanceLevels: [],
     };
   }
 
   // Calculate moving averages
-  const prices = historicalData.map(d => d.close);
+  const prices = historicalData.map((d) => d.close);
   const sma20 = calculateSMA(prices, 20);
   const sma50 = calculateSMA(prices, 50);
 
@@ -87,12 +95,16 @@ function analyzeTechnical(stockData, historicalData) {
   }
 
   // Momentum (RSI approximation)
-  const gains = prices.slice(-10).map((price, index, arr) =>
-    index > 0 ? Math.max(0, price - arr[index - 1]) : 0
-  );
-  const losses = prices.slice(-10).map((price, index, arr) =>
-    index > 0 ? Math.max(0, arr[index - 1] - price) : 0
-  );
+  const gains = prices
+    .slice(-10)
+    .map((price, index, arr) =>
+      index > 0 ? Math.max(0, price - arr[index - 1]) : 0
+    );
+  const losses = prices
+    .slice(-10)
+    .map((price, index, arr) =>
+      index > 0 ? Math.max(0, arr[index - 1] - price) : 0
+    );
 
   const avgGain = gains.reduce((sum, gain) => sum + gain, 0) / gains.length;
   const avgLoss = losses.reduce((sum, loss) => sum + loss, 0) / losses.length;
@@ -110,10 +122,10 @@ function analyzeTechnical(stockData, historicalData) {
     momentum: momentum,
     movingAverages: {
       sma20: sma20,
-      sma50: sma50
+      sma50: sma50,
     },
     supportLevels: [recentLow * 0.98, recentLow * 0.95],
-    resistanceLevels: [recentHigh * 1.02, recentHigh * 1.05]
+    resistanceLevels: [recentHigh * 1.02, recentHigh * 1.05],
   };
 }
 
@@ -152,8 +164,8 @@ function analyzeFundamental(stockData) {
       peRatio: stockData.peRatio || null,
       dividendYield: stockData.dividendYield || 0,
       returnOnEquity: stockData.returnOnEquity || null,
-      marketCap: stockData.marketCap || null
-    }
+      marketCap: stockData.marketCap || null,
+    },
   };
 }
 
@@ -166,7 +178,7 @@ function assessRisk(stockData, historicalData) {
 
   if (historicalData && historicalData.length > 5) {
     // Calculate volatility based on price range
-    const prices = historicalData.map(d => d.close);
+    const prices = historicalData.map((d) => d.close);
     const maxPrice = Math.max(...prices);
     const minPrice = Math.min(...prices);
     const currentPrice = stockData.price;
@@ -186,8 +198,9 @@ function assessRisk(stockData, historicalData) {
     volatilityRating: volatilityRating,
     riskLevel: riskLevel,
     liquidity: stockData.volume ? 'good' : 'poor',
-    downsideProtection: stockData.fiftyTwoWeekLow ?
-      ((stockData.price - stockData.fiftyTwoWeekLow) / stockData.price) * 100 : null
+    downsideProtection: stockData.fiftyTwoWeekLow
+      ? ((stockData.price - stockData.fiftyTwoWeekLow) / stockData.price) * 100
+      : null,
   };
 }
 
@@ -201,14 +214,14 @@ function analyzeSentiment(stockData, historicalData) {
   // Volume analysis for institutional interest
   if (stockData.volume) {
     // High volume indicates strong interest
-    const typicalVolume = stockData.volume; // In a real scenario, this would be compared to averages
-    institutionalInterest = 'moderate'; // Placeholder
+    institutionalInterest = 'moderate'; // Placeholder based on volume availability
   }
 
   // Price vs moving averages
   if (historicalData && historicalData.length > 5) {
-    const prices = historicalData.map(d => d.close);
-    const avgPrice = prices.reduce((sum, price) => sum + price, 0) / prices.length;
+    const prices = historicalData.map((d) => d.close);
+    const avgPrice =
+      prices.reduce((sum, price) => sum + price, 0) / prices.length;
 
     if (stockData.price > avgPrice * 1.05) marketSentiment = 'positive';
     else if (stockData.price < avgPrice * 0.95) marketSentiment = 'negative';
@@ -218,7 +231,7 @@ function analyzeSentiment(stockData, historicalData) {
     marketSentiment: marketSentiment,
     institutionalInterest: institutionalInterest,
     fearGreedIndex: 'neutral', // Would require external data source
-    newsImpact: 'minimal' // Would require news analysis
+    newsImpact: 'minimal', // Would require news analysis
   };
 }
 
@@ -273,7 +286,7 @@ function generateRecommendation(analysis) {
     action: action,
     score: score,
     timeframe: timeframe,
-    reasoning: reasoning.join('；')
+    reasoning: reasoning.join('；'),
   };
 }
 
@@ -301,9 +314,12 @@ function getStrengths(stockData, technical, fundamental) {
 
   if (technical.trend === 'bullish') strengths.push('技術趨勢向上');
   if (fundamental.valuation === 'attractive') strengths.push('估值具吸引力');
-  if (fundamental.dividendStrength === 'strong') strengths.push('股息收益率優良');
-  if (stockData.returnOnEquity && stockData.returnOnEquity > 0.15) strengths.push('權益報酬率高');
-  if (stockData.marketCap && stockData.marketCap > 1e10) strengths.push('市值規模大');
+  if (fundamental.dividendStrength === 'strong')
+    strengths.push('股息收益率優良');
+  if (stockData.returnOnEquity && stockData.returnOnEquity > 0.15)
+    strengths.push('權益報酬率高');
+  if (stockData.marketCap && stockData.marketCap > 1e10)
+    strengths.push('市值規模大');
 
   return strengths;
 }
@@ -316,8 +332,10 @@ function getWeaknesses(stockData, technical, fundamental) {
 
   if (technical.trend === 'bearish') weaknesses.push('技術趨勢向下');
   if (fundamental.valuation === 'expensive') weaknesses.push('估值偏高');
-  if (!stockData.dividendYield || stockData.dividendYield < 0.01) weaknesses.push('股息收益率低');
-  if (stockData.peRatio && stockData.peRatio > 30) weaknesses.push('本益比偏高');
+  if (!stockData.dividendYield || stockData.dividendYield < 0.01)
+    weaknesses.push('股息收益率低');
+  if (stockData.peRatio && stockData.peRatio > 30)
+    weaknesses.push('本益比偏高');
 
   return weaknesses;
 }
@@ -341,7 +359,7 @@ function getOpportunities(stockData, historicalData) {
 
   // Market condition opportunities
   if (historicalData && historicalData.length > 10) {
-    const prices = historicalData.map(d => d.close);
+    const prices = historicalData.map((d) => d.close);
     const recentLow = Math.min(...prices.slice(-5));
     if (currentPrice < recentLow * 1.02) {
       opportunities.push('近期低點，將有反彈機會');
@@ -362,9 +380,10 @@ function getThreats(stockData, historicalData) {
   }
 
   if (historicalData && historicalData.length > 10) {
-    const prices = historicalData.map(d => d.close);
+    const prices = historicalData.map((d) => d.close);
     const currentVolatility = calculateVolatility(prices);
-    if (currentVolatility > 0.05) { // 5% standard deviation
+    if (currentVolatility > 0.05) {
+      // 5% standard deviation
       threats.push('價格波動性高，投資風險較大');
     }
   }
@@ -391,11 +410,12 @@ function calculateVolatility(prices) {
 
   const returns = [];
   for (let i = 1; i < prices.length; i++) {
-    returns.push((prices[i] - prices[i-1]) / prices[i-1]);
+    returns.push((prices[i] - prices[i - 1]) / prices[i - 1]);
   }
 
   const mean = returns.reduce((sum, r) => sum + r, 0) / returns.length;
-  const variance = returns.reduce((sum, r) => sum + Math.pow(r - mean, 2), 0) / returns.length;
+  const variance =
+    returns.reduce((sum, r) => sum + Math.pow(r - mean, 2), 0) / returns.length;
 
   return Math.sqrt(variance);
 }
@@ -404,20 +424,28 @@ function calculateVolatility(prices) {
  * Enhanced analysis for premium users
  * This could integrate with OpenAI API in the future
  */
-async function performEnhancedAnalysis(stockData, historicalData, userPreferences) {
-  const basicAnalysis = await performAnalysis(stockData, historicalData, userPreferences);
+async function performEnhancedAnalysis(
+  stockData,
+  historicalData,
+  userPreferences
+) {
+  const basicAnalysis = await performAnalysis(
+    stockData,
+    historicalData,
+    userPreferences
+  );
 
   // Enhanced features for premium users
   if (userPreferences.isPremium) {
     // Add premium features here
     basicAnalysis.prediction = {
       shortTerm: 'bullish', // Would use ML model
-      confidence: 0.75
+      confidence: 0.75,
     };
 
     basicAnalysis.portfolioAllocation = {
       suggestedPercentage: 5.2,
-      reasoning: '基於風險調整後報酬計算'
+      reasoning: '基於風險調整後報酬計算',
     };
   }
 
@@ -428,25 +456,21 @@ async function performEnhancedAnalysis(stockData, historicalData, userPreference
  * Placeholder for OpenAI API integration
  * This would require OPENAI_API_KEY environment variable
  */
-async function analyzeWithAI(symbol, data, historicalData) {
+async function analyzeWithAI() {
   // Placeholder for future OpenAI integration
-  try {
-    // const openai = require('openai');
-    // const client = new openai({ apiKey: functions.config().openai.key });
-    // const response = await client.chat.completions.create({
-    //   model: 'gpt-4',
-    //   messages: [{ role: 'user', content: buildPrompt(symbol, data, historicalData) }]
-    // });
+  // const openai = require('openai');
+  // const client = new openai({ apiKey: functions.config().openai.key });
+  // const response = await client.chat.completions.create({
+  //   model: 'gpt-4',
+  //   messages: [{ role: 'user', content: buildPrompt(symbol, data, historicalData) }]
+  // });
 
-    // Return mock response for now
-    return {
-      ai: 'OpenAI integration placeholder',
-      recommendation: 'Based on comprehensive analysis including market conditions and historical data'
-    };
-  } catch (error) {
-    console.error('AI analysis error:', error);
-    return { ai: 'unavailable', recommendation: 'Fallback to rule-based analysis' };
-  }
+  // Return mock response for now
+  return {
+    ai: 'OpenAI integration placeholder',
+    recommendation:
+      'Based on comprehensive analysis including market conditions and historical data',
+  };
 }
 
 module.exports = {
@@ -457,5 +481,5 @@ module.exports = {
   assessRisk,
   analyzeSentiment,
   calculateConfidence,
-  analyzeWithAI
+  analyzeWithAI,
 };
