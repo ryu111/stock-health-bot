@@ -32,7 +32,7 @@ jobs:
     - name: 🟢 Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '22'
+        node-version: '24'
         cache: 'npm'
         cache-dependency-path: functions/package-lock.json
 
@@ -93,13 +93,13 @@ jobs:
             username: 'Stock Health CI',
             icon_emoji: ':robot:',
             attachments: [{
-              color: '${{ steps.eslint.outcome == 'success' && steps.prettier.outcome == 'success' && steps.build.outcome == 'success' && steps.test.outcome == 'success' ? 'good' : 'danger' }}',
+              color: '${{ (steps.eslint.outcome == 'success' && steps.prettier.outcome == 'success' && steps.build.outcome == 'success' && steps.test.outcome == 'success') && 'good' || 'danger' }}',
               text: '${{ github.event.head_commit.message }}'
             }]
           }
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      if: failure() && env.SLACK_WEBHOOK_URL != ''
+      if: failure()
 
   # 🔒 Security Check
   security:
@@ -260,10 +260,10 @@ jobs:
           ## 🤖 CI Quality Check Results
 
           ### 📊 Status Summary
-          - **ESLint**: ${{ steps.eslint.outcome == 'success' ? '✅ Passed' : '❌ Failed'}}
-          - **Prettier**: ${{ steps.prettier.outcome == 'success' ? '✅ Passed' : '❌ Failed'}}
-          - **Build**: ${{ steps.build.outcome == 'success' ? '✅ Passed' : '❌ Failed'}}
-          - **Tests**: ${{ steps.test.outcome == 'success' ? '✅ Passed' : '❌ Failed'}}
+          - **ESLint**: ${{ steps.eslint.outcome == 'success' && '✅ Passed' || '❌ Failed'}}
+          - **Prettier**: ${{ steps.prettier.outcome == 'success' && '✅ Passed' || '❌ Failed'}}
+          - **Build**: ${{ steps.build.outcome == 'success' && '✅ Passed' || '❌ Failed'}}
+          - **Tests**: ${{ steps.test.outcome == 'success' && '✅ Passed' || '❌ Failed'}}
 
           ### 🔧 Next Steps
           ${steps.eslint.outcome != 'success' ? '- Run `npm run lint:fix` to fix linting issues\n' : ''}${steps.prettier.outcome != 'success' ? '- Run `npm run format` to fix formatting issues\n' : ''}${steps.build.outcome != 'success' ? '- Check build configuration\n' : ''}${steps.test.outcome != 'success' ? '- Fix test failures\n' : ''}
