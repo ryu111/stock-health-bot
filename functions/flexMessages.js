@@ -2,10 +2,10 @@
 // const line = require('@line/bot-sdk'); // 此模組中未使用
 
 /**
- * Generate health report Flex Message for stock analysis
- * @param {string} symbol - Stock symbol
- * @param {object} data - Stock data with health score
- * @returns {object} Flex Message object
+ * 為股票分析產生健康報告 Flex Message
+ * @param {string} symbol - 股票代碼
+ * @param {object} data - 包含健康分數的股票資料
+ * @returns {object} Flex Message 物件
  */
 function generateHealthReportMessage(symbol, data) {
   const healthScore = data.healthScore || 0;
@@ -157,10 +157,10 @@ function generateHealthReportMessage(symbol, data) {
 }
 
 /**
- * Generate watchlist Flex Message
- * @param {string} userId - User ID
- * @param {Array} watchlist - List of stocks
- * @returns {object} Flex Message object
+ * 產生觀察清單 Flex Message
+ * @param {string} userId - 使用者 ID
+ * @param {Array} watchlist - 股票清單
+ * @returns {object} Flex Message 物件
  */
 function generateWatchlistMessage(userId, watchlist) {
   if (!watchlist || watchlist.length === 0) {

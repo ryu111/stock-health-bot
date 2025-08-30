@@ -13,9 +13,9 @@ const CACHE_DURATION = 5 * 60 * 1000;
 // 快取持續時間 (5 分鐘)
 
 /**
- * Get stock data with caching
- * @param {string} symbol - Stock symbol (e.g., '2330.TW')
- * @returns {Promise<Object>} Stock data object
+ * 取得股票資料並快取
+ * @param {string} symbol - 股票代碼 (例如: '2330.TW')
+ * @returns {Promise<Object>} 股票資料物件
  */
 async function getStockData(symbol) {
   try {
@@ -123,9 +123,9 @@ async function getStockData(symbol) {
 }
 
 /**
- * Calculate health score based on multiple indicators
- * @param {Object} data - Stock data object
- * @returns {number} Health score (0-100)
+ * 基於多個指標計算健康分數
+ * @param {Object} data - 股票資料物件
+ * @returns {number} 健康分數 (0-100)
  */
 function calculateHealthScore(data) {
   let score = 50; // Base score
@@ -187,9 +187,9 @@ function calculateHealthScore(data) {
 }
 
 /**
- * Format market cap for display
- * @param {number} marketCap - Market cap value
- * @returns {string} Formatted market cap
+ * 格式化市值以顯示
+ * @param {number} marketCap - 市值
+ * @returns {string} 格式化的市值
  */
 function formatMarketCap(marketCap) {
   if (!marketCap) return 'N/A';
@@ -206,10 +206,10 @@ function formatMarketCap(marketCap) {
 }
 
 /**
- * Calculate percentage change
- * @param {number} current - Current value
- * @param {number} previous - Previous value
- * @returns {number} Percentage change
+ * 計算百分比變化
+ * @param {number} current - 當前值
+ * @param {number} previous - 先前值
+ * @returns {number} 百分比變化
  */
 function calculatePercentageChange(current, previous) {
   if (!previous || previous === 0) return 0;
@@ -217,10 +217,10 @@ function calculatePercentageChange(current, previous) {
 }
 
 /**
- * Get historical data for trend analysis
- * @param {string} symbol - Stock symbol
- * @param {string} period - Period ('1mo', '3mo', '6mo', '1y')
- * @returns {Promise<Array>} Historical data points
+ * 取得歷史資料以進行趨勢分析
+ * @param {string} symbol - 股票代碼
+ * @param {string} period - 期間 ('1mo', '3mo', '6mo', '1y')
+ * @returns {Promise<Array>} 歷史資料點
  */
 async function getHistoricalData(symbol, period = '3mo') {
   try {

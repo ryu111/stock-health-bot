@@ -2,12 +2,12 @@
 const { calculateHealthScore } = require('./stockService');
 
 /**
- * Advanced AI-style analysis using rule-based algorithms
- * This can be replaced with actual AI API calls later
- * @param {Object} stockData - Stock data object
- * @param {Array} historicalData - Historical data array
- * @param {Object} userPreferences - User analysis preferences (optional)
- * @returns {Object} Analysis result with recommendations
+ * 使用規則基礎演算法的高級 AI 風格分析
+ * 之後可以替換為實際的 AI API 呼叫
+ * @param {Object} stockData - 股票資料物件
+ * @param {Array} historicalData - 歷史資料陣列
+ * @param {Object} userPreferences - 使用者分析偏好 (可選)
+ * @returns {Object} 包含建議的分析結果
  */
 async function performAnalysis(stockData, historicalData) {
   const baseScore = calculateHealthScore(stockData);
@@ -67,7 +67,7 @@ async function performAnalysis(stockData, historicalData) {
 }
 
 /**
- * Technical analysis using price and volume data
+ * 使用價格和成交量資料進行技術分析
  */
 function analyzeTechnical(stockData, historicalData) {
   if (!historicalData || historicalData.length < 10) {
@@ -130,7 +130,7 @@ function analyzeTechnical(stockData, historicalData) {
 }
 
 /**
- * Fundamental analysis using financial data
+ * 使用財務資料進行基本面分析
  */
 function analyzeFundamental(stockData) {
   let overallRating = 'neutral';
