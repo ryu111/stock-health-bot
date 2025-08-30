@@ -33,8 +33,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '24'
-        cache: 'npm'
-        cache-dependency-path: functions/package-lock.json
 
     - name: 📦 安裝依賴套件
       run: cd functions && npm ci
