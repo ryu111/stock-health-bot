@@ -3,15 +3,12 @@
   "configurations": [
     {
       "name": "🔥 股健檢 - 完整品質檢查 (CI)",
-      "type": "shell",
+      "type": "node",
       "request": "launch",
-      "command": "${workspaceFolder}/scripts/ci-check.sh",
-      "args": [],
-      "options": {
-        "cwd": "${workspaceFolder}",
-        "env": {}
-      },
+      "program": "${workspaceFolder}/scripts/ci-check.js",
+      "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
       "presentation": {
         "reveal": "never",
         "panel": "shared",
@@ -115,17 +112,15 @@
       }
     },
     {
-      "type": "node",
+      "type": "shell",
       "request": "launch",
       "name": "🔍 專案結構分析",
-      "program": "tree",
+      "command": "ls",
       "args": [
-        "-L 3",
-        "-I node_modules",
+        "-la",
         "${workspaceFolder}"
       ],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen",
+      "cwd": "${workspaceFolder}",
       "presentation": {
         "reveal": "never",
         "panel": "shared",
