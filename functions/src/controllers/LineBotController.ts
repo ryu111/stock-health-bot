@@ -144,18 +144,23 @@ export class LineBotController {
 
     this.logger.info(`處理文字訊息: "${text}" -> "${cleanText}"`);
 
-    // 檢查是否為股票查詢
-    if (Validation.isValidStockSymbol(cleanText)) {
-      this.logger.info(`識別為股票查詢: ${cleanText}`);
-      await this.handleStockQuery(replyToken, cleanText);
-      return;
-    }
+    // 嘗試從文字中提取股票代碼
+    const extractedSymbol = this.extractSymbolFromText(cleanText);
 
-    // 檢查是否為 ETF 查詢
-    if (Validation.isValidETFSymbol(cleanText)) {
-      this.logger.info(`識別為 ETF 查詢: ${cleanText}`);
-      await this.handleETFQuery(replyToken, cleanText);
-      return;
+    if (extractedSymbol) {
+      // 檢查是否為股票查詢
+      if (Validation.isValidStockSymbol(extractedSymbol)) {
+        this.logger.info(`識別為股票查詢: ${extractedSymbol}`);
+        await this.handleStockQuery(replyToken, extractedSymbol);
+        return;
+      }
+
+      // 檢查是否為 ETF 查詢
+      if (Validation.isValidETFSymbol(extractedSymbol)) {
+        this.logger.info(`識別為 ETF 查詢: ${extractedSymbol}`);
+        await this.handleETFQuery(replyToken, extractedSymbol);
+        return;
+      }
     }
 
     // 檢查是否為分析請求
@@ -310,6 +315,32 @@ export class LineBotController {
   private handleUnfollowEvent(_event: LineUnfollowEvent): void {
     this.logger.info('用戶取消追蹤');
     // 可以在這裡清理用戶資料
+  }
+
+  /**
+   * 從文字中提取股票代碼
+   * @param text - 文字
+   * @returns 股票代碼或 null
+   */
+  private extractSymbolFromText(text: string): string | null {
+    // 支援多種格式：
+    // - 純數字：2330
+    // - 帶前綴：查詢 2330、股票 2330、查 2330
+    // - 帶後綴：2330 查詢、2330 股票
+    const patterns = [
+      /^(\d{4,6})$/, // 純數字
+      /(?:查詢|股票|查|查詢股票|查股票)\s*(\d{4,6})/i, // 帶前綴
+      /(\d{4,6})\s*(?:查詢|股票|查|查詢股票|查股票)/i, // 帶後綴
+    ];
+
+    for (const pattern of patterns) {
+      const match = text.match(pattern);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+
+    return null;
   }
 
   /**
