@@ -239,7 +239,16 @@ export class ETFDataAdapter extends BaseMarketDataAdapter {
    * @returns Yahoo Finance 資料
    */
   private async fetchFromYahooFinance(symbol: string): Promise<YahooFinanceQuote> {
+    const isProduction = process.env['NODE_ENV'] === 'production';
+    const useMockData = process.env['USE_MOCK_DATA'] === 'true' || !isProduction;
+
+    if (useMockData) {
+      console.log(`使用模擬資料 for ${symbol} (環境: ${process.env['NODE_ENV'] || 'development'})`);
+      return this.getMockData(symbol);
+    }
+
     try {
+      console.log(`使用正式 Yahoo Finance API for ${symbol}`);
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const yahooModule = require('yahoo-finance2') as { default: unknown };
       const yahoo = yahooModule.default as {
@@ -249,10 +258,10 @@ export class ETFDataAdapter extends BaseMarketDataAdapter {
       return quote;
     } catch (error) {
       console.warn(
-        `Yahoo Finance 資料取得失敗 ${symbol}:`,
+        `Yahoo Finance 資料取得失敗 ${symbol}，回退到模擬資料:`,
         error instanceof Error ? error.message : 'Unknown error'
       );
-      // 返回模擬資料
+      // 返回模擬資料作為回退
       return this.getMockData(symbol);
     }
   }

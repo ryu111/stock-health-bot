@@ -85,6 +85,8 @@ class DeployScript {
     console.log('🔗 Webhook URL: https://webhook-bhtpq7s4ka-uc.a.run.app');
     console.log('');
     console.log('💡 記得在 LINE Developer Console 中設定 Webhook URL');
+    console.log('💡 生產環境已設定為使用正式 Yahoo Finance API');
+    console.log('💡 如需使用模擬資料，請在 Firebase Console 中設定 USE_MOCK_DATA=true');
   }
 }
 

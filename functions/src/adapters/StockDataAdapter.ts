@@ -315,15 +315,17 @@ export class StockDataAdapter extends BaseMarketDataAdapter {
    * @param symbol - 股票代碼
    * @returns Yahoo Finance 資料
    */
-  // eslint-disable-next-line @typescript-eslint/require-await
   private async fetchFromYahooFinance(symbol: string): Promise<YahooFinanceQuote> {
-    try {
-      // 暫時直接使用模擬資料，避免 Yahoo Finance API 問題
-      console.log(`使用模擬資料 for ${symbol}`);
-      return this.getMockData(symbol);
+    const isProduction = process.env['NODE_ENV'] === 'production';
+    const useMockData = process.env['USE_MOCK_DATA'] === 'true' || !isProduction;
 
-      // 以下是原始 Yahoo Finance API 呼叫（暫時註解）
-      /*
+    if (useMockData) {
+      console.log(`使用模擬資料 for ${symbol} (環境: ${process.env['NODE_ENV'] || 'development'})`);
+      return this.getMockData(symbol);
+    }
+
+    try {
+      console.log(`使用正式 Yahoo Finance API for ${symbol}`);
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       const yahooModule = require('yahoo-finance2') as { default: unknown };
       const yahoo = yahooModule.default as {
@@ -331,13 +333,12 @@ export class StockDataAdapter extends BaseMarketDataAdapter {
       };
       const quote = await yahoo.quote(symbol);
       return quote;
-      */
     } catch (error) {
       console.warn(
-        `Yahoo Finance 資料取得失敗 ${symbol}:`,
+        `Yahoo Finance 資料取得失敗 ${symbol}，回退到模擬資料:`,
         error instanceof Error ? error.message : 'Unknown error'
       );
-      // 返回模擬資料
+      // 返回模擬資料作為回退
       return this.getMockData(symbol);
     }
   }
