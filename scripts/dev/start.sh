@@ -11,7 +11,11 @@ node --version
 
 # 安裝依賴
 echo "📦 安裝依賴套件..."
-cd functions && npm install && cd ..
+if [ -d "functions" ]; then
+  cd functions && npm install && cd ..
+else
+  echo "⚠️  functions 目錄不存在，跳過依賴安裝"
+fi
 
 # 啟動 Firebase 模擬器
 echo "🔥 啟動 Firebase 模擬器..."

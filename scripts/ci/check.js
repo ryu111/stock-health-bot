@@ -8,10 +8,10 @@ try {
   console.log('================================================================');
   
   // 執行 shell 腳本
-  const scriptPath = path.join(__dirname, 'ci-check.sh');
+  const scriptPath = path.join(__dirname, 'check.sh');
   execSync(`bash "${scriptPath}"`, { 
     stdio: 'inherit',
-    cwd: path.dirname(__dirname)
+    cwd: path.dirname(path.dirname(__dirname))
   });
   
   console.log('✅ CI 檢查完成');

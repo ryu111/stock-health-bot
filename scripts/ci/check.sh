@@ -41,18 +41,18 @@ echo -e "${YELLOW}🔍 步驟 3: 執行 ESLint 檢查...${NC}"
 ESLINT_OUTPUT=$(npm run lint 2>&1)
 ESLINT_EXIT_CODE=$?
 if [ $ESLINT_EXIT_CODE -ne 0 ]; then
-    echo -e "${RED}❌ ESLint 檢查失敗！${NC}"
-    echo "$ESLINT_OUTPUT"
-    echo -e "${YELLOW}💡 嘗試: npm run lint:fix${NC}"
-    exit 1
+  echo -e "${RED}❌ ESLint 檢查失敗！${NC}"
+  echo "$ESLINT_OUTPUT"
+  echo -e "${YELLOW}💡 嘗試: npm run lint:fix${NC}"
+  exit 1
 fi
 echo -e "${GREEN}✅ ESLint 檢查通過${NC}\n"
 
 echo -e "${YELLOW}🎨 步驟 4: 檢查 Prettier 格式...${NC}"
 if ! npm run format:check 2>&1; then
-    echo -e "${RED}❌ Prettier 格式檢查失敗！${NC}"
-    echo -e "${YELLOW}💡 嘗試: npm run format${NC}"
-    exit 1
+  echo -e "${RED}❌ Prettier 格式檢查失敗！${NC}"
+  echo -e "${YELLOW}💡 嘗試: npm run format${NC}"
+  exit 1
 fi
 echo -e "${GREEN}✅ Prettier 格式檢查通過${NC}\n"
 

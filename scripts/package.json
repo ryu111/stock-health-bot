@@ -1,0 +1,48 @@
+{
+  "name": "stock-health-scripts",
+  "version": "1.0.0",
+  "description": "股健檢專案腳本工具",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "deploy": "ts-node deploy/deploy.ts",
+    "dev:start": "ts-node dev/start.ts",
+    "dev:structure": "ts-node dev/structure.ts",
+    "test:local": "ts-node test/local.ts",
+    "test:api": "ts-node test/api.ts",
+    "test:stock": "ts-node test/stock.ts",
+    "test:etf-debug": "ts-node test/etf-debug.ts",
+    "ci:check": "ts-node ci/check.ts",
+    "lint": "eslint **/*.ts",
+    "lint:fix": "eslint **/*.ts --fix",
+    "format": "prettier --write **/*.ts",
+    "format:check": "prettier --check **/*.ts"
+  },
+  "keywords": [
+    "typescript",
+    "scripts",
+    "automation",
+    "testing",
+    "deployment"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^24.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.41.0",
+    "@typescript-eslint/parser": "^8.41.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.3.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "yahoo-finance2": "^2.13.3"
+  }
+}
+
+

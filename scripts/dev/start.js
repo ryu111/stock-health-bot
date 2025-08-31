@@ -6,7 +6,7 @@ try {
   console.log('🚀 啟動股健檢本地開發環境...');
   console.log('==============================================================');
   
-  const scriptPath = path.join(__dirname, 'dev-start.sh');
+  const scriptPath = path.join(__dirname, 'start.sh');
   execSync(`bash "${scriptPath}"`, {
     stdio: 'inherit',
     cwd: path.dirname(__dirname)

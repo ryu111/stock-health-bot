@@ -1,0 +1,228 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Cache = void 0;
+// 快取類別
+class Cache {
+    constructor(config) {
+        this.config = config;
+        this.cache = new Map();
+        this.startCleanupTimer();
+    }
+    /**
+     * 設定快取項目
+     * @param key - 快取鍵
+     * @param value - 快取值
+     * @param ttl - 存活時間（秒）
+     */
+    set(key, value, ttl) {
+        const now = new Date();
+        const expiresAt = new Date(now.getTime() + (ttl || this.config.ttl) * 1000);
+        const entry = {
+            key,
+            value,
+            createdAt: now,
+            expiresAt,
+            accessCount: 0,
+            lastAccessed: now,
+        };
+        this.cache.set(key, entry);
+        this.enforceSizeLimit();
+    }
+    /**
+     * 取得快取項目
+     * @param key - 快取鍵
+     * @returns 快取值或 undefined
+     */
+    get(key) {
+        const entry = this.cache.get(key);
+        if (!entry) {
+            return undefined;
+        }
+        // 檢查是否過期
+        if (new Date() > entry.expiresAt) {
+            this.cache.delete(key);
+            return undefined;
+        }
+        // 更新存取統計
+        entry.accessCount++;
+        entry.lastAccessed = new Date();
+        return entry.value;
+    }
+    /**
+     * 檢查快取項目是否存在
+     * @param key - 快取鍵
+     * @returns 是否存在
+     */
+    has(key) {
+        const entry = this.cache.get(key);
+        if (!entry) {
+            return false;
+        }
+        // 檢查是否過期
+        if (new Date() > entry.expiresAt) {
+            this.cache.delete(key);
+            return false;
+        }
+        return true;
+    }
+    /**
+     * 刪除快取項目
+     * @param key - 快取鍵
+     * @returns 是否成功刪除
+     */
+    delete(key) {
+        return this.cache.delete(key);
+    }
+    /**
+     * 清空所有快取
+     */
+    clear() {
+        this.cache.clear();
+    }
+    /**
+     * 取得快取大小
+     * @returns 快取項目數量
+     */
+    size() {
+        return this.cache.size;
+    }
+    /**
+     * 取得快取統計
+     * @returns 快取統計資訊
+     */
+    getStats() {
+        const totalHits = Array.from(this.cache.values()).reduce((sum, entry) => sum + entry.accessCount, 0);
+        const totalMisses = 0; // 這裡需要額外的追蹤機制
+        return {
+            size: this.cache.size,
+            maxSize: this.config.maxSize,
+            hitRate: totalHits / (totalHits + totalMisses) || 0,
+            missRate: totalMisses / (totalHits + totalMisses) || 0,
+            totalHits,
+            totalMisses,
+        };
+    }
+    /**
+     * 取得快取狀態
+     * @returns 快取狀態資訊
+     */
+    getStatus() {
+        const entries = Array.from(this.cache.entries()).map(([key, entry]) => ({
+            key,
+            createdAt: entry.createdAt.toISOString(),
+            expiresAt: entry.expiresAt.toISOString(),
+            accessCount: entry.accessCount,
+            lastAccessed: entry.lastAccessed.toISOString(),
+        }));
+        return {
+            size: this.cache.size,
+            maxSize: this.config.maxSize,
+            ttl: this.config.ttl,
+            entries,
+        };
+    }
+    /**
+     * 手動清理過期項目
+     * @returns 清理的項目數量
+     */
+    manualCleanup() {
+        const now = new Date();
+        let cleanedCount = 0;
+        for (const [key, entry] of this.cache.entries()) {
+            if (now > entry.expiresAt) {
+                this.cache.delete(key);
+                cleanedCount++;
+            }
+        }
+        return cleanedCount;
+    }
+    /**
+     * 取得最常存取的項目
+     * @param limit - 限制數量
+     * @returns 最常存取的項目
+     */
+    getMostAccessed(limit = 10) {
+        const entries = Array.from(this.cache.entries())
+            .map(([key, entry]) => ({ key, accessCount: entry.accessCount }))
+            .sort((a, b) => b.accessCount - a.accessCount)
+            .slice(0, limit);
+        return entries;
+    }
+    /**
+     * 取得最近存取的項目
+     * @param limit - 限制數量
+     * @returns 最近存取的項目
+     */
+    getRecentlyAccessed(limit = 10) {
+        const entries = Array.from(this.cache.entries())
+            .map(([key, entry]) => ({
+            key,
+            lastAccessed: entry.lastAccessed.toISOString(),
+        }))
+            .sort((a, b) => new Date(b.lastAccessed).getTime() - new Date(a.lastAccessed).getTime())
+            .slice(0, limit);
+        return entries;
+    }
+    /**
+     * 取得最舊的項目
+     * @param limit - 限制數量
+     * @returns 最舊的項目
+     */
+    getOldest(limit = 10) {
+        const entries = Array.from(this.cache.entries())
+            .map(([key, entry]) => ({
+            key,
+            createdAt: entry.createdAt.toISOString(),
+        }))
+            .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+            .slice(0, limit);
+        return entries;
+    }
+    /**
+     * 強制執行大小限制
+     */
+    enforceSizeLimit() {
+        if (this.cache.size <= this.config.maxSize) {
+            return;
+        }
+        // 移除最舊的項目
+        const entries = Array.from(this.cache.entries())
+            .map(([key, entry]) => ({ key, entry }))
+            .sort((a, b) => a.entry.lastAccessed.getTime() - b.entry.lastAccessed.getTime());
+        const toRemove = this.cache.size - this.config.maxSize;
+        for (let i = 0; i < toRemove; i++) {
+            const entry = entries[i];
+            if (entry && entry.key) {
+                this.cache.delete(entry.key);
+            }
+        }
+    }
+    /**
+     * 啟動清理計時器
+     */
+    startCleanupTimer() {
+        if (this.config.cleanupInterval) {
+            this.cleanupTimer = setInterval(() => {
+                this.manualCleanup();
+            }, this.config.cleanupInterval);
+        }
+    }
+    /**
+     * 停止清理計時器
+     */
+    stopCleanupTimer() {
+        if (this.cleanupTimer) {
+            clearInterval(this.cleanupTimer);
+        }
+        this.cleanupTimer = undefined;
+    }
+    /**
+     * 清理資源
+     */
+    cleanup() {
+        this.stopCleanupTimer();
+        this.clear();
+    }
+}
+exports.Cache = Cache;
+//# sourceMappingURL=Cache.js.map
