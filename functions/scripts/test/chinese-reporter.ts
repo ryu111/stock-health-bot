@@ -23,8 +23,14 @@ class ChineseTestReporter {
       console.log('🧪 開始執行測試...');
       console.log('='.repeat(50));
 
-      // 執行 Jest 測試
+      // 執行 Jest 測試並獲取 JSON 輸出
       const output = execSync('npm run test:ci', {
+        cwd: this.functionsPath,
+        encoding: 'utf8'
+      });
+
+      // 執行 Jest 獲取 JSON 格式的測試結果
+      execSync('npx jest --json --outputFile=test-results.json', {
         cwd: this.functionsPath,
         encoding: 'utf8'
       });
@@ -67,6 +73,34 @@ class ChineseTestReporter {
       console.log(`⏱️ 執行時間: ${time} 秒`);
     }
 
+    // 顯示測試檔案結果
+    console.log('\n📋 測試檔案結果:');
+    console.log('-'.repeat(40));
+    
+    try {
+      // 嘗試讀取 JSON 測試結果
+      const fs = require('fs');
+      const testResultsPath = path.join(this.functionsPath, 'test-results.json');
+      
+      if (fs.existsSync(testResultsPath)) {
+        const testResults = JSON.parse(fs.readFileSync(testResultsPath, 'utf8'));
+        
+        testResults.testResults.forEach((suite: any) => {
+          const status = suite.status === 'passed' ? '✅' : '❌';
+          const fileName = suite.name.split('/').pop() || suite.name;
+          const time = suite.endTime - suite.startTime;
+          console.log(`${status} ${fileName} (${time}ms)`);
+        });
+        
+        // 清理臨時檔案
+        fs.unlinkSync(testResultsPath);
+      } else {
+        console.log('⚠️ 無法獲取詳細測試結果');
+      }
+    } catch (error) {
+      console.log('⚠️ 無法解析測試結果:', error);
+    }
+
     // 解析覆蓋率
     const coverageMatch = output.match(/Statements\s+:\s+([\d.]+)%\s+\(([^)]+)\)/);
     const branchesMatch = output.match(/Branches\s+:\s+([\d.]+)%\s+\(([^)]+)\)/);
@@ -91,6 +125,8 @@ class ChineseTestReporter {
 
     console.log('\n✅ 測試完成！');
   }
+
+
 }
 
 // 執行腳本
