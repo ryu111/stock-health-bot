@@ -2,83 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "🔍 程式碼品質檢查",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/scripts/ci/check.ts",
-      "cwd": "${workspaceFolder}/scripts",
-      "console": "integratedTerminal",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": false
-      },
-      "env": {
-        "NODE_ENV": "development",
-        "USE_MOCK_DATA": "true"
-      }
-    },
-    {
-      "name": "🧪 API 功能測試 (Firebase)",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/scripts/test/start-and-test.ts",
-      "cwd": "${workspaceFolder}/scripts",
-      "console": "integratedTerminal",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": true
-      },
-      "env": {
-        "NODE_ENV": "development",
-        "USE_MOCK_DATA": "true"
-      }
-    },
-    {
-      "name": "🧪 API 功能測試 (正式資料)",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/scripts/test/start-and-test.ts",
-      "cwd": "${workspaceFolder}/scripts",
-      "console": "integratedTerminal",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": true
-      },
-      "env": {
-        "NODE_ENV": "development",
-        "USE_MOCK_DATA": "false"
-      }
-    },
-    {
-      "name": "🚀 部署到生產環境",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/scripts/deploy/deploy.ts",
-      "cwd": "${workspaceFolder}/scripts",
-      "console": "integratedTerminal",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": true
-      },
-      "env": {
-        "NODE_ENV": "production",
-        "USE_MOCK_DATA": "false"
-      }
-    },
-    {
-      "name": "🧪 Jest 測試 (監控模式)",
+      "name": "🧪 開發測試 (監控模式)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
@@ -96,31 +20,13 @@
       }
     },
     {
-      "name": "🧪 Jest 測試 (中文化報告)",
+      "name": "🧪 測試報告 (中文化)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/functions/node_modules/.bin/ts-node",
       "cwd": "${workspaceFolder}/functions",
       "console": "integratedTerminal",
       "args": ["scripts/test/chinese-reporter.ts"],
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": false
-      },
-      "env": {
-        "NODE_ENV": "test"
-      }
-    },
-    {
-      "name": "🧪 Jest 測試 (覆蓋率)",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
-      "cwd": "${workspaceFolder}/functions",
-      "console": "integratedTerminal",
-      "args": ["--coverage", "--coverageReporters=text", "--coverageReporters=html"],
       "skipFiles": ["<node_internals>/**"],
       "presentation": {
         "reveal": "always",
@@ -150,60 +56,6 @@
       }
     },
     {
-      "name": "🧪 Jest 測試 (特定檔案)",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
-      "cwd": "${workspaceFolder}/functions",
-      "console": "integratedTerminal",
-      "args": ["--testPathPattern=Formatter", "--verbose"],
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": false
-      },
-      "env": {
-        "NODE_ENV": "test"
-      }
-    },
-    {
-      "name": "🧪 Jest 測試 (E2E)",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
-      "cwd": "${workspaceFolder}/functions",
-      "console": "integratedTerminal",
-      "args": ["--testPathPattern=e2e", "--verbose"],
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": false
-      },
-      "env": {
-        "NODE_ENV": "test"
-      }
-    },
-    {
-      "name": "🧪 Jest 測試 (整合測試)",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
-      "cwd": "${workspaceFolder}/functions",
-      "console": "integratedTerminal",
-      "args": ["--testPathPattern=(api|controllers)", "--verbose"],
-      "skipFiles": ["<node_internals>/**"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": false
-      },
-      "env": {
-        "NODE_ENV": "test"
-      }
-    },
-    {
       "name": "🔍 快速品質檢查",
       "type": "node",
       "request": "launch",
@@ -222,13 +74,13 @@
       }
     },
     {
-      "name": "🔍 程式碼格式檢查",
+      "name": "🔍 完整 CI 檢查",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/functions/node_modules/.bin/npm",
-      "cwd": "${workspaceFolder}/functions",
+      "program": "${workspaceFolder}/scripts/ci/check.ts",
+      "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
-      "args": ["run", "format:check"],
+      "runtimeArgs": ["-r", "ts-node/register"],
       "skipFiles": ["<node_internals>/**"],
       "presentation": {
         "reveal": "always",
@@ -236,7 +88,27 @@
         "focus": false
       },
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "USE_MOCK_DATA": "true"
+      }
+    },
+    {
+      "name": "🚀 部署到生產環境",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/deploy/deploy.ts",
+      "cwd": "${workspaceFolder}/scripts",
+      "console": "integratedTerminal",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      },
+      "env": {
+        "NODE_ENV": "production",
+        "USE_MOCK_DATA": "false"
       }
     }
   ]
