@@ -2,7 +2,7 @@
   "name": "functions",
   "version": "1.0.0",
   "description": "",
-  "main": "lib/src/index.js",
+  "main": "dist/index.js",
   "engines": {
     "node": "24"
   },
@@ -18,7 +18,7 @@
     "format:check": "prettier --check src/**/*.ts",
     "ci": "../scripts/ci/check.sh",
     "verify": "npm run build && echo '🔍 驗證環境變數...' && node -e \"if(!require('fs').existsSync('.env')){console.error('❌ .env 檔案遺失！'); process.exit(1);}else{console.log('✅ .env 檔案存在');}\"",
-    "local-test": "node -e \"require('dotenv').config(); require('./lib/src/index.js'); console.log('✅ 本地語法檢查通過');\"",
+    "local-test": "node -e \"require('dotenv').config(); require('./dist/index.js'); console.log('✅ 本地語法檢查通過');\"",
     "analyze": "npm run lint && npm run format:check && npm run build && echo '✅ 分析完成 - 準備部署！'",
     "deploy:staging": "npm run build && firebase deploy --only functions --project stock-health-staging",
     "deploy:production": "npm run build && firebase deploy --only functions --project stock-health-app",

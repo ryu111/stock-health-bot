@@ -48,6 +48,7 @@ coverage/
 
 # 建置檔案（如果不需要 commit）
 functions/lib/
+functions/dist/
 scripts/dist/
 
 # 其他
