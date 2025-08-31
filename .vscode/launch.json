@@ -16,7 +16,8 @@
         "focus": false
       },
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "USE_MOCK_DATA": "true"
       }
     },
     {
@@ -34,7 +35,27 @@
         "focus": true
       },
       "env": {
-        "NODE_ENV": "development"
+        "NODE_ENV": "development",
+        "USE_MOCK_DATA": "true"
+      }
+    },
+    {
+      "name": "🧪 API 功能測試 (正式資料)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/test/start-and-test.ts",
+      "cwd": "${workspaceFolder}/scripts",
+      "console": "integratedTerminal",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
+      },
+      "env": {
+        "NODE_ENV": "development",
+        "USE_MOCK_DATA": "false"
       }
     },
     {
@@ -52,7 +73,8 @@
         "focus": true
       },
       "env": {
-        "NODE_ENV": "production"
+        "NODE_ENV": "production",
+        "USE_MOCK_DATA": "false"
       }
     }
   ]
