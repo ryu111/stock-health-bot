@@ -29,7 +29,9 @@ build/
 .parcel-cache/
 
 # IDE 相關
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/settings.json
 .idea/
 *.swp
 *.swo

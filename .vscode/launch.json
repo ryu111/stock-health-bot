@@ -6,7 +6,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/ci/check.ts",
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
       "presentation": {
@@ -20,7 +20,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/dev/start.ts",
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
       "presentation": {
@@ -34,7 +34,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/test/local.ts",
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
       "presentation": {
@@ -48,8 +48,10 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/functions/src/index.ts",
+      "cwd": "${workspaceFolder}/functions",
       "skipFiles": ["<node_internals>/**"],
       "console": "integratedTerminal",
+      "runtimeArgs": ["-r", "ts-node/register"],
       "env": {
         "NODE_ENV": "development"
       },
@@ -64,7 +66,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/deploy/deploy.ts",
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
       "presentation": {
