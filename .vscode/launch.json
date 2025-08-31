@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "🔥 完整品質檢查 (CI)",
+      "name": "🔍 程式碼品質檢查",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/ci/check.ts",
@@ -16,7 +16,7 @@
       }
     },
     {
-      "name": "🚀 本地開發 + 功能測試",
+      "name": "🧪 股票查詢功能測試",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/dev/start.ts",
@@ -33,7 +33,7 @@
       }
     },
     {
-      "name": "📊 本機 LINE Bot 測試",
+      "name": "🤖 LINE Bot 除錯",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/functions/dist/index.js",
@@ -50,7 +50,7 @@
       }
     },
     {
-      "name": "🚀 本地開發伺服器",
+      "name": "📡 API 伺服器測試",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/functions/dist/local-dev.js",
@@ -67,7 +67,7 @@
       }
     },
     {
-      "name": "🚀 部署到 Firebase",
+      "name": "🚀 部署到生產環境",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/deploy/deploy.ts",
