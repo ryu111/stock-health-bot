@@ -5,7 +5,7 @@
       "name": "🚀 本地開發環境",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/dev/start.js",
+      "program": "${workspaceFolder}/scripts/dev/start.ts",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "presentation": {
@@ -18,7 +18,7 @@
       "name": "🧪 本地功能測試",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/test/local.js",
+      "program": "${workspaceFolder}/scripts/test/local.ts",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "presentation": {
@@ -31,7 +31,7 @@
       "name": "🔥 完整品質檢查 (CI)",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/ci/check.js",
+      "program": "${workspaceFolder}/scripts/ci/check.ts",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "presentation": {
@@ -44,7 +44,7 @@
       "name": "📊 本機 LINE Bot 測試",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/functions/index.js",
+      "program": "${workspaceFolder}/functions/src/index.ts",
       "skipFiles": ["<node_internals>/**"],
       "console": "integratedTerminal",
       "env": {
@@ -60,7 +60,7 @@
       "name": "🚀 部署到 Firebase",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/deploy/deploy.js",
+      "program": "${workspaceFolder}/scripts/deploy/deploy.ts",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "presentation": {
