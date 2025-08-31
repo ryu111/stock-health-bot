@@ -12,7 +12,7 @@ class DevStartScript {
 
   constructor() {
     this.projectRoot = path.dirname(path.dirname(__dirname));
-    this.scriptPath = path.join(__dirname, 'dev-start.sh');
+    this.scriptPath = path.join(__dirname, 'start.sh');
   }
 
   /**

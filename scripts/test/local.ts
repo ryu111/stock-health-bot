@@ -12,7 +12,7 @@ class LocalTestScript {
 
   constructor() {
     this.projectRoot = path.dirname(path.dirname(__dirname));
-    this.scriptPath = path.join(__dirname, 'test-local.sh');
+    this.scriptPath = path.join(__dirname, 'local.sh');
   }
 
   /**
