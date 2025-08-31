@@ -16,7 +16,7 @@
       }
     },
     {
-      "name": "🧪 股票查詢功能測試",
+      "name": "🧪 API 功能測試 (Firebase)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/test/start-and-test.ts",
@@ -46,23 +46,7 @@
         "focus": false
       }
     },
-    {
-      "name": "📡 API 伺服器測試",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/functions/dist/local-dev.js",
-      "cwd": "${workspaceFolder}/functions",
-      "console": "integratedTerminal",
-      "env": {
-        "NODE_ENV": "development",
-        "PORT": "3000"
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": true
-      }
-    },
+
     {
       "name": "🚀 部署到生產環境",
       "type": "node",
