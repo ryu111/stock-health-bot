@@ -315,6 +315,7 @@ export class StockDataAdapter extends BaseMarketDataAdapter {
    * @param symbol - 股票代碼
    * @returns Yahoo Finance 資料
    */
+  // eslint-disable-next-line @typescript-eslint/require-await
   private async fetchFromYahooFinance(symbol: string): Promise<YahooFinanceQuote> {
     try {
       // 暫時直接使用模擬資料，避免 Yahoo Finance API 問題
