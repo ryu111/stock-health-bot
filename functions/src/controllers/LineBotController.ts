@@ -142,20 +142,25 @@ export class LineBotController {
   private async handleTextMessage(replyToken: string, text: string): Promise<void> {
     const cleanText = text.trim().toUpperCase();
 
+    this.logger.info(`處理文字訊息: "${text}" -> "${cleanText}"`);
+
     // 檢查是否為股票查詢
     if (Validation.isValidStockSymbol(cleanText)) {
+      this.logger.info(`識別為股票查詢: ${cleanText}`);
       await this.handleStockQuery(replyToken, cleanText);
       return;
     }
 
     // 檢查是否為 ETF 查詢
     if (Validation.isValidETFSymbol(cleanText)) {
+      this.logger.info(`識別為 ETF 查詢: ${cleanText}`);
       await this.handleETFQuery(replyToken, cleanText);
       return;
     }
 
     // 檢查是否為分析請求
     if (cleanText.includes('分析') || cleanText.includes('ANALYZE')) {
+      this.logger.info(`識別為分析請求: ${cleanText}`);
       const symbol = this.extractSymbolFromAnalysisRequest(cleanText);
       if (symbol) {
         await this.handleAnalysisRequest(replyToken, symbol);
@@ -164,6 +169,7 @@ export class LineBotController {
     }
 
     // 預設回應
+    this.logger.info(`未識別的訊息，發送幫助訊息: ${cleanText}`);
     await this.sendHelpMessage(replyToken);
   }
 
