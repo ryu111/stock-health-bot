@@ -31,7 +31,7 @@ class DevStartScript {
       });
 
       // 如果設定了自動測試，等待模擬器啟動後執行測試
-      if (process.env.AUTO_TEST === 'true') {
+      if (process.env['AUTO_TEST'] === 'true') {
         console.log('');
         console.log('🧪 等待模擬器啟動完成...');
         await this.waitForServer();
