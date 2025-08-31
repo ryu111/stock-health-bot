@@ -81,10 +81,11 @@ class DeployScript {
   private showSuccessMessage(): void {
     console.log('');
     console.log('✅ 部署成功！');
-    console.log('📡 生產環境 API: https://api-bhtpq7s4ka-uc.a.run.app');
-    console.log('🔗 Webhook URL: https://api-bhtpq7s4ka-uc.a.run.app/webhook');
+    console.log('📡 生產環境 API: https://stockhealthapi-bhtpq7s4ka-uc.a.run.app');
+    console.log('🔗 Webhook URL: https://us-central1-stock-health-app.cloudfunctions.net/webhook');
     console.log('');
     console.log('💡 記得在 LINE Developer Console 中設定 Webhook URL');
+    console.log('💡 如果上面的 webhook URL 無法訪問，請檢查 Firebase Console 中的實際 URL');
   }
 }
 

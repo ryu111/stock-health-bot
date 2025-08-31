@@ -242,15 +242,15 @@ class SyncTranslatorAdapter implements Translator {
   constructor(private syncTranslator: SyncTranslator) {}
 
   async translate(text: string, targetLanguage: SupportedLanguage): Promise<string> {
-    return this.syncTranslator.translate(text, targetLanguage);
+    return Promise.resolve(this.syncTranslator.translate(text, targetLanguage));
   }
 
   async translateBatch(texts: string[], targetLanguage: SupportedLanguage): Promise<string[]> {
-    return this.syncTranslator.translateBatch(texts, targetLanguage);
+    return Promise.resolve(this.syncTranslator.translateBatch(texts, targetLanguage));
   }
 
   async detectLanguage(text: string): Promise<SupportedLanguage> {
-    return this.syncTranslator.detectLanguage(text);
+    return Promise.resolve(this.syncTranslator.detectLanguage(text));
   }
 }
 

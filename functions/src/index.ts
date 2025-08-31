@@ -296,6 +296,16 @@ app.use((error: any, _req: express.Request, res: express.Response) => {
 // 匯出 Firebase Functions
 export const stockHealthAPI = functions.https.onRequest(app);
 
+// 專門的 LINE Webhook 函數
+export const webhook = functions.https.onRequest(async (req: express.Request, res: express.Response) => {
+  try {
+    await lineBotController.handleWebhook(req, res);
+  } catch (error) {
+    logger.error('Webhook 處理失敗', error instanceof Error ? error : new Error(String(error)));
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 // 定期清理快取 (HTTP 觸發器，可以通過 Cloud Scheduler 呼叫)
 export const cleanupCache = functions.https.onRequest(async (_req, res) => {
   try {

@@ -34,7 +34,11 @@
     "dist",
     "**/*.js",
     "**/*.sh"
-  ]
+  ],
+  "ts-node": {
+    "esm": false,
+    "experimentalSpecifierResolution": "node"
+  }
 }
 
 

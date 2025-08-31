@@ -46,4 +46,16 @@ echo "00900 ETF 查詢回應:"
 echo "$RESPONSE4"
 
 echo ""
+echo "================================================================"
+echo "🧪 測試 LINE Webhook 功能..."
+
+# 測試 LINE Webhook
+echo "🤖 測試 LINE Webhook 端點..."
+WEBHOOK_RESPONSE=$(curl -s -X POST "http://localhost:5001/stock-health-app/us-central1/webhook" \
+  -H "Content-Type: application/json" \
+  -d '{"events":[{"type":"message","message":{"type":"text","text":"2330"},"replyToken":"test-token"}]}')
+echo "Webhook 回應:"
+echo "$WEBHOOK_RESPONSE"
+
+echo ""
 echo "✅ 本地測試完成！"

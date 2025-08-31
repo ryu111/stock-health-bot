@@ -9,10 +9,14 @@
       "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
+      "skipFiles": ["<node_internals>/**"],
       "presentation": {
         "reveal": "always",
         "panel": "new",
         "focus": false
+      },
+      "env": {
+        "NODE_ENV": "development"
       }
     },
     {
@@ -23,10 +27,14 @@
       "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
+      "skipFiles": ["<node_internals>/**"],
       "presentation": {
         "reveal": "always",
         "panel": "new",
         "focus": true
+      },
+      "env": {
+        "NODE_ENV": "development"
       }
     },
     {
@@ -37,10 +45,14 @@
       "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
+      "skipFiles": ["<node_internals>/**"],
       "presentation": {
         "reveal": "always",
         "panel": "new",
         "focus": true
+      },
+      "env": {
+        "NODE_ENV": "production"
       }
     }
   ]
