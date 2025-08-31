@@ -29,24 +29,7 @@
         "focus": true
       }
     },
-    {
-      "name": "🔧 Firebase Functions 語法檢查",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/functions/dist/index.js",
-      "cwd": "${workspaceFolder}/functions",
-      "skipFiles": ["<node_internals>/**"],
-      "console": "integratedTerminal",
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": false
-      },
-      "justMyCode": true
-    },
+
     {
       "name": "🚀 部署到生產環境",
       "type": "node",
