@@ -16,31 +16,20 @@
       }
     },
     {
-      "name": "🚀 本地開發環境",
+      "name": "🚀 本地開發 + 功能測試",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/scripts/dev/start.ts",
       "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
+      "env": {
+        "AUTO_TEST": "true"
+      },
       "presentation": {
         "reveal": "always",
         "panel": "new",
         "focus": true
-      }
-    },
-    {
-      "name": "🧪 本地功能測試",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/scripts/test/local.ts",
-      "cwd": "${workspaceFolder}/scripts",
-      "console": "integratedTerminal",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": false
       }
     },
     {
@@ -58,6 +47,23 @@
         "reveal": "always",
         "panel": "new",
         "focus": false
+      }
+    },
+    {
+      "name": "🚀 本地開發伺服器",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/dist/local-dev.js",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development",
+        "PORT": "3000"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": true
       }
     },
     {
