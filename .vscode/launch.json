@@ -30,7 +30,7 @@
       }
     },
     {
-      "name": "🤖 LINE Bot 除錯",
+      "name": "🔧 Firebase Functions 語法檢查",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/functions/dist/index.js",
@@ -44,9 +44,9 @@
         "reveal": "always",
         "panel": "new",
         "focus": false
-      }
+      },
+      "justMyCode": true
     },
-
     {
       "name": "🚀 部署到生產環境",
       "type": "node",
