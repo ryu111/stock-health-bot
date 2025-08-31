@@ -80,8 +80,8 @@ echo "  ✅ 驗證: 通過 (環境驗證完成)"
 echo ""
 echo -e "${BLUE}🚀 基礎檢查完成，繼續執行測試檢查...${NC}"
 
-echo -e "${YELLOW}🧪 步驟 7: 執行 Jest 測試...${NC}"
-if ! npm run test:ci 2>&1; then
+echo -e "${YELLOW}🧪 步驟 7: 執行 Jest 測試 (中文化報告)...${NC}"
+if ! npm run test:chinese 2>&1; then
     echo -e "${RED}❌ Jest 測試失敗！${NC}"
     exit 1
 fi

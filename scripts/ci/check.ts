@@ -73,29 +73,15 @@ class CICheckScript {
    * 執行測試檢查
    */
   private async runTestChecks(): Promise<void> {
-    console.log('🧪 執行測試檢查...');
+    console.log('🧪 執行測試檢查 (中文化報告)...');
     
     try {
       // 切換到 functions 目錄
       process.chdir(this.functionsPath);
       
-      // 執行單元測試
-      console.log('  📋 執行單元測試...');
-      execSync('npm run test', { 
-        stdio: 'inherit',
-        cwd: this.functionsPath
-      });
-      
-      // 執行整合測試
-      console.log('  🔗 執行整合測試...');
-      execSync('npm run test -- --testPathPattern="(api|controllers)"', { 
-        stdio: 'inherit',
-        cwd: this.functionsPath
-      });
-      
-      // 執行端到端測試
-      console.log('  🌐 執行端到端測試...');
-      execSync('npm run test -- --testPathPattern="e2e"', { 
+      // 執行中文化測試報告
+      console.log('  📋 執行完整測試套件 (中文化)...');
+      execSync('npm run test:chinese', { 
         stdio: 'inherit',
         cwd: this.functionsPath
       });
@@ -132,21 +118,11 @@ class CICheckScript {
     }
   }
 
-  /**
-   * 生成測試報告摘要
-   */
-  private generateTestSummary(): void {
-    console.log('\n📋 測試報告摘要:');
-    console.log('  ✅ 單元測試: 通過');
-    console.log('  ✅ 整合測試: 通過');
-    console.log('  ✅ 端到端測試: 通過');
-    console.log('  ✅ 覆蓋率檢查: 通過');
-    console.log('  📊 覆蓋率報告: 已生成');
-  }
+
 }
 
 // 執行檢查
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (require.main === module) {
   const ciCheckScript = new CICheckScript();
   ciCheckScript.run().catch(error => {
     console.error('CI 檢查失敗:', error);
