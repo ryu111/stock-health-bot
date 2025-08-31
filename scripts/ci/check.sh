@@ -63,14 +63,7 @@ if ! npm run build 2>&1; then
 fi
 echo -e "${GREEN}✅ 建置檢查通過${NC}\n"
 
-echo -e "${YELLOW}🧪 步驟 6: 執行本地測試...${NC}"
-if ! npm run local-test 2>&1; then
-    echo -e "${RED}❌ 本地測試失敗！${NC}"
-    exit 1
-fi
-echo -e "${GREEN}✅ 本地測試通過${NC}\n"
-
-echo -e "${YELLOW}📝 步驟 7: 執行完整驗證...${NC}"
+echo -e "${YELLOW}📝 步驟 6: 執行完整驗證...${NC}"
 if ! npm run verify 2>&1; then
     echo -e "${RED}❌ 驗證失敗！${NC}"
     exit 1
@@ -78,15 +71,14 @@ fi
 echo -e "${GREEN}✅ 驗證通過${NC}\n"
 
 echo "================================================================"
-echo -e "${GREEN}🎉 所有 CI 檢查都成功通過！${NC}"
-echo -e "${Purple}📊 品質摘要:${NC}"
+echo -e "${GREEN}🎉 基礎 CI 檢查都成功通過！${NC}"
+echo -e "${Purple}📊 基礎品質摘要:${NC}"
 echo "  ✅ ESLint: 通過 (無語法錯誤)"
 echo "  ✅ Prettier: 通過 (程式碼格式正確)"
 echo "  ✅ 建置: 通過 (專案可編譯)"
-echo "  ✅ 測試: 通過 (本地語法檢查)"
 echo "  ✅ 驗證: 通過 (環境驗證完成)"
 echo ""
-echo -e "${BLUE}🚀 準備好提交和部署！${NC}"
+echo -e "${BLUE}🚀 基礎檢查完成，繼續執行測試檢查...${NC}"
 
 cd ..
 exit 0
