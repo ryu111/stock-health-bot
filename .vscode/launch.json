@@ -76,6 +76,150 @@
         "NODE_ENV": "production",
         "USE_MOCK_DATA": "false"
       }
+    },
+    {
+      "name": "🧪 Jest 測試 (監控模式)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "args": ["--watch", "--verbose"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "🧪 Jest 測試 (中文化報告)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/ts-node",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "args": ["scripts/test/chinese-reporter.ts"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "🧪 Jest 測試 (覆蓋率)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "args": ["--coverage", "--coverageReporters=text", "--coverageReporters=html"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "🧪 Jest 測試 (特定檔案)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "args": ["--testPathPattern=Formatter", "--verbose"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "🧪 Jest 測試 (E2E)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "args": ["--testPathPattern=e2e", "--verbose"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "🧪 Jest 測試 (整合測試)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/jest",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "args": ["--testPathPattern=(api|controllers)", "--verbose"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
+      "name": "🔍 快速品質檢查",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/npm",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "args": ["run", "lint"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    {
+      "name": "🔍 程式碼格式檢查",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/npm",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "args": ["run", "format:check"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "env": {
+        "NODE_ENV": "development"
+      }
     }
   ]
 }
