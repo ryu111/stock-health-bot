@@ -80,5 +80,29 @@ echo "  ✅ 驗證: 通過 (環境驗證完成)"
 echo ""
 echo -e "${BLUE}🚀 基礎檢查完成，繼續執行測試檢查...${NC}"
 
+echo -e "${YELLOW}🧪 步驟 7: 執行 Jest 測試...${NC}"
+if ! npm run test:ci 2>&1; then
+    echo -e "${RED}❌ Jest 測試失敗！${NC}"
+    exit 1
+fi
+echo -e "${GREEN}✅ Jest 測試通過${NC}\n"
+
+echo -e "${YELLOW}📊 步驟 8: 檢查測試覆蓋率...${NC}"
+if ! npm run test:coverage:check 2>&1; then
+    echo -e "${RED}❌ 測試覆蓋率檢查失敗！${NC}"
+    exit 1
+fi
+echo -e "${GREEN}✅ 測試覆蓋率檢查通過${NC}\n"
+
+echo "================================================================"
+echo -e "${GREEN}🎉 完整 CI 檢查都成功通過！${NC}"
+echo -e "${Purple}📊 完整品質摘要:${NC}"
+echo "  ✅ ESLint: 通過 (無語法錯誤)"
+echo "  ✅ Prettier: 通過 (程式碼格式正確)"
+echo "  ✅ 建置: 通過 (專案可編譯)"
+echo "  ✅ 驗證: 通過 (環境驗證完成)"
+echo "  ✅ Jest 測試: 通過 (所有測試案例)"
+echo "  ✅ 覆蓋率: 通過 (達到閾值要求)"
+
 cd ..
 exit 0
