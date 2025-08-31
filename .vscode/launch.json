@@ -47,11 +47,10 @@
       "name": "📊 本機 LINE Bot 測試",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/functions/src/index.ts",
+      "program": "${workspaceFolder}/functions/dist/index.js",
       "cwd": "${workspaceFolder}/functions",
       "skipFiles": ["<node_internals>/**"],
       "console": "integratedTerminal",
-      "runtimeArgs": ["-r", "ts-node/register"],
       "env": {
         "NODE_ENV": "development"
       },
