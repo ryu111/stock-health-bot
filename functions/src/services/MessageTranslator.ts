@@ -8,6 +8,13 @@ export interface Translator {
   detectLanguage(text: string): Promise<SupportedLanguage>;
 }
 
+// 同步翻譯器介面
+export interface SyncTranslator {
+  translate(text: string, targetLanguage: SupportedLanguage): string;
+  translateBatch(texts: string[], targetLanguage: SupportedLanguage): string[];
+  detectLanguage(text: string): SupportedLanguage;
+}
+
 // 訊息翻譯器類別
 export class MessageTranslator {
   private localizationService: LocalizationService;
@@ -15,7 +22,7 @@ export class MessageTranslator {
 
   constructor(translator?: Translator) {
     this.localizationService = LocalizationService.getInstance();
-    this.translator = translator || (new DefaultTranslator() as Translator);
+    this.translator = translator || new SyncTranslatorAdapter(new DefaultTranslator());
   }
 
   // 翻譯單一訊息
@@ -230,9 +237,26 @@ export class MessageTranslator {
   }
 }
 
-// 預設翻譯器（模擬外部翻譯服務）
-class DefaultTranslator implements Translator {
+// 同步翻譯器適配器
+class SyncTranslatorAdapter implements Translator {
+  constructor(private syncTranslator: SyncTranslator) {}
+
   async translate(text: string, targetLanguage: SupportedLanguage): Promise<string> {
+    return this.syncTranslator.translate(text, targetLanguage);
+  }
+
+  async translateBatch(texts: string[], targetLanguage: SupportedLanguage): Promise<string[]> {
+    return this.syncTranslator.translateBatch(texts, targetLanguage);
+  }
+
+  async detectLanguage(text: string): Promise<SupportedLanguage> {
+    return this.syncTranslator.detectLanguage(text);
+  }
+}
+
+// 預設翻譯器（模擬外部翻譯服務）
+class DefaultTranslator implements SyncTranslator {
+  translate(text: string, targetLanguage: SupportedLanguage): string {
     // 這裡可以整合 Google Translate API 或其他翻譯服務
     // 目前返回模擬翻譯
 
@@ -275,18 +299,18 @@ class DefaultTranslator implements Translator {
     return text;
   }
 
-  async translateBatch(texts: string[], targetLanguage: SupportedLanguage): Promise<string[]> {
+  translateBatch(texts: string[], targetLanguage: SupportedLanguage): string[] {
     const results: string[] = [];
 
     for (const text of texts) {
-      const translated = await this.translate(text, targetLanguage);
+      const translated = this.translate(text, targetLanguage);
       results.push(translated);
     }
 
     return results;
   }
 
-  async detectLanguage(text: string): Promise<SupportedLanguage> {
+  detectLanguage(text: string): SupportedLanguage {
     // 簡單的語言檢測邏輯
     const chineseRegex = /[\u4e00-\u9fff]/;
     const japaneseRegex = /[\u3040-\u309f\u30a0-\u30ff]/;

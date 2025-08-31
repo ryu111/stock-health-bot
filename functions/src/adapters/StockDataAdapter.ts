@@ -315,7 +315,7 @@ export class StockDataAdapter extends BaseMarketDataAdapter {
    * @param symbol - 股票代碼
    * @returns Yahoo Finance 資料
    */
-  private async fetchFromYahooFinance(symbol: string): Promise<YahooFinanceQuote> {
+  private fetchFromYahooFinance(symbol: string): YahooFinanceQuote {
     try {
       // 暫時直接使用模擬資料，避免 Yahoo Finance API 問題
       console.log(`使用模擬資料 for ${symbol}`);

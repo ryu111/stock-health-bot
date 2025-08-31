@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Client, middleware } from '@line/bot-sdk';
+import { Client, middleware, Message } from '@line/bot-sdk';
 import { LineConfig } from '../config/LineConfig';
 import { Logger } from '../utils/Logger';
 import { Validation } from '../utils/Validation';
@@ -379,7 +379,7 @@ export class LineBotController {
    */
   private async sendFlexMessage(replyToken: string, message: LineFlexReplyMessage): Promise<void> {
     try {
-      await this.getClient().replyMessage(replyToken, message as any);
+      await this.getClient().replyMessage(replyToken, message as Message);
     } catch (error) {
       this.logger.error(
         '發送 Flex 訊息失敗',
