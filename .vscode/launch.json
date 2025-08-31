@@ -132,6 +132,24 @@
       }
     },
     {
+      "name": "📊 覆蓋率檢查 (中文化)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/functions/node_modules/.bin/ts-node",
+      "cwd": "${workspaceFolder}/functions",
+      "console": "integratedTerminal",
+      "args": ["scripts/test/chinese-coverage-check.ts"],
+      "skipFiles": ["<node_internals>/**"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      },
+      "env": {
+        "NODE_ENV": "test"
+      }
+    },
+    {
       "name": "🧪 Jest 測試 (特定檔案)",
       "type": "node",
       "request": "launch",

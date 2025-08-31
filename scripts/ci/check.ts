@@ -96,11 +96,11 @@ class CICheckScript {
    * 執行覆蓋率檢查
    */
   private async runCoverageChecks(): Promise<void> {
-    console.log('📊 執行覆蓋率檢查...');
+    console.log('📊 執行覆蓋率檢查 (中文化報告)...');
     
     try {
-      // 執行覆蓋率檢查
-      execSync('npm run test:coverage:check', { 
+      // 執行中文化覆蓋率檢查
+      execSync('npm run test:coverage:chinese', { 
         stdio: 'inherit',
         cwd: this.functionsPath
       });

@@ -15,6 +15,7 @@
     "test:ci": "jest --ci --coverage --watchAll=false",
     "test:chinese": "ts-node scripts/test/chinese-reporter.ts",
     "test:coverage:check": "jest --coverage --coverageReporters=text-summary --coverageThreshold.global.branches=30 --coverageThreshold.global.functions=40 --coverageThreshold.global.lines=35 --coverageThreshold.global.statements=35",
+    "test:coverage:chinese": "ts-node scripts/test/chinese-coverage-check.ts",
     "coverage:report": "node --loader ts-node/esm scripts/generate-coverage-report.ts",
     "build": "tsc",
     "build:watch": "tsc --watch",

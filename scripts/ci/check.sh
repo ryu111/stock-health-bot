@@ -87,8 +87,8 @@ if ! npm run test:chinese 2>&1; then
 fi
 echo -e "${GREEN}✅ Jest 測試通過${NC}\n"
 
-echo -e "${YELLOW}📊 步驟 8: 檢查測試覆蓋率...${NC}"
-if ! npm run test:coverage:check 2>&1; then
+echo -e "${YELLOW}📊 步驟 8: 檢查測試覆蓋率 (中文化報告)...${NC}"
+if ! npm run test:coverage:chinese 2>&1; then
     echo -e "${RED}❌ 測試覆蓋率檢查失敗！${NC}"
     exit 1
 fi
