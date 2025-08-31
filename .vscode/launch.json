@@ -19,13 +19,10 @@
       "name": "🧪 股票查詢功能測試",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/dev/start.ts",
+      "program": "${workspaceFolder}/scripts/test/start-and-test.ts",
       "cwd": "${workspaceFolder}/scripts",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
-      "env": {
-        "AUTO_TEST": "true"
-      },
       "presentation": {
         "reveal": "always",
         "panel": "new",
