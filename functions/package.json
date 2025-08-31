@@ -10,7 +10,7 @@
     "test": "echo \"錯誤: 未來將添加測試\" && npm run local-test",
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "build:script": "ts-node scripts/build.ts",
+
     "debug": "node debug lib/index.js",
     "lint": "eslint src/**/*.ts --ext .ts",
     "lint:fix": "eslint src/**/*.ts --ext .ts --fix",
