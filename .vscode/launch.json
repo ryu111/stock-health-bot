@@ -2,10 +2,23 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "🔥 完整品質檢查 (CI)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/dist/ci/check.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "focus": false
+      }
+    },
+    {
       "name": "🚀 本地開發環境",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/dev/start.ts",
+      "program": "${workspaceFolder}/scripts/dist/dev/start.js",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "presentation": {
@@ -18,20 +31,7 @@
       "name": "🧪 本地功能測試",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/test/local.ts",
-      "cwd": "${workspaceFolder}",
-      "console": "integratedTerminal",
-      "presentation": {
-        "reveal": "always",
-        "panel": "new",
-        "focus": false
-      }
-    },
-    {
-      "name": "🔥 完整品質檢查 (CI)",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/scripts/ci/check.ts",
+      "program": "${workspaceFolder}/scripts/dist/test/local.js",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "presentation": {
@@ -60,7 +60,7 @@
       "name": "🚀 部署到 Firebase",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/scripts/deploy/deploy.ts",
+      "program": "${workspaceFolder}/scripts/dist/deploy/deploy.js",
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal",
       "presentation": {

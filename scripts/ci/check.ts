@@ -11,8 +11,10 @@ class CICheckScript {
   private readonly scriptPath: string;
 
   constructor() {
-    this.projectRoot = path.dirname(path.dirname(__dirname));
-    this.scriptPath = path.join(__dirname, 'check.sh');
+    // 從 scripts/ci/ 目錄回到專案根目錄
+    this.projectRoot = path.dirname(path.dirname(path.dirname(__dirname)));
+    // 使用絕對路徑指向 scripts/ci/check.sh
+    this.scriptPath = path.resolve(this.projectRoot, 'scripts', 'ci', 'check.sh');
   }
 
   /**
