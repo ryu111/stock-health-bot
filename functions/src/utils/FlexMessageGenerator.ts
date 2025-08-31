@@ -5,6 +5,38 @@ import { LineFlexReplyMessage } from '../types/line-events';
 // Flex 訊息生成器
 export class FlexMessageGenerator {
   /**
+   * 取得顯示名稱
+   * @param name - 原始名稱
+   * @param symbol - 股票代碼
+   * @returns 顯示名稱
+   */
+  private getDisplayName(name: string, _symbol: string): string {
+    // 如果有中文名稱，優先使用中文
+    if (/[\u4e00-\u9fff]/.test(name)) {
+      // 限制長度，避免過長
+      return name.length > 20 ? name.substring(0, 20) + '...' : name;
+    }
+
+    // 如果沒有中文，使用英文名稱
+    return name.length > 25 ? name.substring(0, 25) + '...' : name;
+  }
+
+  /**
+   * 格式化成交量
+   * @param volume - 成交量
+   * @returns 格式化後的成交量
+   */
+  private formatVolume(volume: number): string {
+    if (volume >= 1000000000) {
+      return `${(volume / 1000000000).toFixed(1)}B`;
+    } else if (volume >= 1000000) {
+      return `${(volume / 1000000).toFixed(1)}M`;
+    } else if (volume >= 1000) {
+      return `${(volume / 1000).toFixed(1)}K`;
+    }
+    return volume.toLocaleString();
+  }
+  /**
    * 建立股票資訊訊息
    * @param stockData - 股票資料
    * @returns Flex 訊息
@@ -12,10 +44,11 @@ export class FlexMessageGenerator {
   createStockInfoMessage(stockData: StockData): LineFlexReplyMessage {
     const priceColor = stockData.price && stockData.price > 0 ? '#00B900' : '#FF0000';
     const priceText = stockData.price ? `$${stockData.price.toFixed(2)}` : 'N/A';
+    const displayName = this.getDisplayName(stockData.name, stockData.symbol);
 
     return {
       type: 'flex',
-      altText: `${stockData.name} (${stockData.symbol}) 股票資訊`,
+      altText: `${displayName} 股票資訊`,
       contents: {
         type: 'bubble',
         size: 'kilo',
@@ -25,11 +58,20 @@ export class FlexMessageGenerator {
           contents: [
             {
               type: 'text',
-              text: `${stockData.name} (${stockData.symbol})`,
+              text: displayName,
               weight: 'bold',
-              size: 'lg',
+              size: 'sm',
               color: '#FFFFFF',
               align: 'center',
+              wrap: true,
+            },
+            {
+              type: 'text',
+              text: stockData.symbol,
+              size: 'xs',
+              color: '#E8F5E8',
+              align: 'center',
+              margin: 'sm',
             },
           ],
           backgroundColor: '#27AE60',
@@ -38,7 +80,7 @@ export class FlexMessageGenerator {
         body: {
           type: 'box',
           layout: 'vertical',
-          spacing: 'md',
+          spacing: 'sm',
           contents: [
             {
               type: 'box',
@@ -58,6 +100,7 @@ export class FlexMessageGenerator {
                   color: priceColor,
                   align: 'end',
                   flex: 0,
+                  weight: 'bold',
                 },
               ],
             },
@@ -74,7 +117,7 @@ export class FlexMessageGenerator {
                 },
                 {
                   type: 'text',
-                  text: stockData.volume ? stockData.volume.toLocaleString() : 'N/A',
+                  text: stockData.volume ? this.formatVolume(stockData.volume) : 'N/A',
                   size: 'sm',
                   color: '#111111',
                   align: 'end',
@@ -357,10 +400,11 @@ export class FlexMessageGenerator {
   createETFInfoMessage(etfData: ETFData): LineFlexReplyMessage {
     const priceColor = etfData.price && etfData.price > 0 ? '#00B900' : '#FF0000';
     const priceText = etfData.price ? `$${etfData.price.toFixed(2)}` : 'N/A';
+    const displayName = this.getDisplayName(etfData.name, etfData.symbol);
 
     return {
       type: 'flex',
-      altText: `${etfData.name} (${etfData.symbol}) ETF 資訊`,
+      altText: `${displayName} ETF 資訊`,
       contents: {
         type: 'bubble',
         size: 'kilo',
@@ -370,11 +414,20 @@ export class FlexMessageGenerator {
           contents: [
             {
               type: 'text',
-              text: `${etfData.name} (${etfData.symbol})`,
+              text: displayName,
               weight: 'bold',
-              size: 'lg',
+              size: 'sm',
               color: '#FFFFFF',
               align: 'center',
+              wrap: true,
+            },
+            {
+              type: 'text',
+              text: etfData.symbol,
+              size: 'xs',
+              color: '#E8F5E8',
+              align: 'center',
+              margin: 'sm',
             },
           ],
           backgroundColor: '#3498DB',
@@ -383,7 +436,7 @@ export class FlexMessageGenerator {
         body: {
           type: 'box',
           layout: 'vertical',
-          spacing: 'md',
+          spacing: 'sm',
           contents: [
             {
               type: 'box',
@@ -403,6 +456,7 @@ export class FlexMessageGenerator {
                   color: priceColor,
                   align: 'end',
                   flex: 0,
+                  weight: 'bold',
                 },
               ],
             },
@@ -419,7 +473,7 @@ export class FlexMessageGenerator {
                 },
                 {
                   type: 'text',
-                  text: etfData.volume ? etfData.volume.toLocaleString() : 'N/A',
+                  text: etfData.volume ? this.formatVolume(etfData.volume) : 'N/A',
                   size: 'sm',
                   color: '#111111',
                   align: 'end',
