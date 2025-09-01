@@ -36,7 +36,7 @@
   - _Leverage: functions/src/services/StockService.ts, functions/src/adapters/StockDataAdapter.ts_
   - _Requirements: 1.1_
 
-- [ ] 5. 實作Yahoo Finance資料來源
+- [x] 5. 實作Yahoo Finance資料來源
   - File: functions/src/services/sources/YahooFinanceSource.ts
   - 整合現有的yahoo-finance2套件
   - 實作股票和ETF資料取得
@@ -44,7 +44,7 @@
   - _Leverage: functions/src/services/StockService.ts_
   - _Requirements: 1.1_
 
-- [ ] 6. 實作公開資訊觀測站資料來源
+- [-] 6. 實作公開資訊觀測站資料來源
   - File: functions/src/services/sources/PublicInfoSource.ts
   - 實作台灣上市櫃公司財報資料取得
   - 支援EPS、股利、FCF等財務指標
