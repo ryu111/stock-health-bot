@@ -178,3 +178,6 @@ export interface Statistics {
 export * from './stock';
 export * from './line';
 export * from './analysis';
+export * from './valuation';
+export * from './health-score';
+export * from './data-source';
