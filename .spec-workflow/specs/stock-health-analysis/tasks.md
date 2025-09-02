@@ -62,7 +62,7 @@
 
 ## 階段3：估值引擎實作
 
-- [-] 8. 建立ValuationEngine基礎類別
+- [x] 8. 建立ValuationEngine基礎類別
   - File: functions/src/engines/ValuationEngine.ts
   - 實作估值引擎的核心架構
   - 整合資料服務和品質控制
@@ -70,7 +70,7 @@
   - _Leverage: functions/src/engines/AnalysisEngine.ts, functions/src/services/DataFetcher.ts_
   - _Requirements: 1.2_
 
-- [ ] 9. 實作PE Band估值方法
+- [-] 9. 實作PE Band估值方法
   - File: functions/src/engines/methods/PEBandValuation.ts
   - 實作本益比區間估值計算
   - 支援動態PE區間調整
