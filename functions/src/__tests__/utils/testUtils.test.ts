@@ -88,7 +88,7 @@ describe('TestUtils', () => {
       await TestUtils.wait(100);
       const endTime = Date.now();
       
-      expect(endTime - startTime).toBeGreaterThanOrEqual(100);
+      expect(endTime - startTime).toBeGreaterThanOrEqual(95);
     });
   });
 

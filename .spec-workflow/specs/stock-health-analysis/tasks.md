@@ -70,7 +70,7 @@
   - _Leverage: functions/src/engines/AnalysisEngine.ts, functions/src/services/DataFetcher.ts_
   - _Requirements: 1.2_
 
-- [-] 9. 實作PE Band估值方法
+- [x] 9. 實作PE Band估值方法
   - File: functions/src/engines/methods/PEBandValuation.ts
   - 實作本益比區間估值計算
   - 支援動態PE區間調整
@@ -78,7 +78,7 @@
   - _Leverage: functions/src/engines/ValuationEngine.ts_
   - _Requirements: 1.2_
 
-- [ ] 10. 實作DCF估值方法
+- [-] 10. 實作DCF估值方法
   - File: functions/src/engines/methods/DCFValuation.ts
   - 實作現金流量折現估值計算
   - 支援成長率預估和終期價值計算
