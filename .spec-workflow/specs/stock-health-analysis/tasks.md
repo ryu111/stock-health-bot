@@ -94,7 +94,7 @@
   - _Leverage: functions/src/engines/ValuationEngine.ts_
   - _Requirements: 1.2_
 
-- [ ] 12. 實作ETF殖利率估值
+- [x] 12. 實作ETF殖利率估值
   - File: functions/src/engines/methods/ETFYieldValuation.ts
   - 實作基於殖利率的ETF估值計算
   - 支援目標殖利率區間設定
@@ -104,7 +104,7 @@
 
 ## 階段4：健康評分系統
 
-- [ ] 13. 建立HealthScoreCalculator
+- [-] 13. 建立HealthScoreCalculator
   - File: functions/src/services/HealthScoreCalculator.ts
   - 實作綜合體質評分計算邏輯
   - 整合估值、技術、基本面等多維度指標
