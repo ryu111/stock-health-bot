@@ -112,7 +112,7 @@
   - _Leverage: functions/src/services/AIAnalyzer.ts, functions/src/types/analysis.ts_
   - _Requirements: 1.4_
 
-- [ ] 14. 實作評分權重配置系統
+- [x] 14. 實作評分權重配置系統
   - File: functions/src/services/ScoreWeightConfig.ts
   - 實作不同產業和市場條件的評分權重
   - 支援動態權重調整
@@ -120,7 +120,7 @@
   - _Leverage: functions/src/services/HealthScoreCalculator.ts_
   - _Requirements: 1.4_
 
-- [ ] 15. 實作健康報告生成器
+- [x] 15. 實作健康報告生成器
   - File: functions/src/services/HealthReportGenerator.ts
   - 實作詳細的健康報告生成邏輯
   - 包含評分依據、改善建議、風險提醒
@@ -130,7 +130,7 @@
 
 ## 階段5：建議引擎與整合
 
-- [ ] 16. 建立RecommendationEngine
+- [x] 16. 建立RecommendationEngine
   - File: functions/src/services/RecommendationEngine.ts
   - 實作進場建議生成邏輯
   - 基於估值結果和體質評分
