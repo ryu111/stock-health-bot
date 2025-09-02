@@ -104,7 +104,7 @@
 
 ## 階段4：健康評分系統
 
-- [-] 13. 建立HealthScoreCalculator
+- [x] 13. 建立HealthScoreCalculator
   - File: functions/src/services/HealthScoreCalculator.ts
   - 實作綜合體質評分計算邏輯
   - 整合估值、技術、基本面等多維度指標
