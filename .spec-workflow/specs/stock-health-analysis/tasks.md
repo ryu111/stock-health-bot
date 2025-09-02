@@ -146,7 +146,7 @@
   - _Leverage: functions/src/services/RecommendationEngine.ts_
   - _Requirements: 1.5_
 
-- [-] 18. 整合現有分析引擎
+- [x] 18. 整合現有分析引擎
   - File: functions/src/engines/AnalysisEngine.ts (修改)
   - 整合新的估值引擎到現有分析系統
   - 擴展分析類型和結果格式
@@ -156,7 +156,7 @@
 
 ## 階段6：LINE Bot整合與測試
 
-- [ ] 19. 擴展LINE Bot控制器
+- [x] 19. 擴展LINE Bot控制器
   - File: functions/src/controllers/LineBotController.ts (修改)
   - 新增股票體質分析指令處理
   - 整合估值結果和健康報告
@@ -164,7 +164,7 @@
   - _Leverage: functions/src/engines/AnalysisEngine.ts, functions/src/services/HealthScoreCalculator.ts_
   - _Requirements: 1.2, 1.4, 1.5_
 
-- [ ] 20. 實作Flex Message模板
+- [x] 20. 實作Flex Message模板
   - File: functions/src/utils/FlexMessageGenerator.ts (修改)
   - 新增體質分析結果的視覺化模板
   - 支援圖表、評分、建議等元素
@@ -172,7 +172,7 @@
   - _Leverage: functions/src/utils/FlexMessageGenerator.ts_
   - _Requirements: 1.4, 1.5_
 
-- [ ] 21. 建立單元測試套件
+- [x] 21. 建立單元測試套件
   - File: functions/src/__tests__/valuation/
   - 測試所有估值方法的計算邏輯
   - 測試資料品質控制和錯誤處理
@@ -180,7 +180,7 @@
   - _Leverage: functions/src/__tests__/ (現有測試架構)_
   - _Requirements: 所有功能需求_
 
-- [ ] 22. 建立整合測試套件
+- [x] 22. 建立整合測試套件
   - File: functions/src/__tests__/integration/
   - 測試完整的分析流程
   - 測試多資料來源的整合
@@ -190,7 +190,7 @@
 
 ## 階段7：部署與優化
 
-- [ ] 23. 效能優化與快取
+- [x] 23. 效能優化與快取
   - File: functions/src/utils/Cache.ts (修改)
   - 實作估值結果的快取機制
   - 優化資料取得和計算效能
@@ -198,7 +198,7 @@
   - _Leverage: functions/src/utils/Cache.ts_
   - _Requirements: 非功能性需求_
 
-- [ ] 24. 監控與日誌系統
+- [x] 24. 監控與日誌系統
   - File: functions/src/utils/Logger.ts (修改)
   - 新增估值分析的詳細日誌
   - 實作效能監控和錯誤追蹤
@@ -206,7 +206,7 @@
   - _Leverage: functions/src/utils/Logger.ts_
   - _Requirements: 非功能性需求_
 
-- [ ] 25. 最終整合與部署
+- [x] 25. 最終整合與部署
   - File: functions/src/index.ts (修改)
   - 整合所有新組件到主應用程式
   - 部署到Firebase Functions

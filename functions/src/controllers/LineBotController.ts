@@ -8,6 +8,7 @@ import { AIAnalyzer } from '../services/AIAnalyzer';
 import { StockDataAdapter } from '../adapters/StockDataAdapter';
 import { ETFDataAdapter } from '../adapters/ETFDataAdapter';
 import { AnalysisType } from '../types/analysis';
+import { ComprehensiveAnalysisEngine } from '../engines/AnalysisEngine';
 import {
   LineWebhookRequest,
   LineEvent,
@@ -28,6 +29,7 @@ export class LineBotController {
   private stockAdapter: StockDataAdapter;
   private etfAdapter: ETFDataAdapter;
   private flexMessageGenerator: FlexMessageGenerator;
+  private comprehensiveEngine: ComprehensiveAnalysisEngine;
 
   constructor() {
     this.config = new LineConfig();
@@ -36,6 +38,7 @@ export class LineBotController {
     this.stockAdapter = new StockDataAdapter();
     this.etfAdapter = new ETFDataAdapter();
     this.flexMessageGenerator = new FlexMessageGenerator();
+    this.comprehensiveEngine = new ComprehensiveAnalysisEngine();
   }
 
   /**
@@ -173,6 +176,16 @@ export class LineBotController {
       }
     }
 
+    // 檢查是否為體質分析請求
+    if (cleanText.includes('體質') || cleanText.includes('健康') || cleanText.includes('HEALTH')) {
+      this.logger.info(`識別為體質分析請求: ${cleanText}`);
+      const symbol = this.extractSymbolFromHealthRequest(cleanText);
+      if (symbol) {
+        await this.handleHealthAnalysisRequest(replyToken, symbol);
+        return;
+      }
+    }
+
     // 預設回應
     this.logger.info(`未識別的訊息，發送幫助訊息: ${cleanText}`);
     await this.sendHelpMessage(replyToken);
@@ -248,6 +261,54 @@ export class LineBotController {
     } catch (error) {
       this.logger.error('分析請求失敗', error instanceof Error ? error : new Error(String(error)));
       await this.sendErrorMessage(replyToken, `分析股票 ${symbol} 時發生錯誤`);
+    }
+  }
+
+  /**
+   * 處理體質分析請求
+   * @param replyToken - 回覆 Token
+   * @param symbol - 股票代碼
+   */
+  private async handleHealthAnalysisRequest(replyToken: string, symbol: string): Promise<void> {
+    try {
+      this.logger.info(`處理體質分析請求: ${symbol}`);
+
+      // 先取得股票資料
+      let stockData;
+
+      if (Validation.isValidStockSymbol(symbol)) {
+        stockData = await this.stockAdapter.fetchStockData(symbol);
+      } else if (Validation.isValidETFSymbol(symbol)) {
+        stockData = await this.etfAdapter.fetchStockData(symbol);
+      } else {
+        await this.sendErrorMessage(replyToken, `無效的股票代碼: ${symbol}`);
+        return;
+      }
+
+      if (!stockData) {
+        await this.sendErrorMessage(replyToken, `找不到股票資料: ${symbol}`);
+        return;
+      }
+
+      // 執行綜合體質分析
+      const comprehensiveResult = await this.comprehensiveEngine.performComprehensiveAnalysis(
+        symbol,
+        stockData,
+        'NEUTRAL', // 預設市場條件
+        stockData.industry // 產業資訊
+      );
+
+      // 生成體質分析訊息（使用專用模板）
+      const message = this.flexMessageGenerator.createHealthAnalysisMessage(
+        comprehensiveResult.healthReport
+      );
+      await this.sendFlexMessage(replyToken, message);
+    } catch (error) {
+      this.logger.error(
+        '體質分析請求失敗',
+        error instanceof Error ? error : new Error(String(error))
+      );
+      await this.sendErrorMessage(replyToken, `體質分析股票 ${symbol} 時發生錯誤`);
     }
   }
 
@@ -355,6 +416,31 @@ export class LineBotController {
   }
 
   /**
+   * 從體質分析請求中提取股票代碼
+   * @param text - 體質分析請求文字
+   * @returns 股票代碼或 null
+   */
+  private extractSymbolFromHealthRequest(text: string): string | null {
+    // 支援多種格式：
+    // - "體質 2330"
+    // - "健康 2330"
+    // - "HEALTH 2330"
+    // - "2330 體質"
+    // - "2330 健康"
+    // - "2330 HEALTH"
+    const patterns = [/(?:體質|健康|HEALTH)\s+(\d{4,5})/i, /(\d{4,5})\s+(?:體質|健康|HEALTH)/i];
+
+    for (const pattern of patterns) {
+      const match = text.match(pattern);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * 發送歡迎訊息
    * @param replyToken - 回覆 Token
    */
@@ -373,7 +459,7 @@ export class LineBotController {
   private async sendHelpMessage(replyToken: string): Promise<void> {
     const message = {
       type: 'text',
-      text: '股健檢使用說明：\n\n📈 股票查詢：\n• 輸入 4 位數字股票代碼\n• 例如：2330、2317\n\n📊 ETF 查詢：\n• 輸入 4 位數字 ETF 代碼\n• 例如：0050、0056\n\n🔍 深度分析：\n• 輸入「股票代碼 分析」\n• 例如：2330 分析\n\n❓ 其他指令：\n• 輸入「幫助」查看此說明',
+      text: '股健檢使用說明：\n\n📈 股票查詢：\n• 輸入 4 位數字股票代碼\n• 例如：2330、2317\n\n📊 ETF 查詢：\n• 輸入 4 位數字 ETF 代碼\n• 例如：0050、0056\n\n🔍 深度分析：\n• 輸入「股票代碼 分析」\n• 例如：2330 分析\n\n💪 體質分析：\n• 輸入「股票代碼 體質」或「股票代碼 健康」\n• 例如：2330 體質、0050 健康\n\n❓ 其他指令：\n• 輸入「幫助」查看此說明',
     };
     await this.sendTextMessage(replyToken, message.text);
   }

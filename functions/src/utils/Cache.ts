@@ -1,4 +1,6 @@
 import { CacheConfig, CacheEntry } from '../types';
+import { ValuationResult } from '../types/valuation';
+import { HealthReport } from '../types/health-score';
 
 // 快取類別
 export class Cache {
@@ -281,5 +283,142 @@ export class Cache {
   cleanup(): void {
     this.stopCleanupTimer();
     this.clear();
+  }
+
+  /**
+   * 快取估值結果
+   * @param symbol - 股票代碼
+   * @param method - 估值方法
+   * @param result - 估值結果
+   * @param ttl - 存活時間（秒）
+   */
+  cacheValuationResult(
+    symbol: string,
+    method: string,
+    result: ValuationResult,
+    ttl?: number
+  ): void {
+    const key = `valuation:${symbol}:${method}`;
+    this.set(key, result, ttl || this.config.ttl);
+  }
+
+  /**
+   * 取得快取的估值結果
+   * @param symbol - 股票代碼
+   * @param method - 估值方法
+   * @returns 估值結果或 undefined
+   */
+  getCachedValuationResult(symbol: string, method: string): ValuationResult | undefined {
+    const key = `valuation:${symbol}:${method}`;
+    return this.get<ValuationResult>(key);
+  }
+
+  /**
+   * 快取體質分析報告
+   * @param symbol - 股票代碼
+   * @param report - 體質分析報告
+   * @param ttl - 存活時間（秒）
+   */
+  cacheHealthReport(symbol: string, report: HealthReport, ttl?: number): void {
+    const key = `health:${symbol}`;
+    this.set(key, report, ttl || this.config.ttl);
+  }
+
+  /**
+   * 取得快取的體質分析報告
+   * @param symbol - 股票代碼
+   * @returns 體質分析報告或 undefined
+   */
+  getCachedHealthReport(symbol: string): HealthReport | undefined {
+    const key = `health:${symbol}`;
+    return this.get<HealthReport>(key);
+  }
+
+  /**
+   * 快取綜合分析結果
+   * @param symbol - 股票代碼
+   * @param result - 綜合分析結果
+   * @param ttl - 存活時間（秒）
+   */
+  cacheComprehensiveAnalysis(symbol: string, result: any, ttl?: number): void {
+    const key = `comprehensive:${symbol}`;
+    this.set(key, result, ttl || this.config.ttl);
+  }
+
+  /**
+   * 取得快取的綜合分析結果
+   * @param symbol - 股票代碼
+   * @returns 綜合分析結果或 undefined
+   */
+  getCachedComprehensiveAnalysis(symbol: string): any | undefined {
+    const key = `comprehensive:${symbol}`;
+    return this.get<any>(key);
+  }
+
+  /**
+   * 清除特定股票的所有快取
+   * @param symbol - 股票代碼
+   */
+  clearStockCache(symbol: string): void {
+    const keysToDelete: string[] = [];
+
+    for (const key of this.cache.keys()) {
+      if (key.includes(symbol)) {
+        keysToDelete.push(key);
+      }
+    }
+
+    keysToDelete.forEach(key => this.cache.delete(key));
+  }
+
+  /**
+   * 取得快取統計資訊
+   * @returns 快取統計資訊
+   */
+  getCacheStats(): {
+    totalEntries: number;
+    totalSize: number;
+    hitRate: number;
+    averageAccessCount: number;
+    oldestEntry: Date | null;
+    newestEntry: Date | null;
+  } {
+    if (this.cache.size === 0) {
+      return {
+        totalEntries: 0,
+        totalSize: 0,
+        hitRate: 0,
+        averageAccessCount: 0,
+        oldestEntry: null,
+        newestEntry: null,
+      };
+    }
+
+    let totalSize = 0;
+    let totalAccessCount = 0;
+    let oldestDate = new Date();
+    let newestDate = new Date(0);
+
+    for (const entry of this.cache.values()) {
+      totalSize += JSON.stringify(entry.value).length;
+      totalAccessCount += entry.accessCount;
+
+      if (entry.createdAt < oldestDate) {
+        oldestDate = entry.createdAt;
+      }
+
+      if (entry.createdAt > newestDate) {
+        newestDate = entry.createdAt;
+      }
+    }
+
+    return {
+      totalEntries: this.cache.size,
+      totalSize,
+      hitRate: totalAccessCount / this.cache.size,
+      averageAccessCount: totalAccessCount / this.cache.size,
+      oldestEntry: oldestDate,
+      newestEntry: newestDate,
+    };
   }
 }

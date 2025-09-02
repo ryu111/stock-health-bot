@@ -1,6 +1,7 @@
 import { StockData, ETFData } from '../types/stock';
 import { AnalysisResult } from '../types/analysis';
 import { LineFlexReplyMessage } from '../types/line-events';
+import { HealthReport, ScoreCategory, ScoreGrade } from '../types/health-score';
 
 // Flex 訊息生成器
 export class FlexMessageGenerator {
@@ -675,6 +676,379 @@ export class FlexMessageGenerator {
         return '#E74C3C'; // 紅色
       default:
         return '#F39C12'; // 橙色
+    }
+  }
+
+  /**
+   * 建立體質分析結果訊息
+   * @param healthReport - 體質分析報告
+   * @returns Flex 訊息
+   */
+  createHealthAnalysisMessage(healthReport: HealthReport): LineFlexReplyMessage {
+    const scoreColor = this.getScoreColor(healthReport.overallScore);
+    const gradeText = this.getGradeText(healthReport.overallGrade);
+
+    // 建立各類別評分條目
+    const categoryScoreItems = Object.entries(healthReport.categoryScores).map(
+      ([category, breakdown]) => ({
+        type: 'box',
+        layout: 'horizontal',
+        contents: [
+          {
+            type: 'text',
+            text: this.getCategoryDisplayName(category as ScoreCategory),
+            size: 'sm',
+            color: '#555555',
+            flex: 0,
+          },
+          {
+            type: 'text',
+            text: `${breakdown.score}/100`,
+            size: 'sm',
+            color: this.getScoreColor(breakdown.score),
+            align: 'end',
+            flex: 0,
+          },
+        ],
+      })
+    );
+
+    // 建立風險因子條目
+    const riskFactorItems = healthReport.riskFactors.slice(0, 3).map(risk => ({
+      type: 'box',
+      layout: 'horizontal',
+      contents: [
+        {
+          type: 'text',
+          text: '⚠️',
+          size: 'sm',
+          color: this.getRiskColor(risk.level),
+          flex: 0,
+        },
+        {
+          type: 'text',
+          text: risk.name,
+          size: 'sm',
+          color: '#111111',
+          flex: 1,
+          wrap: true,
+        },
+        {
+          type: 'text',
+          text: risk.level.toUpperCase(),
+          size: 'xs',
+          color: this.getRiskColor(risk.level),
+          align: 'end',
+          flex: 0,
+        },
+      ],
+    }));
+
+    // 建立優勢和弱勢條目
+    const strengthItems = healthReport.strengths.slice(0, 2).map(strength => ({
+      type: 'box',
+      layout: 'horizontal',
+      contents: [
+        {
+          type: 'text',
+          text: '✅',
+          size: 'sm',
+          color: '#27AE60',
+          flex: 0,
+        },
+        {
+          type: 'text',
+          text: strength,
+          size: 'sm',
+          color: '#111111',
+          flex: 1,
+          wrap: true,
+        },
+      ],
+    }));
+
+    const weaknessItems = healthReport.weaknesses.slice(0, 2).map(weakness => ({
+      type: 'box',
+      layout: 'horizontal',
+      contents: [
+        {
+          type: 'text',
+          text: '❌',
+          size: 'sm',
+          color: '#E74C3C',
+          flex: 0,
+        },
+        {
+          type: 'text',
+          text: weakness,
+          size: 'sm',
+          color: '#111111',
+          flex: 1,
+          wrap: true,
+        },
+      ],
+    }));
+
+    return {
+      type: 'flex',
+      altText: `${healthReport.symbol} 體質分析結果`,
+      contents: {
+        type: 'bubble',
+        size: 'kilo',
+        header: {
+          type: 'box',
+          layout: 'vertical',
+          contents: [
+            {
+              type: 'text',
+              text: `${healthReport.symbol} 體質分析`,
+              weight: 'bold',
+              size: 'lg',
+              color: '#FFFFFF',
+              align: 'center',
+            },
+            {
+              type: 'text',
+              text: gradeText,
+              size: 'sm',
+              color: '#E8F5E8',
+              align: 'center',
+              margin: 'sm',
+            },
+          ],
+          backgroundColor: scoreColor,
+          paddingAll: 'md',
+        },
+        body: {
+          type: 'box',
+          layout: 'vertical',
+          spacing: 'md',
+          contents: [
+            // 整體評分
+            {
+              type: 'box',
+              layout: 'horizontal',
+              contents: [
+                {
+                  type: 'text',
+                  text: '整體評分',
+                  size: 'lg',
+                  weight: 'bold',
+                  color: '#111111',
+                  flex: 0,
+                },
+                {
+                  type: 'text',
+                  text: `${healthReport.overallScore}/100`,
+                  size: 'lg',
+                  weight: 'bold',
+                  color: scoreColor,
+                  align: 'end',
+                  flex: 0,
+                },
+              ],
+            },
+            // 分隔線
+            {
+              type: 'separator',
+              margin: 'md',
+            },
+            // 各類別評分
+            {
+              type: 'text',
+              text: '各類別評分',
+              size: 'sm',
+              weight: 'bold',
+              color: '#111111',
+              margin: 'md',
+            },
+            ...categoryScoreItems,
+            // 分隔線
+            {
+              type: 'separator',
+              margin: 'md',
+            },
+            // 風險因子
+            ...(healthReport.riskFactors.length > 0
+              ? [
+                  {
+                    type: 'text',
+                    text: '風險因子',
+                    size: 'sm',
+                    weight: 'bold',
+                    color: '#111111',
+                    margin: 'md',
+                  },
+                  ...riskFactorItems,
+                  {
+                    type: 'separator',
+                    margin: 'md',
+                  },
+                ]
+              : []),
+            // 優勢項目
+            ...(healthReport.strengths.length > 0
+              ? [
+                  {
+                    type: 'text',
+                    text: '優勢項目',
+                    size: 'sm',
+                    weight: 'bold',
+                    color: '#111111',
+                    margin: 'md',
+                  },
+                  ...strengthItems,
+                  {
+                    type: 'separator',
+                    margin: 'md',
+                  },
+                ]
+              : []),
+            // 弱勢項目
+            ...(healthReport.weaknesses.length > 0
+              ? [
+                  {
+                    type: 'text',
+                    text: '弱勢項目',
+                    size: 'sm',
+                    weight: 'bold',
+                    color: '#111111',
+                    margin: 'md',
+                  },
+                  ...weaknessItems,
+                ]
+              : []),
+          ],
+        },
+        footer: {
+          type: 'box',
+          layout: 'vertical',
+          contents: [
+            {
+              type: 'text',
+              text: `投資建議: ${healthReport.investmentAdvice.advice}`,
+              size: 'sm',
+              color: '#555555',
+              align: 'center',
+              wrap: true,
+            },
+            {
+              type: 'text',
+              text: `適合: ${this.getSuitabilityText(healthReport.investmentAdvice.suitability)} | 時間: ${this.getTimeHorizonText(healthReport.investmentAdvice.timeHorizon)}`,
+              size: 'xs',
+              color: '#888888',
+              align: 'center',
+              margin: 'sm',
+            },
+          ],
+          flex: 0,
+          paddingAll: 'md',
+        },
+      },
+    };
+  }
+
+  /**
+   * 取得評分等級顯示文字
+   * @param grade - 評分等級
+   * @returns 顯示文字
+   */
+  private getGradeText(grade: ScoreGrade): string {
+    switch (grade) {
+      case ScoreGrade.EXCELLENT:
+        return '優秀 (90-100)';
+      case ScoreGrade.GOOD:
+        return '良好 (80-89)';
+      case ScoreGrade.AVERAGE:
+        return '平均 (70-79)';
+      case ScoreGrade.BELOW_AVERAGE:
+        return '低於平均 (60-69)';
+      case ScoreGrade.POOR:
+        return '不佳 (50-59)';
+      case ScoreGrade.VERY_POOR:
+        return '很差 (0-49)';
+      default:
+        return '未知';
+    }
+  }
+
+  /**
+   * 取得類別顯示名稱
+   * @param category - 評分類別
+   * @returns 顯示名稱
+   */
+  private getCategoryDisplayName(category: ScoreCategory): string {
+    switch (category) {
+      case ScoreCategory.VALUATION:
+        return '估值評分';
+      case ScoreCategory.FUNDAMENTALS:
+        return '基本面評分';
+      case ScoreCategory.TECHNICAL:
+        return '技術面評分';
+      case ScoreCategory.RISK:
+        return '風險評分';
+      case ScoreCategory.GROWTH:
+        return '成長性評分';
+      case ScoreCategory.QUALITY:
+        return '品質評分';
+      case ScoreCategory.LIQUIDITY:
+        return '流動性評分';
+      default:
+        return category;
+    }
+  }
+
+  /**
+   * 取得風險等級顏色
+   * @param level - 風險等級
+   * @returns 顏色代碼
+   */
+  private getRiskColor(level: 'low' | 'medium' | 'high'): string {
+    switch (level) {
+      case 'low':
+        return '#27AE60';
+      case 'medium':
+        return '#F39C12';
+      case 'high':
+        return '#E74C3C';
+      default:
+        return '#555555';
+    }
+  }
+
+  /**
+   * 取得投資適合性文字
+   * @param suitability - 適合性
+   * @returns 顯示文字
+   */
+  private getSuitabilityText(suitability: 'conservative' | 'moderate' | 'aggressive'): string {
+    switch (suitability) {
+      case 'conservative':
+        return '保守型';
+      case 'moderate':
+        return '穩健型';
+      case 'aggressive':
+        return '積極型';
+      default:
+        return '未知';
+    }
+  }
+
+  /**
+   * 取得投資時間範圍文字
+   * @param timeHorizon - 時間範圍
+   * @returns 顯示文字
+   */
+  private getTimeHorizonText(timeHorizon: 'short' | 'medium' | 'long'): string {
+    switch (timeHorizon) {
+      case 'short':
+        return '短期';
+      case 'medium':
+        return '中期';
+      case 'long':
+        return '長期';
+      default:
+        return '未知';
     }
   }
 }

@@ -195,19 +195,225 @@ export class Logger {
   }
 
   /**
+   * 記錄體質分析開始
+   * @param symbol - 股票代碼
+   * @param context - 上下文
+   */
+  logHealthAnalysisStart(symbol: string, context?: Record<string, unknown>): void {
+    this.info(`開始體質分析: ${symbol}`, {
+      symbol,
+      analysisType: 'health',
+      timestamp: new Date().toISOString(),
+      ...context,
+    });
+  }
+
+  /**
+   * 記錄體質分析完成
+   * @param symbol - 股票代碼
+   * @param score - 健康評分
+   * @param duration - 分析耗時（毫秒）
+   * @param context - 上下文
+   */
+  logHealthAnalysisComplete(
+    symbol: string,
+    score: number,
+    duration: number,
+    context?: Record<string, unknown>
+  ): void {
+    this.info(`體質分析完成: ${symbol} (評分: ${score}, 耗時: ${duration}ms)`, {
+      symbol,
+      analysisType: 'health',
+      score,
+      duration,
+      timestamp: new Date().toISOString(),
+      ...context,
+    });
+  }
+
+  /**
+   * 記錄估值計算開始
+   * @param symbol - 股票代碼
+   * @param method - 估值方法
+   * @param context - 上下文
+   */
+  logValuationStart(symbol: string, method: string, context?: Record<string, unknown>): void {
+    this.info(`開始估值計算: ${symbol} (方法: ${method})`, {
+      symbol,
+      analysisType: 'valuation',
+      method,
+      timestamp: new Date().toISOString(),
+      ...context,
+    });
+  }
+
+  /**
+   * 記錄估值計算完成
+   * @param symbol - 股票代碼
+   * @param method - 估值方法
+   * @param fairValue - 合理價值
+   * @param duration - 計算耗時（毫秒）
+   * @param context - 上下文
+   */
+  logValuationComplete(
+    symbol: string,
+    method: string,
+    fairValue: number,
+    duration: number,
+    context?: Record<string, unknown>
+  ): void {
+    this.info(
+      `估值計算完成: ${symbol} (方法: ${method}, 價值: ${fairValue}, 耗時: ${duration}ms)`,
+      {
+        symbol,
+        analysisType: 'valuation',
+        method,
+        fairValue,
+        duration,
+        timestamp: new Date().toISOString(),
+        ...context,
+      }
+    );
+  }
+
+  /**
+   * 記錄快取命中
+   * @param key - 快取鍵
+   * @param context - 上下文
+   */
+  logCacheHit(key: string, context?: Record<string, unknown>): void {
+    this.debug(`快取命中: ${key}`, {
+      cacheKey: key,
+      cacheType: 'hit',
+      timestamp: new Date().toISOString(),
+      ...context,
+    });
+  }
+
+  /**
+   * 記錄快取未命中
+   * @param key - 快取鍵
+   * @param context - 上下文
+   */
+  logCacheMiss(key: string, context?: Record<string, unknown>): void {
+    this.debug(`快取未命中: ${key}`, {
+      cacheKey: key,
+      cacheType: 'miss',
+      timestamp: new Date().toISOString(),
+      ...context,
+    });
+  }
+
+  /**
    * 記錄效能指標
    * @param operation - 操作名稱
-   * @param duration - 執行時間
+   * @param duration - 耗時（毫秒）
    * @param context - 上下文
    */
   logPerformance(operation: string, duration: number, context?: Record<string, unknown>): void {
-    const level = duration > 1000 ? LogLevel.WARN : LogLevel.INFO;
+    const level = duration > 1000 ? LogLevel.WARN : LogLevel.DEBUG;
 
-    this.log(level, `效能指標: ${operation}`, {
-      operation,
-      duration: `${duration}ms`,
-      ...context,
-    });
+    if (level === LogLevel.WARN) {
+      this.warn(`效能警告: ${operation} 耗時 ${duration}ms`, {
+        operation,
+        duration,
+        performanceLevel: 'slow',
+        timestamp: new Date().toISOString(),
+        ...context,
+      });
+    } else {
+      this.debug(`效能記錄: ${operation} 耗時 ${duration}ms`, {
+        operation,
+        duration,
+        performanceLevel: 'normal',
+        timestamp: new Date().toISOString(),
+        ...context,
+      });
+    }
+  }
+
+  /**
+   * 記錄資料品質問題
+   * @param symbol - 股票代碼
+   * @param issue - 問題描述
+   * @param severity - 嚴重程度
+   * @param context - 上下文
+   */
+  logDataQualityIssue(
+    symbol: string,
+    issue: string,
+    severity: 'low' | 'medium' | 'high',
+    context?: Record<string, unknown>
+  ): void {
+    const level =
+      severity === 'high' ? LogLevel.ERROR : severity === 'medium' ? LogLevel.WARN : LogLevel.INFO;
+
+    if (level === LogLevel.ERROR) {
+      this.error(`資料品質問題: ${symbol} - ${issue}`, undefined, {
+        symbol,
+        issue,
+        severity,
+        dataQualityType: 'issue',
+        timestamp: new Date().toISOString(),
+        ...context,
+      });
+    } else if (level === LogLevel.WARN) {
+      this.warn(`資料品質問題: ${symbol} - ${issue}`, {
+        symbol,
+        issue,
+        severity,
+        dataQualityType: 'issue',
+        timestamp: new Date().toISOString(),
+        ...context,
+      });
+    } else {
+      this.info(`資料品質問題: ${symbol} - ${issue}`, {
+        symbol,
+        issue,
+        severity,
+        dataQualityType: 'issue',
+        timestamp: new Date().toISOString(),
+        ...context,
+      });
+    }
+  }
+
+  /**
+   * 記錄系統健康狀態
+   * @param status - 健康狀態
+   * @param metrics - 系統指標
+   * @param context - 上下文
+   */
+  logSystemHealth(
+    status: 'healthy' | 'warning' | 'critical',
+    metrics: Record<string, unknown>,
+    context?: Record<string, unknown>
+  ): void {
+    const level =
+      status === 'critical' ? LogLevel.ERROR : status === 'warning' ? LogLevel.WARN : LogLevel.INFO;
+
+    if (level === LogLevel.ERROR) {
+      this.error(`系統健康狀態: ${status}`, undefined, {
+        systemHealth: status,
+        metrics,
+        timestamp: new Date().toISOString(),
+        ...context,
+      });
+    } else if (level === LogLevel.WARN) {
+      this.warn(`系統健康狀態: ${status}`, {
+        systemHealth: status,
+        metrics,
+        timestamp: new Date().toISOString(),
+        ...context,
+      });
+    } else {
+      this.info(`系統健康狀態: ${status}`, {
+        systemHealth: status,
+        metrics,
+        timestamp: new Date().toISOString(),
+        ...context,
+      });
+    }
   }
 
   /**

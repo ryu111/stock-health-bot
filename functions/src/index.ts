@@ -6,6 +6,8 @@ import { LineBotController } from './controllers/LineBotController';
 import { StockService } from './services/StockService';
 import { AIAnalyzer } from './services/AIAnalyzer';
 import { ETFDataService } from './services/ETFDataService';
+import { ComprehensiveAnalysisEngine } from './engines/AnalysisEngine';
+import { ValuationEngine } from './engines/ValuationEngine';
 import { FirebaseConfig } from './config/FirebaseConfig';
 import { Logger } from './utils/Logger';
 import { Cache } from './utils/Cache';
@@ -19,6 +21,12 @@ const lineBotController = new LineBotController();
 const stockService = new StockService();
 const aiAnalyzer = new AIAnalyzer();
 const etfDataService = new ETFDataService();
+const comprehensiveEngine = new ComprehensiveAnalysisEngine();
+const valuationEngine = new ValuationEngine([], { safetyThreshold: 0.9, expensiveThreshold: 1.1 });
+// 這些服務已整合到ComprehensiveAnalysisEngine中
+// const healthCalculator = new HealthScoreCalculator();
+// const recommendationEngine = new RecommendationEngine();
+// const entryPriceCalculator = new EntryPriceCalculator();
 const logger = Logger.getInstance();
 const cache = new Cache({
   ttl: 300, // 5 分鐘
@@ -243,6 +251,161 @@ app.post('/api/analyze/batch', async (req: express.Request, res: express.Respons
   }
 });
 
+// 體質分析 API
+app.get('/api/health/:symbol', async (req: express.Request, res: express.Response) => {
+  try {
+    const { symbol } = req.params;
+    const { marketCondition = 'NEUTRAL', industry } = req.query;
+    
+    if (!symbol || !Validation.isValidStockSymbol(symbol)) {
+      return res.status(400).json({
+        success: false,
+        error: '無效的股票代碼',
+        message: '請提供有效的股票代碼（4-5位數字）',
+      });
+    }
+
+    // 檢查快取
+    const cachedResult = cache.getCachedComprehensiveAnalysis(symbol);
+    if (cachedResult) {
+      logger.logCacheHit(`comprehensive:${symbol}`);
+      return res.json({
+        success: true,
+        data: cachedResult,
+        cached: true,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    logger.logCacheMiss(`comprehensive:${symbol}`);
+    
+    // 取得股票資料
+    let stockData;
+    if (Validation.isValidStockSymbol(symbol)) {
+      stockData = await stockService.getStockData(symbol);
+    } else if (Validation.isValidETFSymbol(symbol)) {
+      stockData = await etfDataService.getETFData(symbol);
+    } else {
+      return res.status(400).json({
+        success: false,
+        error: '無效的股票代碼',
+        message: '請提供有效的股票或ETF代碼',
+      });
+    }
+
+    if (!stockData) {
+      return res.status(404).json({
+        success: false,
+        error: '找不到股票資料',
+        message: `找不到股票 ${symbol} 的資料`,
+      });
+    }
+
+    // 執行綜合體質分析
+    const startTime = Date.now();
+    logger.logHealthAnalysisStart(symbol, { marketCondition, industry });
+    
+    const comprehensiveResult = await comprehensiveEngine.performComprehensiveAnalysis(
+      symbol,
+      stockData as any, // 使用類型斷言
+      marketCondition as 'NEUTRAL' | 'BULLISH' | 'BEARISH',
+      industry as string || (stockData as any).industry || 'Unknown'
+    );
+
+    const duration = Date.now() - startTime;
+    logger.logHealthAnalysisComplete(symbol, comprehensiveResult.healthReport.overallScore, duration);
+
+    // 快取結果
+    cache.cacheComprehensiveAnalysis(symbol, comprehensiveResult);
+
+    return res.json({
+      success: true,
+      data: comprehensiveResult,
+      cached: false,
+      duration: `${duration}ms`,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    logger.error('體質分析失敗', error instanceof Error ? error : new Error(String(error)));
+    return res.status(500).json({
+      success: false,
+      error: '分析失敗',
+      message: '體質分析失敗，請稍後再試',
+    });
+  }
+});
+
+// 估值計算 API
+app.post('/api/valuation', async (req: express.Request, res: express.Response) => {
+  try {
+    const { symbol, method, parameters } = req.body;
+    
+    if (!symbol || !method || !parameters) {
+      return res.status(400).json({
+        success: false,
+        error: '缺少必要參數',
+        message: '請提供股票代碼、估值方法和參數',
+      });
+    }
+
+    // 檢查快取
+    const cachedResult = cache.getCachedValuationResult(symbol, method);
+    if (cachedResult) {
+      logger.logCacheHit(`valuation:${symbol}:${method}`);
+      return res.json({
+        success: true,
+        data: cachedResult,
+        cached: true,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    logger.logCacheMiss(`valuation:${symbol}:${method}`);
+
+    // 取得股票資料
+    const stockData = await stockService.getStockData(symbol);
+    if (!stockData) {
+      return res.status(404).json({
+        success: false,
+        error: '找不到股票資料',
+        message: `找不到股票 ${symbol} 的資料`,
+      });
+    }
+
+    // 執行估值計算
+    const startTime = Date.now();
+    logger.logValuationStart(symbol, method, { parameters });
+    
+    const valuationResult = await valuationEngine.evaluate({
+      symbol,
+      method,
+      data: stockData,
+      parameters,
+    } as any);
+
+    const duration = Date.now() - startTime;
+    logger.logValuationComplete(symbol, method, valuationResult.compositeFair?.mid || 0, duration);
+
+    // 快取結果
+    cache.cacheValuationResult(symbol, method, valuationResult);
+
+    return res.json({
+      success: true,
+      data: valuationResult,
+      cached: false,
+      duration: `${duration}ms`,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    logger.error('估值計算失敗', error instanceof Error ? error : new Error(String(error)));
+    return res.status(500).json({
+      success: false,
+      error: '計算失敗',
+      message: '估值計算失敗，請稍後再試',
+    });
+  }
+});
+
 // 健康檢查 API
 app.get('/api/health', (_req: express.Request, res: express.Response) => {
   res.json({
@@ -255,13 +418,60 @@ app.get('/api/health', (_req: express.Request, res: express.Response) => {
 });
 
 // 快取狀態 API
-app.get('/api/cache/status', (_req: express.Request, res: express.Response) => {
-  const cacheStatus = cache.getStats();
-  res.json({
-    success: true,
-    data: cacheStatus,
-    timestamp: new Date().toISOString(),
-  });
+app.get('/api/cache/status', async (_req: express.Request, res: express.Response) => {
+  try {
+    const stats = cache.getCacheStats();
+    return res.json({
+      success: true,
+      data: stats,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    logger.error('取得快取狀態失敗', error instanceof Error ? error : new Error(String(error)));
+    return res.status(500).json({
+      success: false,
+      error: '查詢失敗',
+      message: '取得快取狀態失敗',
+    });
+  }
+});
+
+// 系統健康檢查 API
+app.get('/api/health/status', async (_req: express.Request, res: express.Response) => {
+  try {
+    const cacheStats = cache.getCacheStats();
+    const systemMetrics = {
+      uptime: process.uptime(),
+      memory: process.memoryUsage(),
+      cache: cacheStats,
+      timestamp: new Date().toISOString(),
+    };
+
+    // 評估系統健康狀態
+    let status: 'healthy' | 'warning' | 'critical' = 'healthy';
+    if (cacheStats.totalEntries > 800) {
+      status = 'warning';
+    }
+    if (cacheStats.totalEntries > 950) {
+      status = 'critical';
+    }
+
+    logger.logSystemHealth(status, systemMetrics);
+
+    return res.json({
+      success: true,
+      status,
+      data: systemMetrics,
+      timestamp: new Date().toISOString(),
+    });
+  } catch (error) {
+    logger.error('系統健康檢查失敗', error instanceof Error ? error : new Error(String(error)));
+    return res.status(500).json({
+      success: false,
+      error: '檢查失敗',
+      message: '系統健康檢查失敗',
+    });
+  }
 });
 
 // 清除快取 API
