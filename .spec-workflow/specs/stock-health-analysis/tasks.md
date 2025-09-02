@@ -138,7 +138,7 @@
   - _Leverage: functions/src/services/HealthScoreCalculator.ts_
   - _Requirements: 1.5_
 
-- [ ] 17. 實作進場價格計算器
+- [x] 17. 實作進場價格計算器
   - File: functions/src/services/EntryPriceCalculator.ts
   - 實作考慮安全邊際的建議買價計算
   - 支援不同風險偏好的價格調整
@@ -146,7 +146,7 @@
   - _Leverage: functions/src/services/RecommendationEngine.ts_
   - _Requirements: 1.5_
 
-- [ ] 18. 整合現有分析引擎
+- [-] 18. 整合現有分析引擎
   - File: functions/src/engines/AnalysisEngine.ts (修改)
   - 整合新的估值引擎到現有分析系統
   - 擴展分析類型和結果格式
