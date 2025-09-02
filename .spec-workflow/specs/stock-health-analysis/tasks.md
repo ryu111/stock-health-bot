@@ -78,7 +78,7 @@
   - _Leverage: functions/src/engines/ValuationEngine.ts_
   - _Requirements: 1.2_
 
-- [-] 10. 實作DCF估值方法
+- [x] 10. 實作DCF估值方法
   - File: functions/src/engines/methods/DCFValuation.ts
   - 實作現金流量折現估值計算
   - 支援成長率預估和終期價值計算
@@ -86,7 +86,7 @@
   - _Leverage: functions/src/engines/ValuationEngine.ts_
   - _Requirements: 1.2_
 
-- [ ] 11. 實作DDM估值方法
+- [x] 11. 實作DDM估值方法
   - File: functions/src/engines/methods/DDMValuation.ts
   - 實作股利折現模型估值計算
   - 支援股利成長率預估
