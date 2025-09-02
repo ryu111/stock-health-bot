@@ -52,7 +52,7 @@
   - _Leverage: functions/src/services/DataFetcher.ts_
   - _Requirements: 1.1_
 
-- [-] 7. 實作資料品質控制器
+- [x] 7. 實作資料品質控制器
   - File: functions/src/services/DataQualityController.ts
   - 實作資料驗證、一致性檢查、異常偵測
   - 支援除權調整和資料時效性檢查
@@ -62,7 +62,7 @@
 
 ## 階段3：估值引擎實作
 
-- [ ] 8. 建立ValuationEngine基礎類別
+- [-] 8. 建立ValuationEngine基礎類別
   - File: functions/src/engines/ValuationEngine.ts
   - 實作估值引擎的核心架構
   - 整合資料服務和品質控制
