@@ -340,7 +340,7 @@ export class Cache {
    * @param result - 綜合分析結果
    * @param ttl - 存活時間（秒）
    */
-  cacheComprehensiveAnalysis(symbol: string, result: any, ttl?: number): void {
+  cacheComprehensiveAnalysis(symbol: string, result: unknown, ttl?: number): void {
     const key = `comprehensive:${symbol}`;
     this.set(key, result, ttl || this.config.ttl);
   }
@@ -350,9 +350,9 @@ export class Cache {
    * @param symbol - 股票代碼
    * @returns 綜合分析結果或 undefined
    */
-  getCachedComprehensiveAnalysis(symbol: string): any | undefined {
+  getCachedComprehensiveAnalysis(symbol: string): unknown | undefined {
     const key = `comprehensive:${symbol}`;
-    return this.get<any>(key);
+    return this.get<unknown>(key);
   }
 
   /**

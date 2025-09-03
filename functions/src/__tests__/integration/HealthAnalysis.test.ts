@@ -116,7 +116,7 @@ describe('體質分析整合測試', () => {
         'Semiconductor'
       );
 
-      const recommendation = comprehensiveResult.investmentRecommendation;
+      const recommendation = comprehensiveResult.investmentRecommendation as any;
       expect(recommendation.action).toBeDefined();
       expect(recommendation.reasoning).toBeDefined();
       expect(recommendation.confidence).toBeGreaterThan(0);
@@ -130,7 +130,7 @@ describe('體質分析整合測試', () => {
         'Semiconductor'
       );
 
-      const entryPrice = comprehensiveResult.entryPriceResult;
+      const entryPrice = comprehensiveResult.entryPriceResult as any;
       expect(entryPrice.recommendedPrice).toBeGreaterThan(0);
       expect(entryPrice.safetyMargin).toBeGreaterThan(0);
       expect(entryPrice.riskLevel).toBeDefined();

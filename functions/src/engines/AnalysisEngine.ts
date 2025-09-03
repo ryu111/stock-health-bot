@@ -46,8 +46,8 @@ export abstract class BaseAnalysisEngine implements IAnalysisEngine {
     analysisResult: AnalysisResult;
     valuationResult: ValuationResult;
     healthReport: HealthReport;
-    investmentRecommendation: any;
-    entryPriceResult: any;
+    investmentRecommendation: unknown;
+    entryPriceResult: unknown;
   }> {
     // 執行基礎分析
     const analysisResult = await this.analyze(symbol, data);
@@ -68,21 +68,23 @@ export abstract class BaseAnalysisEngine implements IAnalysisEngine {
       price: data.price || 0,
       marketType: data.marketType,
       financials: {
-        epsTtm: (data as any).epsTtm,
-        fcfPerShare: (data as any).fcf,
-        dividendYield: (data as any).dividendYield,
+        epsTtm: (this.getPropertySafely(data, 'epsTtm') as number | undefined) ?? 0,
+        fcfPerShare: (this.getPropertySafely(data, 'fcf') as number | undefined) ?? 0,
+        dividendYield: (this.getPropertySafely(data, 'dividendYield') as number | undefined) ?? 0,
       },
-      epsCagr: (data as any).growthRate,
-      fcfCagr: (data as any).growthRate,
-      discountRate: (data as any).discountRate,
-      terminalGrowth: (data as any).terminalGrowth,
-      peLow: (data as any).peLow,
-      peHigh: (data as any).peHigh,
-      dividendGrowth: (data as any).dividendGrowth,
-      ddmDiscountRate: (data as any).ddmDiscountRate,
+      epsCagr: (this.getPropertySafely(data, 'growthRate') as number | undefined) ?? 0,
+      fcfCagr: (this.getPropertySafely(data, 'growthRate') as number | undefined) ?? 0,
+      discountRate: (this.getPropertySafely(data, 'discountRate') as number | undefined) ?? 0.1,
+      terminalGrowth:
+        (this.getPropertySafely(data, 'terminalGrowth') as number | undefined) ?? 0.03,
+      peLow: (this.getPropertySafely(data, 'peLow') as number | undefined) ?? 15,
+      peHigh: (this.getPropertySafely(data, 'peHigh') as number | undefined) ?? 25,
+      dividendGrowth: (this.getPropertySafely(data, 'growthRate') as number | undefined) ?? 0.05,
+      ddmDiscountRate:
+        (this.getPropertySafely(data, 'ddmDiscountRate') as number | undefined) ?? 0.08,
       marginOfSafety: 0.1,
-      industry: (data as any).industry,
-      sector: (data as any).sector,
+      industry: (this.getPropertySafely(data, 'industry') as string | undefined) ?? 'Unknown',
+      sector: (this.getPropertySafely(data, 'sector') as string | undefined) ?? 'Unknown',
     });
 
     // 執行健康評分分析
@@ -122,6 +124,16 @@ export abstract class BaseAnalysisEngine implements IAnalysisEngine {
       investmentRecommendation,
       entryPriceResult,
     };
+  }
+
+  /**
+   * 安全地取得物件屬性值
+   * @param obj - 物件
+   * @param key - 屬性鍵
+   * @returns 屬性值或 undefined
+   */
+  protected getPropertySafely<T>(obj: T, key: string): unknown {
+    return (obj as Record<string, unknown>)[key];
   }
 
   /**
@@ -272,7 +284,7 @@ export class ComprehensiveAnalysisEngine extends BaseAnalysisEngine {
    * @param data - 股票資料
    * @returns 分析結果
    */
-  async analyze(symbol: string, data: StockData | ETFData): Promise<AnalysisResult> {
+  analyze(symbol: string, data: StockData | ETFData): Promise<AnalysisResult> {
     // 基礎分析邏輯
     const healthScore = this.calculateHealthScore(data);
     const technicalScore = this.calculateTechnicalScore(data);
@@ -290,7 +302,7 @@ export class ComprehensiveAnalysisEngine extends BaseAnalysisEngine {
     // 分析因素
     const factors = this.getAnalysisFactors(data);
 
-    return {
+    return Promise.resolve({
       symbol,
       type: AnalysisType.COMPREHENSIVE,
       marketType: data.marketType,
@@ -316,7 +328,7 @@ export class ComprehensiveAnalysisEngine extends BaseAnalysisEngine {
         },
         risk: { score: riskScore, factors: factors.filter(f => f.category === 'risk') },
       },
-    };
+    });
   }
 
   /**
@@ -327,7 +339,8 @@ export class ComprehensiveAnalysisEngine extends BaseAnalysisEngine {
 
     if (data.price && data.price > 0) score += 15;
     if (data.volume && data.volume > 0) score += 15;
-    if ((data as any).priceChange && (data as any).priceChange > 0) score += 20;
+    const priceChange = this.getPropertySafely(data, 'priceChange') as number | undefined;
+    if (priceChange && priceChange > 0) score += 20;
 
     return Math.min(100, score);
   }
@@ -340,7 +353,8 @@ export class ComprehensiveAnalysisEngine extends BaseAnalysisEngine {
 
     if (data.marketCap && data.marketCap > 0) score += 20;
     if (data.dividendYield && data.dividendYield > 0) score += 15;
-    if ((data as any).epsTtm && (data as any).epsTtm > 0) score += 15;
+    const epsTtm = this.getPropertySafely(data, 'epsTtm') as number | undefined;
+    if (epsTtm && epsTtm > 0) score += 15;
 
     return Math.min(100, score);
   }
@@ -352,7 +366,8 @@ export class ComprehensiveAnalysisEngine extends BaseAnalysisEngine {
     let score = 50;
 
     // 價格波動風險
-    if ((data as any).volatility && (data as any).volatility > 0.3) score += 20;
+    const volatility = this.getPropertySafely(data, 'volatility') as number | undefined;
+    if (volatility && volatility > 0.3) score += 20;
 
     // 市值風險
     if (data.marketCap && data.marketCap < 1000000000) score += 15; // 小於10億

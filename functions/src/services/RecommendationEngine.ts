@@ -41,7 +41,7 @@ export class RecommendationEngine {
     weak: 0.4,
   };
 
-  async generateRecommendation(
+  generateRecommendation(
     symbol: string,
     healthReport: HealthReport,
     valuationResult: ValuationResult,
@@ -110,10 +110,10 @@ export class RecommendationEngine {
       result.stopLoss = stopLoss;
     }
 
-    return result;
+    return Promise.resolve(result);
   }
 
-  async generatePortfolioRecommendation(
+  generatePortfolioRecommendation(
     symbol: string,
     currentAllocation: number,
     healthReport: HealthReport,
@@ -160,14 +160,14 @@ export class RecommendationEngine {
       valuationSignal
     );
 
-    return {
+    return Promise.resolve({
       symbol,
       currentAllocation,
       recommendedAllocation: Number(recommendedAllocation.toFixed(3)),
       rebalanceAction,
       priority,
       reasoning,
-    };
+    });
   }
 
   private calculateCompositeScore(

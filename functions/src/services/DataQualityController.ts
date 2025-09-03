@@ -31,7 +31,7 @@ export class DataQualityController {
     };
   }
 
-  async validate(data: Analyzable, _source: DataSource): Promise<ValidationResult> {
+  validate(data: Analyzable, _source: DataSource): Promise<ValidationResult> {
     const start = Date.now();
     const errors: ValidationError[] = [];
     const warnings: ValidationWarning[] = [];
@@ -85,7 +85,7 @@ export class DataQualityController {
 
     const isValid = errors.length === 0 && quality.overallScore >= 60;
 
-    return {
+    return Promise.resolve({
       isValid,
       quality,
       errors,
@@ -93,7 +93,7 @@ export class DataQualityController {
       suggestions,
       timestamp: new Date(),
       duration: Date.now() - start,
-    };
+    });
   }
 
   // 提供除權/分割等調整掛鉤（目前僅設計擴充點）

@@ -202,12 +202,12 @@ describe('AnalysisEngine', () => {
       expect(comprehensiveResult.healthReport.overallScore).toBeGreaterThan(0);
 
       // 檢查投資建議
-      expect(comprehensiveResult.investmentRecommendation.symbol).toBe('2330');
-      expect(comprehensiveResult.investmentRecommendation.action).toBeDefined();
+      expect((comprehensiveResult.investmentRecommendation as any).symbol).toBe('2330');
+      expect((comprehensiveResult.investmentRecommendation as any).action).toBeDefined();
 
       // 檢查進場價格
-      expect(comprehensiveResult.entryPriceResult.symbol).toBe('2330');
-      expect(comprehensiveResult.entryPriceResult.currentPrice).toBe(500);
+      expect((comprehensiveResult.entryPriceResult as any).symbol).toBe('2330');
+      expect((comprehensiveResult.entryPriceResult as any).currentPrice).toBe(500);
     });
 
     test('應能處理不同的市場條件', async () => {

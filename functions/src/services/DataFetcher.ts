@@ -5,6 +5,7 @@ import {
   DataSourceType,
   DataSourceStatus,
   ValidationResult,
+  DataQualityLevel,
 } from '../types/data-source';
 import { StockDataAdapter } from '../adapters/StockDataAdapter';
 import { ETFDataAdapter } from '../adapters/ETFDataAdapter';
@@ -363,11 +364,11 @@ export class DataFetcher {
   /**
    * 從公開資訊觀測站取得財務資料
    */
-  private async fetchFinancialDataFromPublicInfo(_symbol: string): Promise<Partial<StockData>> {
+  private fetchFinancialDataFromPublicInfo(_symbol: string): Promise<Partial<StockData>> {
     // 這裡應該實作公開資訊觀測站的API呼叫
     // 目前返回模擬資料
-    return {
-      eps: Math.random() * 10 + 1,
+    return Promise.resolve({
+      epsTtm: Math.random() * 10 + 1,
       roe: Math.random() * 0.3 + 0.1,
       debtToEquity: Math.random() * 0.5,
       currentRatio: Math.random() * 2 + 1,
@@ -375,20 +376,17 @@ export class DataFetcher {
       netProfitMargin: Math.random() * 0.2 + 0.05,
       revenueGrowth: Math.random() * 0.3 - 0.1,
       earningsGrowth: Math.random() * 0.4 - 0.2,
-    };
+    });
   }
 
   /**
    * 驗證資料品質
    */
-  private async validateDataQuality(
-    _data: unknown,
-    _source: DataSource
-  ): Promise<ValidationResult> {
+  private validateDataQuality(_data: unknown, _source: DataSource): Promise<ValidationResult> {
     // 簡化的資料品質驗證
     const quality = {
       overallScore: 85,
-      level: 'good' as any, // 暫時使用any，稍後會修復型別問題
+      level: DataQualityLevel.GOOD,
       completeness: 80,
       accuracy: 90,
       timeliness: 95,
@@ -398,7 +396,7 @@ export class DataFetcher {
       lastValidation: new Date(),
     };
 
-    return {
+    return Promise.resolve({
       isValid: true,
       quality,
       errors: [],
@@ -406,7 +404,7 @@ export class DataFetcher {
       suggestions: [],
       timestamp: new Date(),
       duration: 0,
-    };
+    });
   }
 
   /**

@@ -11,6 +11,7 @@ import {
   HealthScoreHistory,
 } from '../types/health-score';
 import { AnalysisResult } from '../types/analysis';
+import { MarketType } from '../types/stock';
 
 const DEFAULT_WEIGHTS: Record<ScoreCategory, number> = {
   [ScoreCategory.VALUATION]: 0.2,
@@ -41,7 +42,7 @@ export class HealthScoreCalculator implements IHealthScoreService {
     void DEFAULT_THRESHOLDS;
   }
 
-  async calculateHealthScore(symbol: string, data: AnalysisResult): Promise<HealthReport> {
+  calculateHealthScore(symbol: string, data: AnalysisResult): Promise<HealthReport> {
     const categoryScores: Record<ScoreCategory, ScoreBreakdown> = {
       [ScoreCategory.VALUATION]: this.calculateValuationScore(data),
       [ScoreCategory.FUNDAMENTALS]: this.calculateFundamentalsScore(data),
@@ -67,12 +68,14 @@ export class HealthScoreCalculator implements IHealthScoreService {
     const weaknesses = this.deriveWeaknesses(categoryScores);
     const recommendations = this.buildRecommendations(categoryScores, riskFactors);
 
-    return {
+    return Promise.resolve({
       symbol,
-      marketType: (data as any).marketType ?? 'TW_STOCK',
+      marketType:
+        (this.getPropertySafely(data, 'marketType') as MarketType | undefined) ??
+        MarketType.TW_STOCK,
       overallScore,
       overallGrade,
-      categoryScores: categoryScores as any,
+      categoryScores,
       riskFactors,
       strengths,
       weaknesses,
@@ -86,23 +89,23 @@ export class HealthScoreCalculator implements IHealthScoreService {
       lastUpdated: new Date(),
       confidence: 0.8,
       dataQuality: 0.85,
-    };
+    });
   }
 
-  async getScoreBreakdown(_symbol: string): Promise<ScoreBreakdown[]> {
-    return [];
+  getScoreBreakdown(_symbol: string): Promise<ScoreBreakdown[]> {
+    return Promise.resolve([]);
   }
 
-  async getRiskAssessment(_symbol: string): Promise<HealthRiskFactor[]> {
-    return [];
+  getRiskAssessment(_symbol: string): Promise<HealthRiskFactor[]> {
+    return Promise.resolve([]);
   }
 
-  async generateRecommendations(_healthReport: HealthReport): Promise<string[]> {
-    return [];
+  generateRecommendations(_healthReport: HealthReport): Promise<string[]> {
+    return Promise.resolve([]);
   }
 
-  async compareWithPeers(symbol: string, industry: string): Promise<ScoreComparison> {
-    return {
+  compareWithPeers(symbol: string, industry: string): Promise<ScoreComparison> {
+    return Promise.resolve({
       symbol,
       currentScore: 75,
       peerComparison: { industry, industryAverage: 70, industryRank: 30, industryPercentile: 80 },
@@ -113,11 +116,11 @@ export class HealthScoreCalculator implements IHealthScoreService {
         oneYearAgo: 68,
       },
       benchmarkComparison: { benchmark: 'TAIEX', benchmarkScore: 68, relativePerformance: 7 },
-    };
+    });
   }
 
-  async getScoreHistory(symbol: string, _period: string): Promise<HealthScoreHistory> {
-    return {
+  getScoreHistory(symbol: string, _period: string): Promise<HealthScoreHistory> {
+    return Promise.resolve({
       symbol,
       scores: [],
       trend: 'STABLE',
@@ -125,18 +128,32 @@ export class HealthScoreCalculator implements IHealthScoreService {
       averageScore: 75,
       bestScore: 82,
       worstScore: 65,
-    };
+    });
   }
 
-  async setAlertThresholds(_symbol: string, _thresholds: Record<string, number>): Promise<void> {
-    return;
+  setAlertThresholds(_symbol: string, _thresholds: Record<string, number>): Promise<void> {
+    return Promise.resolve();
+  }
+
+  /**
+   * 安全地取得物件屬性值
+   * @param obj - 物件
+   * @param key - 屬性鍵
+   * @returns 屬性值或 undefined
+   */
+  private getPropertySafely<T>(obj: T, key: string): unknown {
+    return (obj as Record<string, unknown>)[key];
   }
 
   // 各類別計算（簡化版，依常見指標範圍進行歸一與加權）
   private calculateValuationScore(data: AnalysisResult): ScoreBreakdown {
-    const pe = this.clampNum((data as any).peRatio, 0, 60);
-    const pb = this.clampNum((data as any).pbRatio, 0, 20);
-    const dy = this.clampNum((data as any).dividendYield, 0, 0.12);
+    const pe = this.clampNum(this.getPropertySafely(data, 'peRatio') as number | undefined, 0, 60);
+    const pb = this.clampNum(this.getPropertySafely(data, 'pbRatio') as number | undefined, 0, 20);
+    const dy = this.clampNum(
+      this.getPropertySafely(data, 'dividendYield') as number | undefined,
+      0,
+      0.12
+    );
 
     // 估值越低越好，殖利率越高越好
     const peScore = this.toScoreInverse(pe, 10, 30);
@@ -175,9 +192,17 @@ export class HealthScoreCalculator implements IHealthScoreService {
   }
 
   private calculateFundamentalsScore(data: AnalysisResult): ScoreBreakdown {
-    const roe = this.clampNum((data as any).roe, 0, 0.5);
-    const dte = this.clampNum((data as any).debtToEquity, 0, 2);
-    const margin = this.clampNum((data as any).netProfitMargin, 0, 0.4);
+    const roe = this.clampNum(this.getPropertySafely(data, 'roe') as number | undefined, 0, 0.5);
+    const dte = this.clampNum(
+      this.getPropertySafely(data, 'debtToEquity') as number | undefined,
+      0,
+      2
+    );
+    const margin = this.clampNum(
+      this.getPropertySafely(data, 'netProfitMargin') as number | undefined,
+      0,
+      0.4
+    );
 
     const roeScore = this.toScoreLinear(roe, 0.1, 0.25);
     const dteScore = this.toScoreInverse(dte, 0.3, 1.0);
@@ -215,8 +240,16 @@ export class HealthScoreCalculator implements IHealthScoreService {
   }
 
   private calculateGrowthScore(data: AnalysisResult): ScoreBreakdown {
-    const rg = this.clampNum((data as any).revenueGrowth, -0.2, 0.4);
-    const eg = this.clampNum((data as any).earningsGrowth, -0.2, 0.4);
+    const rg = this.clampNum(
+      this.getPropertySafely(data, 'revenueGrowth') as number | undefined,
+      -0.2,
+      0.4
+    );
+    const eg = this.clampNum(
+      this.getPropertySafely(data, 'earningsGrowth') as number | undefined,
+      -0.2,
+      0.4
+    );
 
     const rgScore = this.toScoreLinear(rg, 0.05, 0.2);
     const egScore = this.toScoreLinear(eg, 0.05, 0.2);
@@ -244,8 +277,16 @@ export class HealthScoreCalculator implements IHealthScoreService {
   }
 
   private calculateQualityScore(data: AnalysisResult): ScoreBreakdown {
-    const gross = this.clampNum((data as any).grossProfitMargin, 0.1, 0.6);
-    const operating = this.clampNum((data as any).operatingMargin, 0.05, 0.4);
+    const gross = this.clampNum(
+      this.getPropertySafely(data, 'grossProfitMargin') as number | undefined,
+      0.1,
+      0.6
+    );
+    const operating = this.clampNum(
+      this.getPropertySafely(data, 'operatingMargin') as number | undefined,
+      0.05,
+      0.4
+    );
 
     const gScore = this.toScoreLinear(gross, 0.3, 0.5);
     const oScore = this.toScoreLinear(operating, 0.15, 0.3);
@@ -273,8 +314,12 @@ export class HealthScoreCalculator implements IHealthScoreService {
   }
 
   private calculateRiskScore(data: AnalysisResult): ScoreBreakdown {
-    const beta = this.clampNum((data as any).beta, 0, 2);
-    const vol = this.clampNum((data as any).volatility, 0, 50);
+    const beta = this.clampNum(this.getPropertySafely(data, 'beta') as number | undefined, 0, 2);
+    const vol = this.clampNum(
+      this.getPropertySafely(data, 'volatility') as number | undefined,
+      0,
+      50
+    );
 
     const betaScore = this.toScoreInverse(beta, 0.8, 1.2);
     const volScore = this.toScoreInverse(vol, 10, 30);
@@ -302,7 +347,11 @@ export class HealthScoreCalculator implements IHealthScoreService {
   }
 
   private calculateTechnicalScore(data: AnalysisResult): ScoreBreakdown {
-    const momentum = this.clampNum((data as any).momentum ?? 0, -0.3, 0.3);
+    const momentum = this.clampNum(
+      (this.getPropertySafely(data, 'momentum') as number | undefined) ?? 0,
+      -0.3,
+      0.3
+    );
     const momentumScore = this.toScoreLinear(momentum, 0.02, 0.08);
 
     return this.composeCategory(ScoreCategory.TECHNICAL, [
@@ -319,7 +368,11 @@ export class HealthScoreCalculator implements IHealthScoreService {
   }
 
   private calculateLiquidityScore(data: AnalysisResult): ScoreBreakdown {
-    const volume = this.clampNum((data as any).volume, 0, 100000000);
+    const volume = this.clampNum(
+      this.getPropertySafely(data, 'volume') as number | undefined,
+      0,
+      100000000
+    );
     const liqScore = this.toScoreLinear(volume, 100000, 2000000);
 
     return this.composeCategory(ScoreCategory.LIQUIDITY, [
@@ -384,8 +437,8 @@ export class HealthScoreCalculator implements IHealthScoreService {
   }
 
   private deriveRiskFactors(data: AnalysisResult): HealthRiskFactor[] {
-    const vol = (data as any).volatility ?? 0;
-    const beta = (data as any).beta ?? 1;
+    const vol = (this.getPropertySafely(data, 'volatility') as number | undefined) ?? 0;
+    const beta = (this.getPropertySafely(data, 'beta') as number | undefined) ?? 1;
     const risks: HealthRiskFactor[] = [];
     if (vol > 30)
       risks.push({

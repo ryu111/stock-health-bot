@@ -2,6 +2,7 @@
 import { ValuationInput, ValuationResult, MethodFair } from '../types/valuation';
 import { MarketType } from '../types/stock';
 import { DataQualityController } from '../services/DataQualityController';
+import { DataSourceType, DataSourceStatus } from '../types/data-source';
 
 export interface IValuationMethod {
   getName(): 'PE' | 'DCF' | 'DDM';
@@ -39,8 +40,8 @@ export class ValuationEngine {
       {
         id: 'valuation_engine',
         name: 'ValuationEngine',
-        type: 'market_data' as any,
-        status: 'active' as any,
+        type: DataSourceType.MARKET_DATA,
+        status: DataSourceStatus.ACTIVE,
         priority: 10,
         reliability: 0.95,
         updateFrequency: 'realtime',
