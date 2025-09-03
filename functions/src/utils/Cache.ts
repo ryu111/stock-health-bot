@@ -350,9 +350,9 @@ export class Cache {
    * @param symbol - 股票代碼
    * @returns 綜合分析結果或 undefined
    */
-  getCachedComprehensiveAnalysis(symbol: string): unknown | undefined {
+  getCachedComprehensiveAnalysis<T = unknown>(symbol: string): T | undefined {
     const key = `comprehensive:${symbol}`;
-    return this.get<unknown>(key);
+    return this.get<T>(key);
   }
 
   /**

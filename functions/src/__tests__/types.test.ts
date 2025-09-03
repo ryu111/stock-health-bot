@@ -21,6 +21,7 @@ import {
   DataSourceStatus,
   DataSource,
   DataQuality,
+  DataQualityLevel,
   ValidationResult,
 } from '../types/data-source';
 
@@ -98,7 +99,7 @@ describe('型別定義測試', () => {
       overallGrade: ScoreGrade.GOOD,
       categoryScores: {
         [ScoreCategory.VALUATION]: scoreBreakdown,
-      } as any, // 簡化測試
+      } as Record<ScoreCategory, ScoreBreakdown>,
       riskFactors: [healthRiskFactor],
       strengths: ['基本面強勁'],
       weaknesses: ['估值偏高'],
@@ -136,7 +137,7 @@ describe('型別定義測試', () => {
 
     const dataQuality: DataQuality = {
       overallScore: 90,
-      level: 'excellent' as any, // 暫時使用any
+      level: DataQualityLevel.EXCELLENT,
       completeness: 85,
       accuracy: 95,
       timeliness: 90,
