@@ -85,7 +85,7 @@ export class ValuationEngine {
       suggestedBuyPrice,
       notes: [],
       timestamp: new Date(),
-      dataQuality: qc.quality.overallScore,
+      dataQuality: qc?.quality?.overallScore ?? 0.8,
       confidence: this.estimateConfidence(methods),
     } as Omit<ValuationResult, 'compositeFair'>;
 

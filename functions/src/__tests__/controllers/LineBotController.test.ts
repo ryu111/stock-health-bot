@@ -131,6 +131,7 @@ describe('LineBotController', () => {
       createStockInfoMessage: jest.fn(),
       createETFInfoMessage: jest.fn(),
       createAnalysisMessage: jest.fn(),
+      createHealthAnalysisMessage: jest.fn(),
       createErrorMessage: jest.fn(),
     };
 
@@ -230,7 +231,7 @@ describe('LineBotController', () => {
       mockValidation.isValidETFSymbol.mockReturnValue(false);
       mockStockAdapter.fetchStockData.mockResolvedValue(stockData);
       mockComprehensiveEngine.performComprehensiveAnalysis.mockResolvedValue(comprehensiveResult);
-      mockFlexMessageGenerator.createAnalysisMessage.mockReturnValue({ type: 'flex' } as any);
+      mockFlexMessageGenerator.createHealthAnalysisMessage.mockReturnValue({ type: 'flex' } as any);
 
       await (controller as any).handleHealthAnalysisRequest('reply-token', '2330');
 
@@ -241,7 +242,7 @@ describe('LineBotController', () => {
         'NEUTRAL',
         'Semiconductor'
       );
-      expect(mockFlexMessageGenerator.createAnalysisMessage).toHaveBeenCalledWith(comprehensiveResult.analysisResult);
+      expect(mockFlexMessageGenerator.createHealthAnalysisMessage).toHaveBeenCalledWith(comprehensiveResult.healthReport);
     });
 
     test('應能處理ETF體質分析請求', async () => {
@@ -258,7 +259,7 @@ describe('LineBotController', () => {
       mockValidation.isValidETFSymbol.mockReturnValue(true);
       mockETFAdapter.fetchStockData.mockResolvedValue(etfData);
       mockComprehensiveEngine.performComprehensiveAnalysis.mockResolvedValue(comprehensiveResult);
-      mockFlexMessageGenerator.createAnalysisMessage.mockReturnValue({ type: 'flex' } as any);
+      mockFlexMessageGenerator.createHealthAnalysisMessage.mockReturnValue({ type: 'flex' } as any);
 
       await (controller as any).handleHealthAnalysisRequest('reply-token', '0050');
 
@@ -336,7 +337,7 @@ describe('LineBotController', () => {
       mockValidation.isValidETFSymbol.mockReturnValue(false);
       mockStockAdapter.fetchStockData.mockResolvedValue(stockData);
       mockComprehensiveEngine.performComprehensiveAnalysis.mockResolvedValue(comprehensiveResult);
-      mockFlexMessageGenerator.createAnalysisMessage.mockReturnValue({ type: 'flex' } as any);
+      mockFlexMessageGenerator.createHealthAnalysisMessage.mockReturnValue({ type: 'flex' } as any);
 
       // 模擬文字訊息處理
       await (controller as any).handleTextMessage(mockReplyToken, mockText);
